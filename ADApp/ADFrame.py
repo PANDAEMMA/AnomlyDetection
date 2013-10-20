@@ -79,7 +79,7 @@ class ADFrame(wx.Frame):
 	arr = []
 	index = []
 	signal = []
-	threadhold = 2
+	threadhold = 20
         dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.filename = dlg.GetFilename()
@@ -93,20 +93,24 @@ class ADFrame(wx.Frame):
 	    N = len(arr)
             for i in range(N):
                 signal.append(float(arr[i]))
-                index.append(i)
-
+		
 	    # Search the extreme
 	    result = self.goldenSectionSearch(signal, 1, N/2, N, 1)
- 
+	
 	    zipped = zip(index, signal)
 	    temp = []
+	    count = 0
 	    for i in range(result - threadhold, result + threadhold, 1):
-		temp.append(zipped[i])
+		index.append(count)
+		count = count + 1
+		temp.append(signal[i])
+  	    zipped = zip(index, temp)
 
+	    print zipped
             #TODO handle data read and data parser by call utility functions here
             #TODO need a new draw function pass in data here
 	    #TODO need to deliver multiple possible data ranges
-            self.DrawComicMap(temp)
+            self.DrawComicMap(zipped)
         dlg.Destroy()
     
 	#analyze functions
