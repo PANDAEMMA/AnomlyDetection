@@ -2,9 +2,7 @@ import wx
 import math
 from DataPanel import *
 from AnalyzePanel import *
-
-phi = (1 + math.sqrt(5)) / 2
-resphi = 2 - phi
+from ADModel import *
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
@@ -52,71 +50,33 @@ class ADFrame(wx.Frame):
         dlg.SetFont(wx.Font(8, wx.NORMAL, wx.NORMAL, wx.NORMAL, False, "Verdana"))
         dlg.ShowModal()
         dlg.Destroy()
-	
-	# Maximizer Search algorithm
-    def goldenSectionSearch(self, f, a, b, c, tau):
-        if(c - b > b - a):
-                x = b + resphi * (c - b)
-        else:
-                x = b - resphi * (b - a)
-        if (math.fabs(c - a) < tau * (math.fabs(b) + math.fabs(x))):
-                return (c + a) /2
-        assert f[x] != f[b]
-        if(f[x] < f[b]):
-                if (c - b > b - a):
-                        return goldenSectionSearch(f, b, x, c, tau)
-                else:
-                        return goldenSectionSearch(f, a, x, b, tau)
-        else:
-                if (c - b > b - a):
-                        return goldenSectionSearch(f, a, b, x, tau)
-                else:
-                        return goldenSectionSearch(f, x, b, c, tau)
         
     def OnImport(self, event):
         self.dirname = ''
-	#The list for data reading
-	arr = []
-	index = []
-	signal = []
-	threadhold = 20
         dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.filename = dlg.GetFilename()
             self.dirname = dlg.GetDirectory()
             self.openFilePath = os.path.join(self.dirname, self.filename)
-	    # OpenFile, and read data out
-	    fd = open(self.openFilePath, 'r')
-	    for line in fd.readlines():
-		arr.append(line.strip('\n'))
-	    # Convert data into float
-	    N = len(arr)
-            for i in range(N):
-                signal.append(float(arr[i]))
-		
-	    # Search the extreme
-	    result = self.goldenSectionSearch(signal, 1, N/2, N, 1)
-	
-	    zipped = zip(index, signal)
-	    temp = []
-	    count = 0
-	    for i in range(result - threadhold, result + threadhold, 1):
-		index.append(count)
-		count = count + 1
-		temp.append(signal[i])
-  	    zipped = zip(index, temp)
-
-	    print zipped
             #TODO handle data read and data parser by call utility functions here
             #TODO need a new draw function pass in data here
-	    #TODO need to deliver multiple possible data ranges
-            self.DrawComicMap(zipped)
+            #self.DrawComicMap(zipped)
+            self.anomalies = AnalyzeData(self.openFilePath)
+            self.anomaliesData = self.PackDataToDraw(self.anomalies)
+            self.DrawComicMap(self.anomaliesData)
         dlg.Destroy()
-    
-	#analyze functions
-    def DrawComicMap(self, zipped):
+        
+    def PackDataToDraw(self, anomalies):
+        data = []
+        for anomaly in anomalies:
+            dic = dict()
+            dic['color'] = 'red'
+            dic['points'] = anomaly
+            data.append([dic])
+        return data
+        #mimic Data
         #genData mimic data here, will by read later
-        list = []
+        '''list = []
         dic = dict()
         dic1 = dict()
         dic2 = dict()
@@ -127,12 +87,17 @@ class ADFrame(wx.Frame):
         dic3['color'] = 'green'
         #dic['points'] = [(-10, 30),(20, -40), (30, 90), (40, 50)]
         dic['points'] = zipped
-	dic1['points'] = [(-20, 10),(0, 40), (30, 60), (40, 50)]
+        dic1['points'] = [(-20, 10),(0, 40), (30, 60), (40, 50)]
         dic2['points'] = [(-10, 30),(20, 90), (30, -40), (40, 90)]
         dic3['points'] = [(-40, 30),(0, -40), (30, 80), (40, 90)]
         list.append([dic])
         list.append([dic1])
         list.append([dic2])
-        list.append([dic3])
+        list.append([dic3])'''
+            
+    #analyze functions
+    def DrawComicMap(self, data):
         #TODO need to maintain comic maps ID globally here
-        self.AnalyzePanel.AddComicMap(list, 200, 3)
+        self.AnalyzePanel.AddComicMap(data, 200, 3)
+    
+    
