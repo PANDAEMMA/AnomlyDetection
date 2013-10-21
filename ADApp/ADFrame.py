@@ -64,8 +64,18 @@ class ADFrame(wx.Frame):
             self.anomalies = AnalyzeData(self.openFilePath)
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             self.DrawComicMap(self.anomaliesData)
+            self.UpdateAttribute('temprature')
         dlg.Destroy()
         
+    def UpdateAttribute(self, attr):
+        checkboxes = self.DataPanel.attributePanel.GetChildren()
+        if attr == 'temprature':
+            checkboxes[0].SetValue(True)
+        if attr == 'humidity':
+            checkboxes[1].SetValue(True)
+        if attr == 'airPressure':
+            checkboxes[2].SetValue(True)
+            
     def PackDataToDraw(self, anomalies):
         data = []
         for anomaly in anomalies:

@@ -8,8 +8,8 @@ class DataPanel(wx.Panel):
         #create the manager
         self.foldPanel = FoldPanelMgr(self)
         #init
-        self.foldPanel.AddPanel(DataSourcePanel, "Data")
-        self.foldPanel.AddPanel(AttributePanel, "Attribute")
+        self.dataSourcePanel = self.foldPanel.AddPanel(DataSourcePanel, "Data")
+        self.attributePanel = self.foldPanel.AddPanel(AttributePanel, "Attribute")
         # Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.foldPanel, 1, wx.EXPAND)
@@ -32,7 +32,15 @@ class DataSourcePanel(wx.Panel):
 class AttributePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        wx.Button(self, 10, "Attribute Button", (20, 100))
+        self.temp_check = wx.CheckBox(self, -1, "Temprature")
+        self.humi_check = wx.CheckBox(self, -1, "Humidity")
+        self.air_check = wx.CheckBox(self, -1, "Air pressure")
+        # Layout
+        self.vsizer = wx.BoxSizer(wx.VERTICAL)
+        self.vsizer.Add(self.temp_check, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.humi_check, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.air_check, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.SetSizer(self.vsizer)
 
 #a utility class fold panel manager
 class FoldPanelMgr(fpb.FoldPanelBar):
