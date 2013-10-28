@@ -22,7 +22,7 @@ def AnalyzeData(filePath):
     
     # Search the extreme
     result = goldenSectionSearch(signal, 1, N/2, N, 1)
-
+    
     zipped = zip(index, signal)
     temp = []
     count = 0
