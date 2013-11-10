@@ -9,6 +9,13 @@ import wx
 class PlotWindow(wx.Window):
     def __init__(self, parent, id, data, maxH=0, maxW=0):
         wx.Window.__init__(self, parent, id=id, style=wx.SUNKEN_BORDER)
+        self.id = id
+        self.sourceID = id-1000
+        self.dataID = id-1000
+        print self.GetParent()
+        #drop target
+        self.dropTarget = DropTarget(self)
+        self.SetDropTarget(self.dropTarget)
         self.SetSize((100,100))
         self.SetBackgroundColour(wx.WHITE)
         #define maxH and maxW for Axis
@@ -21,8 +28,20 @@ class PlotWindow(wx.Window):
         self.findMinHW(self.data)
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)#drag     
         
     #def redefineInputData(self, data):
+    
+    def ReDraw(self, dataID, data):
+        self.dataID = dataID
+        #define maxH and maxW for Axis
+        self.data = data
+        self.maxH = self.maxW = 0
+        self.findMaxHW(self.data)
+        self.minH = self.maxH #here to use maxH(=0) or self.maxH??
+        self.minW = self.maxW
+        self.findMinHW(self.data)
+        self.Refresh()
         
     def findMaxHW(self, list):
         for l in list:
@@ -104,4 +123,60 @@ class PlotWindow(wx.Window):
         x = self.zeroX+x*self.unitX;
         y = self.zeroY+(self.rect.height-y*self.unitY)
         return (x,y)
+    
+    def OnLeftDown(self, event):
+        self.StartDragOpperation()
+        
+    def UpdateDragTarget(self):
+        self.GetParent().UpdateDragTarget(self.sourceID)
+
+
+    def StartDragOpperation(self):
+
+        # create our own data format and use it in a
+        # custom data object
+        data = wx.CustomDataObject("anomalyID")
+        data.SetData(str(self.sourceID))
+
+        # And finally, create the drop source and begin the drag
+        # and drop opperation
+        dropSource = wx.DropSource(self)
+        dropSource.SetData(data)
+        #print "Begining DragDrop\n"
+        result = dropSource.DoDragDrop(wx.Drag_AllowMove)
+        #print "DragDrop completed:\n"
+
+        #if result == wx.DragMove:
+    def SetSwapSource(self, sourceID):
+        self.GetParent().Swap(int(sourceID), self.GetParent().dragTarget)
+    
+class DropTarget(wx.PyDropTarget):
+    def __init__(self, window):
+        wx.PyDropTarget.__init__(self)
+        self.dv = window
+
+        # specify the type of data we will accept
+        self.data = wx.CustomDataObject("anomalyID")
+        self.SetDataObject(self.data)
+        
+    def OnEnter(self, x, y, d):
+        self.dv.UpdateDragTarget()
+        return d
+
+
+    # Called when OnDrop returns True.  We need to get the data and
+    # do something with it.
+    def OnData(self, x, y, d):
+
+        # copy the data from the drag source to our data object
+        if self.GetData():
+            # convert it back to a list of lines and give it to the viewer
+            anomalyID = self.data.GetData()
+            self.dv.UpdateDragTarget()
+            self.dv.SetSwapSource(anomalyID)
+            
+        # what is returned signals the source what to do
+        # with the original data (move, copy, etc.)  In this
+        # case we just return the suggested value given to us.
+        return d  
         

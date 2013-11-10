@@ -7,6 +7,9 @@ from ADModel import *
 class ADFrame(wx.Frame):
     def __init__(self, size):
         wx.Frame.__init__(self, None, -1, 'Anomaly Detection Tool', size = size)
+        #init data for app
+        self.AnomalNum = 9
+        self.GridEffect = 'swap'
         #init main menu
         self.SetMenuBar(self.CreateMenuBar())
         #set panels
@@ -64,7 +67,7 @@ class ADFrame(wx.Frame):
             self.anomalies = AnalyzeData(self.openFilePath)
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             self.DrawComicMap(self.anomaliesData)
-            self.UpdateAttribute('temprature')
+            #self.UpdateAttribute('temprature')
         dlg.Destroy()
         
     def UpdateAttribute(self, attr):
@@ -84,9 +87,9 @@ class ADFrame(wx.Frame):
             dic['points'] = anomaly
             data.append([dic])
         return data
-        #mimic Data
+        '''#mimic Data
         #genData mimic data here, will by read later
-        '''list = []
+        list = []
         dic = dict()
         dic1 = dict()
         dic2 = dict()
@@ -95,19 +98,26 @@ class ADFrame(wx.Frame):
         dic1['color'] = (255, 255, 0)
         dic2['color'] = (255, 0, 255)
         dic3['color'] = 'green'
-        #dic['points'] = [(-10, 30),(20, -40), (30, 90), (40, 50)]
-        dic['points'] = zipped
+        dic['points'] = [(-10, 30),(20, -40), (30, 90), (40, 50)]
         dic1['points'] = [(-20, 10),(0, 40), (30, 60), (40, 50)]
         dic2['points'] = [(-10, 30),(20, 90), (30, -40), (40, 90)]
         dic3['points'] = [(-40, 30),(0, -40), (30, 80), (40, 90)]
         list.append([dic])
         list.append([dic1])
         list.append([dic2])
-        list.append([dic3])'''
+        list.append([dic3])
+        return list'''
             
     #analyze functions
     def DrawComicMap(self, data):
         #TODO need to maintain comic maps ID globally here
         self.AnalyzePanel.AddComicMap(data, 200, 3)
+    
+    def SetAnomalyNum(self, num):
+        self.AnomalNum = num
+        
+    def SetGridEffect(self, effect):
+        self.GridEffect = effect
+        print self.GridEffect
     
     

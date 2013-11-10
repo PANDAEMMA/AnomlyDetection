@@ -21,6 +21,7 @@ class DataSourcePanel(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
         self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
+        
         # Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 50)
@@ -32,15 +33,36 @@ class DataSourcePanel(wx.Panel):
 class AttributePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.temp_check = wx.CheckBox(self, -1, "Temprature")
-        self.humi_check = wx.CheckBox(self, -1, "Humidity")
-        self.air_check = wx.CheckBox(self, -1, "Air pressure")
+        self.spinLabel = wx.StaticText(self, -1, "Anomalies No: ", (15, 10))
+        font = wx.Font(12,  wx.DEFAULT, wx.NORMAL, wx.NORMAL)
+        self.spinLabel.SetFont(font)
+        self.k_spin = wx.SpinCtrl(self, -1, "", (30, 50))
+        self.k_spin.SetRange(1,50)
+        self.k_spin.SetValue(self.GetTopLevelParent().AnomalNum)
+        self.Bind(wx.EVT_SPINCTRL, self.OnSpin, self.k_spin)
+        self.dragEffect = wx.RadioBox(
+                self, -1, "Comic Map Effect: ", wx.DefaultPosition, wx.DefaultSize,
+                ['swap', 'merge'], 2, wx.RA_SPECIFY_COLS
+                )
+        self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dragEffect)
+    
         # Layout
+        self.k_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.k_spin_sizer.Add(self.spinLabel,1,wx.ALIGN_CENTER_VERTICAL)
+        self.k_spin_sizer.Add(self.k_spin,0,wx.ALIGN_CENTER_VERTICAL)
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
-        self.vsizer.Add(self.temp_check, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.humi_check, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.air_check, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.dragEffect, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.SetSizer(self.vsizer)
+        
+    def OnSpin(self,e):
+        self.GetTopLevelParent().SetAnomalyNum(self.k_spin.GetValue())
+    
+    def EvtRadioBox(self, event):
+        if event.GetInt() == 0:
+            self.GetTopLevelParent().SetGridEffect('swap')
+        if event.GetInt() == 1:
+            self.GetTopLevelParent().SetGridEffect('merge')
 
 #a utility class fold panel manager
 class FoldPanelMgr(fpb.FoldPanelBar):
