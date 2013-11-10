@@ -69,10 +69,11 @@ def AnalyzeData(fileObj, top_k, chunk_num):
 	# index is the x-axis
 	# r is the index of data chunk
 	# temp_anomaly is the temperature in one data chunk
+	# zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
 	zipped = zip(t, r, index, temp_anomaly)
 	# clean the temp buffer
 	temp_anomaly = []
-	# return the number of top_k data chunk 
+	# return the number of top_k data chunk
 	anomalies.append(zipped)
         fd.close()
     
@@ -82,7 +83,7 @@ def AnalyzeData(fileObj, top_k, chunk_num):
 # anomaly: the anomaly list
 # chunk_index: the index of ceil (index of top_k)
 # k: the number of exetreme data
-# usage: getExtremedata_index(anomaly, 0, 2)
+# usage: getExtremedata_index(anomaly, 0, 2) 
 def getExtremedata_index(anomaly, chunk_index, k):
         temp = []
         it = [item[2] for item in res_data[chunk_index]]
