@@ -3,12 +3,14 @@ import math
 from DataPanel import *
 from AnalyzePanel import *
 from ADModel import *
+from ADParse import *
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
         wx.Frame.__init__(self, None, -1, 'Anomaly Detection Tool', size = size)
         #init data for app
-        self.AnomalNum = 9
+        self.AnomalNum = 4
+        self.ParNum = 4
         self.GridEffect = 'swap'
         #init main menu
         self.SetMenuBar(self.CreateMenuBar())
@@ -63,10 +65,17 @@ class ADFrame(wx.Frame):
             #TODO handle data read and data parser by call utility functions here
             #TODO need a new draw function pass in data here
             #self.DrawComicMap(zipped)
-            self.anomalies = AnalyzeData(self.openFilePath)
+            #self.anomalies = AnalyzeData(self.openFilePath)
             #self.anomaliesData = self.PackDataToDraw(self.anomalies)
             #self.DrawComicMap(self.anomaliesData)
             #self.UpdateAttribute('temprature')
+
+            #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
+            partition = self.ParNum
+            top_k = self.AnomalNum
+            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
+            self.anomaliesData = self.PackDataToDraw(self.anomalies)
+            self.DrawComicMap(self.anomaliesData)
         dlg.Destroy()
         
     def UpdateAttribute(self, attr):
@@ -96,10 +105,11 @@ class ADFrame(wx.Frame):
 # 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
 #       Using index, and temp_anomaly to draw the graph
 
-        for anomaly in anomalies:
+        N = len(anomalies)
+        for i in range(N):
             dic = dict()
             dic['color'] = 'red'
-            dic['points'] = anomaly
+            dic['points'] = anomalies[i]
             data.append([dic])
         return data
         '''#mimic Data
@@ -126,10 +136,13 @@ class ADFrame(wx.Frame):
     #analyze functions
     def DrawComicMap(self, data):
         #TODO need to maintain comic maps ID globally here
-        self.AnalyzePanel.AddComicMap(data, 200, 3)
+        self.AnalyzePanel.AddComicMap(200, data)
     
     def SetAnomalyNum(self, num):
         self.AnomalNum = num
+        
+    def SetParNum(self, num):
+        self.ParNum = num
         
     def SetGridEffect(self, effect):
         self.GridEffect = effect

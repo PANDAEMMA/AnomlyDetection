@@ -19,27 +19,52 @@ class DataPanel(wx.Panel):
 class DataSourcePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
-        self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
         
-        # Layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 50)
-        self.SetSizer(sizer)
-    
-    def OnImport(self,e):
-        self.GetTopLevelParent().OnImport(e)
-        
-class AttributePanel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
         self.spinLabel = wx.StaticText(self, -1, "Anomalies No: ", (15, 10))
         font = wx.Font(12,  wx.DEFAULT, wx.NORMAL, wx.NORMAL)
         self.spinLabel.SetFont(font)
         self.k_spin = wx.SpinCtrl(self, -1, "", (30, 50))
         self.k_spin.SetRange(1,50)
         self.k_spin.SetValue(self.GetTopLevelParent().AnomalNum)
-        self.Bind(wx.EVT_SPINCTRL, self.OnSpin, self.k_spin)
+        self.Bind(wx.EVT_SPINCTRL, self.OnSpinK, self.k_spin)
+        
+        self.parLabel = wx.StaticText(self, -1, "Partition No: ", (15, 10))
+        font = wx.Font(12,  wx.DEFAULT, wx.NORMAL, wx.NORMAL)
+        self.parLabel.SetFont(font)
+        self.par_spin = wx.SpinCtrl(self, -1, "", (30, 50))
+        self.par_spin.SetRange(1,50)
+        self.par_spin.SetValue(self.GetTopLevelParent().ParNum)
+        self.Bind(wx.EVT_SPINCTRL, self.OnSpinPar, self.par_spin)
+        
+        self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
+        self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
+        
+        # Layout
+        self.k_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.k_spin_sizer.Add(self.spinLabel,1,wx.ALIGN_CENTER_VERTICAL)
+        self.k_spin_sizer.Add(self.k_spin,0,wx.ALIGN_CENTER_VERTICAL)
+        self.par_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.par_spin_sizer.Add(self.parLabel,1,wx.ALIGN_CENTER_VERTICAL)
+        self.par_spin_sizer.Add(self.par_spin,0,wx.ALIGN_CENTER_VERTICAL)
+        self.vsizer = wx.BoxSizer(wx.VERTICAL)
+        self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.par_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 50)
+        self.SetSizer(self.vsizer)
+    
+    def OnImport(self,e):
+        self.GetTopLevelParent().OnImport(e)
+        
+    def OnSpinK(self,e):
+        self.GetTopLevelParent().SetAnomalyNum(self.k_spin.GetValue())
+        
+    def OnSpinPar(self,e):
+        self.GetTopLevelParent().SetParNum(self.par_spin.GetValue())
+        
+class AttributePanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+    
         self.dragEffect = wx.RadioBox(
                 self, -1, "Comic Map Effect: ", wx.DefaultPosition, wx.DefaultSize,
                 ['swap', 'merge'], 2, wx.RA_SPECIFY_COLS
@@ -47,16 +72,9 @@ class AttributePanel(wx.Panel):
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dragEffect)
     
         # Layout
-        self.k_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.k_spin_sizer.Add(self.spinLabel,1,wx.ALIGN_CENTER_VERTICAL)
-        self.k_spin_sizer.Add(self.k_spin,0,wx.ALIGN_CENTER_VERTICAL)
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
-        self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.dragEffect, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.SetSizer(self.vsizer)
-        
-    def OnSpin(self,e):
-        self.GetTopLevelParent().SetAnomalyNum(self.k_spin.GetValue())
     
     def EvtRadioBox(self, event):
         if event.GetInt() == 0:

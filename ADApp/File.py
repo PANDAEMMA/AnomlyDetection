@@ -1,5 +1,6 @@
 import sys
-
+import fileinput
+import StringIO
 
 def FileRead(path):
 	arr = []

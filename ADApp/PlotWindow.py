@@ -7,7 +7,7 @@ import wx
 # need a id to maintain
 # maxH to define the Y scale, default will be largest number+5
 class PlotWindow(wx.Window):
-    def __init__(self, parent, id, data, maxH=0, maxW=0):
+    def __init__(self, parent, id, data):
         wx.Window.__init__(self, parent, id=id, style=wx.SUNKEN_BORDER)
         self.id = id
         self.sourceID = id-1000
@@ -16,31 +16,27 @@ class PlotWindow(wx.Window):
         #drop target
         self.dropTarget = DropTarget(self)
         self.SetDropTarget(self.dropTarget)
-        self.SetSize((100,100))
+        self.SetSize((200,200))
         self.SetBackgroundColour(wx.WHITE)
-        #define maxH and maxW for Axis
         self.data = data
-        self.maxH = maxH
-        self.maxW = maxW
-        self.findMaxHW(self.data)
-        self.minH = maxH #here to use maxH(=0) or self.maxH??
-        self.minW = maxW
-        self.findMinHW(self.data)
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)#drag     
         
     #def redefineInputData(self, data):
     
+    def getMaxData(self):
+        #define maxH and maxW for Axis
+        self.maxH = self.maxW = 0
+        self.findMaxHW(self.data)
+        self.minH = 0 #here to use maxH(=0) or self.maxH??
+        self.minW = 0
+        self.findMinHW(self.data)
+    
     def ReDraw(self, dataID, data):
         self.dataID = dataID
         #define maxH and maxW for Axis
         self.data = data
-        self.maxH = self.maxW = 0
-        self.findMaxHW(self.data)
-        self.minH = self.maxH #here to use maxH(=0) or self.maxH??
-        self.minW = self.maxW
-        self.findMinHW(self.data)
         self.Refresh()
         
     def findMaxHW(self, list):
@@ -77,10 +73,12 @@ class PlotWindow(wx.Window):
         self.minW = self.minW-5
         
     def OnPaint(self, event):
+        #init paint 
         dc = wx.PaintDC(self)
         self.rect = self.GetClientRect()
         self.zeroX = self.rect.x
         self.zeroY = self.rect.y
+        self.getMaxData()
         self.unitX = float(self.rect.width)/(self.maxW-self.minW)
         self.unitY = float(self.rect.height)/(self.maxH-self.minH)
         #dc.DrawLine(0,0,2,2)
@@ -95,8 +93,9 @@ class PlotWindow(wx.Window):
         dc.SetPen(wx.BLACK_PEN)
         if p[1] >self.zeroY:
             dc.DrawLine(self.zeroX,p[1],self.zeroX+self.rect.width,p[1])
-        if p[0] >self.zeroX:
-            dc.DrawLine(p[0],self.zeroY,p[0],self.zeroY+self.rect.height)
+        #no y Axis, cuz it is not exactly zero
+        #if p[0] >self.zeroX:
+            #dc.DrawLine(p[0],self.zeroY,p[0],self.zeroY+self.rect.height)
             
     def DrawData(self, data, dc):
         if data['color'] == 'red':

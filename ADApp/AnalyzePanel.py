@@ -10,8 +10,8 @@ class AnalyzePanel(wx.Panel):
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
         
-    def AddComicMap(self, data, id, col):
-        self.comicMap = ComicMap(self, id, data, col)
-        self.sizer.AddSpacer(100)
-        self.sizer.Add(self.comicMap, 0, wx.LEFT, 100)
+    def AddComicMap(self, id, data):
+        self.comicMap = ComicMap(self, id, data)
+        self.sizer.AddSpacer(10)
+        self.sizer.Add(self.comicMap, 0, wx.LEFT, 10)
         self.Layout()

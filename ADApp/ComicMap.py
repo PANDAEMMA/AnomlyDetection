@@ -5,7 +5,7 @@ import sys
 from PlotWindow import *
 
 class ComicMap(wx.Panel):
-    def __init__(self, parent, id, data, nInRow = 3):
+    def __init__(self, parent, id, data):
         wx.Panel.__init__(self, parent, id=id, style=wx.NO_BORDER)
         self.data = data
         self.plots =[]
@@ -13,10 +13,10 @@ class ComicMap(wx.Panel):
         self.window_init_id = 1000
         i = 0
         while (i<len(data)):
-            self.plots.append(PlotWindow(self, self.window_init_id+i, data=data[i], maxH=0, maxW=0))
+            self.plots.append(PlotWindow(self, self.window_init_id+i, data=data[i]))
             i=i+1
-
-        sizer = wx.GridSizer(rows=math.ceil(float(len(data))/nInRow))
+        self.nInRow = math.sqrt(len(data))
+        sizer = wx.GridSizer(rows=math.ceil(float(len(data))/self.nInRow))
         for plot in self.plots:
             sizer.Add(plot, 0, 0)
         self.SetSizer(sizer)
