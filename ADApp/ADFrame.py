@@ -36,7 +36,6 @@ class ADFrame(wx.Frame):
         MENU_ABOUT = wx.NewId()
         help_menu.Append(MENU_ABOUT,"&About")
         menu_bar.Append(help_menu,"&Help")
-        #bind events for menu
         self.Bind(wx.EVT_MENU, self.OnQuit, id=MENU_QUIT)
         self.Bind(wx.EVT_MENU, self.OnAbout, id=MENU_ABOUT)
         return menu_bar
@@ -81,6 +80,22 @@ class ADFrame(wx.Frame):
             
     def PackDataToDraw(self, anomalies):
         data = []
+
+#       TODO: Design an interface to let users key in top_k, chunk_num, dataObj_i
+#	 top_k is the number of ceil you want to show them out
+# 	 chunk_num is the number of partitions. Dividing data into a couple of partitions. e.g. 1, 2, .... 
+# 	 dataObj_i is the category of data index. e.g. TEMPER = 8 (refer ADParse.py)
+
+#	AnalyzeData(fileObj, top_k, chunk_num, dataObj_i):
+#       AnalyzeData returns 
+# 	t is the index of top_k, e.g. 1, 2, 3, ...
+# 	index is the x-axis
+# 	r is the index of data chunk
+# 	temp_anomaly is the temperature in one data chunk
+#       zip(t, r, index, temp_anomaly)
+# 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
+#       Using index, and temp_anomaly to draw the graph
+
         for anomaly in anomalies:
             dic = dict()
             dic['color'] = 'red'
@@ -119,5 +134,4 @@ class ADFrame(wx.Frame):
     def SetGridEffect(self, effect):
         self.GridEffect = effect
         print self.GridEffect
-    
     
