@@ -42,4 +42,11 @@ class File(wx.Frame):
         # Calc data size of one chunk line by line
         	data = f_Obj.read(dataSize).strip('\n')
         	return data
-
+	
+	# Seek to file position, and read it out
+	def read_out(fd, d_list, k):
+        	seek_size = 0
+                seek_size = seek_size + d_list[k]
+        	fd.seek(seek_size)
+        	res_data = readInChunks(fd, d_list[k])
+        	return res_data
