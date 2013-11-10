@@ -63,7 +63,7 @@ def AnalyzeData(fileObj, top_k, chunk_num):
 	buff = StringIO.StringIO(out_data)
 	for j in range(N1):
 		temp_anomaly.append(float(buff.readline()))
-	t = [top_k] * N1
+	t = [i] * N1
 	r = [rank[i]] * N1
 	# t is the index of top_k, e.g. 1, 2, 3, ...
 	# index is the x-axis
