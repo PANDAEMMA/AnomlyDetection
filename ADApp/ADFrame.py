@@ -64,8 +64,8 @@ class ADFrame(wx.Frame):
             #TODO need a new draw function pass in data here
             #self.DrawComicMap(zipped)
             self.anomalies = AnalyzeData(self.openFilePath)
-            self.anomaliesData = self.PackDataToDraw(self.anomalies)
-            self.DrawComicMap(self.anomaliesData)
+            #self.anomaliesData = self.PackDataToDraw(self.anomalies)
+            #self.DrawComicMap(self.anomaliesData)
             #self.UpdateAttribute('temprature')
         dlg.Destroy()
         
