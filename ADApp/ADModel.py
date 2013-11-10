@@ -156,21 +156,6 @@ def goldenSectionSearch(f, a, b, c, tau):
             else:
                 return goldenSectionSearch(f, x, b, c, tau) 
 
-# Get the Top K index
-def getTopKIndex(data, k):
-        maxIndex = 0
-        lst = []
-        for j in range(k):
-                lenn = len(data)
-                for i in range(lenn):
-                        if(data[i]>data[maxIndex]):
-                                maxIndex = i
-                lst.append(maxIndex)
-                data.pop(i)
-                maxIndex = 0
-        return lst 
-
-# Get Max Index
 def getTopKIndex(data, k):
         maxIndex = 0
         lst = []
