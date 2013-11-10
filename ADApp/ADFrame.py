@@ -79,8 +79,9 @@ class ADFrame(wx.Frame):
 # 	index is the x-axis
 # 	r is the index of data chunk
 # 	temp_anomaly is the temperature in one data chunk
+#       zip(t, r, index, temp_anomaly)
 # 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
-
+#       Using index, and temp_anomaly to draw the graph
 
         for anomaly in anomalies:
             dic = dict()
