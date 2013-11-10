@@ -108,7 +108,11 @@ class ADFrame(wx.Frame):
         N = len(anomalies)
         for i in range(N):
             dic = dict()
-            dic['color'] = 'red'
+            r = random.randint(100, 255)
+            g = random.randint(30, 255)
+            b = random.randint(30, 255)
+            dic['color'] = (r,g,b)
+            #dic['color'] = 'red'
             dic['points'] = anomalies[i]
             data.append([dic])
         return data
