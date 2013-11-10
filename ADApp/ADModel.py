@@ -78,6 +78,22 @@ def AnalyzeData(fileObj, top_k, chunk_num):
     
     return anomalies
 
+# Return (index, extreme_data) in each chunk of data
+# anomaly: the anomaly list
+# chunk_index: the index of ceil (index of top_k)
+# k: the number of exetreme data
+# usage: getExtremedata_index(anomaly, 0, 2)
+def getExtremedata_index(anomaly, chunk_index, k):
+        temp = []
+        it = [item[2] for item in res_data[chunk_index]]
+        an = [item[3] for item in res_data[chunk_index]]
+        top = getTopKIndex(it, k)
+        for i in range(len(top)):
+                temp.append(an[top[i]])
+        zipped = zip(top, temp)
+        temp = []
+        return zipped
+
 # Model builder
 def FFT_Model(signal, N):
         sp = fft(signal, N)
