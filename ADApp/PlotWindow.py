@@ -16,7 +16,7 @@ class PlotWindow(wx.Window):
         self.maxH = maxH
         self.maxW = maxW
         self.findMaxHW(self.data)
-        self.minH = maxH
+        self.minH = maxH #here to use maxH(=0) or self.maxH??
         self.minW = maxW
         self.findMinHW(self.data)
         
