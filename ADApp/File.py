@@ -46,7 +46,8 @@ def readInChunks(f_Obj, dataSize):
 # Seek to file position, and read it out
 def read_out(fd, d_list, k):
         seek_size = 0
-        seek_size = seek_size + d_list[k]
+	for i in range(k):
+        	seek_size = seek_size + d_list[i]
         fd.seek(seek_size)
         res_data = readInChunks(fd, d_list[k])
         return res_data

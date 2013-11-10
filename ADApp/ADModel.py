@@ -14,7 +14,8 @@ resphi = 2 - phi
 #TODO need to deliver multiple possible data ranges -- done
 # top_k is the number of data which we want to return
 # chunk_num is the number of partitions
-def AnalyzeData(fileObj, top_k, chunk_num):
+# dataObj_i is the category of data index. e.g. TEMPER = 8
+def AnalyzeData(fileObj, top_k, chunk_num, dataObj_i):
     anomalies = []
     index = []
     signal = []
@@ -40,7 +41,9 @@ def AnalyzeData(fileObj, top_k, chunk_num):
         buf = StringIO.StringIO(result)
         input_data = []
         for i in range(chunkComp):
-                input_data.append(float(buf.readline()))
+		a = re.split(',|\n| ', buf.readline())
+		if (a[dataObj_i]):
+                	input_data.append(float(a[dataObj_i]))
 
 	N1 = len(input_data)
         #Calculate model
@@ -62,7 +65,8 @@ def AnalyzeData(fileObj, top_k, chunk_num):
        	out_data = read_out(fd, d_list, rank_i[i])
 	buff = StringIO.StringIO(out_data)
 	for j in range(N1):
-		temp_anomaly.append(float(buff.readline()))
+		a = re.split(',|\n| ', buff.readline())
+		temp_anomaly.append(float(a[dataObj_i]))
 	t = [i] * N1
 	r = [rank[i]] * N1
 	# t is the index of top_k, e.g. 1, 2, 3, ...
@@ -165,15 +169,32 @@ def getTopKIndex(data, k):
         return lst 
 
 # Get Max Index
-def getMaxIndex(data):
+def getTopKIndex(data, k):
         maxIndex = 0
-        lenn = len(data)
-        for i in range(lenn):
-            if(data[i]>data[maxIndex]):
-                maxIndex = i
-        return maxIndex
+        lst = []
+        buf = []
+        N = len(data)
+        for x in range(N):
+                buf.append(data[x])
+        for j in range(k):
+                lenn = len(data)
+                for i in range(lenn):
+                        if((float)(data[i])>(float)(data[maxIndex])):
+                                maxIndex = i
+                flag = 0
+                for t in range(N):
+                        if ((float)(buf[t]) == (float)(data[maxIndex])):
+                                NN = len(lst)
+                                print NN
+                                if (flag == 0):
+                                        lst.append(t)
+                                        flag = 1
+                                        data.pop(maxIndex)
+                maxIndex = 0
+                print lst
+        buf =[]
+        return lst
 
-# Get Max Value
 def getMaxValue(data, maxIndex):
         return data[maxIndex]
 
@@ -183,4 +204,12 @@ def stderr(raw, model, N):
         for i in range(N):
                 std_k = std_k + math.pow((raw[i] - model[i]), 2.0)
         return math.sqrt(std_k/(N - 1))
+
+# Count the miss data
+def miss_data_count(data, N):
+        count = 0
+        for i in range(N):
+                if (data[i] == None):
+                        count = count + 1
+        return count
 
