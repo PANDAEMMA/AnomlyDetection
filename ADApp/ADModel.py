@@ -1,15 +1,17 @@
 import math
 import fileinput
 import StringIO
+import re
 
 from numpy import *
 from numpy.fft import *
 
 from File import *
 
+
 phi = (1 + math.sqrt(5)) / 2
 resphi = 2 - phi
-
+RANK = 5
 #This function should return a list of anomaly datas, if there is only 1, only one image will show
 #TODO need to deliver multiple possible data ranges -- done
 # top_k is the number of data which we want to return
@@ -67,14 +69,14 @@ def AnalyzeData(fileObj, top_k, chunk_num, dataObj_i):
 	for j in range(N1):
 		a = re.split(',|\n| ', buff.readline())
 		temp_anomaly.append(float(a[dataObj_i]))
-	t = [i] * N1
-	r = [rank[i]] * N1
+#	t = [i] * N1
+#	r = [rank[i]] * N1
 	# t is the index of top_k, e.g. 1, 2, 3, ...
 	# index is the x-axis
 	# r is the index of data chunk
 	# temp_anomaly is the temperature in one data chunk
 	# zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
-	zipped = zip(t, r, index, temp_anomaly)
+	zipped = zip(index, temp_anomaly)
 	# clean the temp buffer
 	temp_anomaly = []
 	# return the number of top_k data chunk

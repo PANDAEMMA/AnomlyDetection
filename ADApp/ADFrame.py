@@ -3,6 +3,7 @@ import math
 from DataPanel import *
 from AnalyzePanel import *
 from ADModel import *
+from ADParse import *
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
@@ -60,7 +61,13 @@ class ADFrame(wx.Frame):
             #TODO handle data read and data parser by call utility functions here
             #TODO need a new draw function pass in data here
             #self.DrawComicMap(zipped)
-            self.anomalies = AnalyzeData(self.openFilePath)
+
+	    # TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
+	    partition = 9
+	    top_k = 3
+
+	   
+            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             self.DrawComicMap(self.anomaliesData)
         dlg.Destroy()
@@ -83,10 +90,11 @@ class ADFrame(wx.Frame):
 # 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
 #       Using index, and temp_anomaly to draw the graph
 
-        for anomaly in anomalies:
+	N = len(anomalies)
+        for i in range(N):
             dic = dict()
             dic['color'] = 'red'
-            dic['points'] = anomaly
+            dic['points'] = anomalies[i]
             data.append([dic])
         return data
         #mimic Data
