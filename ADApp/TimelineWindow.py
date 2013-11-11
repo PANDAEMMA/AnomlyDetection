@@ -1,45 +1,24 @@
 import wx
 
 #Data should be a list of dictionaries
-#each dictionary is like {color:,
-#                         points: [list],anomolies: [list]}
+#each dictionary is like {color:, labels:[list], anomolies: [list], points: [list]}
 # points:[(w1,h1) (w2,h2) (w3,h3)]
 # need a id to maintain
 # maxH to define the Y scale, default will be largest number+5
-class PlotWindow(wx.Window):
+class TimelineWindow(wx.Window):
     def __init__(self, parent, id, data):
         wx.Window.__init__(self, parent, id=id, style=wx.SUNKEN_BORDER)
         self.id = id
-        self.sourceID = id-1000
-        self.dataID = id-1000
-        self.radius = 3
-        #drop target
-        self.dropTarget = DropTarget(self)
-        self.SetDropTarget(self.dropTarget)
-        self.SetSize((150,150))
+        self.SetSize((600,100))
+        self.radius = 3 #mark circle size
         self.SetBackgroundColour(wx.WHITE)
         self.data = data
+        self.maxH = self.maxW = self.minH = self.minW = 0
+        self.findMax(self.data)
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)#drag     
-        
-    #def redefineInputData(self, data):
     
-    def getMaxData(self):
-        #define maxH and maxW for Axis
-        self.maxH = self.maxW = 0
-        self.findMaxHW(self.data)
-        self.minH = 0 #here to use maxH(=0) or self.maxH??
-        self.minW = 0
-        self.findMinHW(self.data)
-    
-    def ReDraw(self, dataID, data):
-        self.dataID = dataID
-        #define maxH and maxW for Axis
-        self.data = data
-        self.Refresh()
-        
-    def findMaxHW(self, list):
+    def findMax(self, list):
         for l in list:
             c = l['points']
             for point in c:
@@ -55,8 +34,7 @@ class PlotWindow(wx.Window):
                 
         self.maxH = self.maxH+5
         self.maxW = self.maxW+5
-                
-    def findMinHW(self, list):
+        
         for l in list:
             c = l['points']
             for point in c:
@@ -78,7 +56,6 @@ class PlotWindow(wx.Window):
         self.rect = self.GetClientRect()
         self.zeroX = self.rect.x
         self.zeroY = self.rect.y
-        self.getMaxData()
         self.unitX = float(self.rect.width)/(self.maxW-self.minW)
         self.unitY = float(self.rect.height)/(self.maxH-self.minH)
         #dc.DrawLine(0,0,2,2)
@@ -89,15 +66,23 @@ class PlotWindow(wx.Window):
     def DrawAxis(self, dc):
         #find origin
         p = self.Projection((0, 0))
-        #draw
+        #draw x axis
         dc.SetPen(wx.BLACK_PEN)
         if p[1] >self.zeroY:
             dc.DrawLine(self.zeroX,p[1],self.zeroX+self.rect.width,p[1])
-        #no y Axis, cuz it is not exactly zero
-        #if p[0] >self.zeroX:
-            #dc.DrawLine(p[0],self.zeroY,p[0],self.zeroY+self.rect.height)
             
     def DrawData(self, data, dc):
+        #draw label
+        self.labelFont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        dc.SetFont(self.labelFont)
+        dc.SetPen(wx.BLACK_PEN)
+        labels = data['labels']
+        for label in labels:
+            pos = self.Projection((label[0], 0))
+            dc.DrawCircle(pos[0], pos[1], 2)
+            labelText = label[1]
+            tw, th = dc.GetTextExtent(labelText)
+            dc.DrawText(labelText, pos[0], pos[1])
         #mark anomalies
         dc.SetPen(wx.RED_PEN)
         anomalies = data['anomolies']
@@ -105,7 +90,7 @@ class PlotWindow(wx.Window):
             dotPos = data['points'][dotID] 
             ppos = self.Projection(dotPos)
             dc.DrawCircle(ppos[0], ppos[1], self.radius)
-        #draw data
+        #draw lines
         if data['color'] == 'red':
             dc.SetPen(wx.RED_PEN)
         if data['color'] == 'green':
@@ -120,7 +105,6 @@ class PlotWindow(wx.Window):
             newpoints.append(self.Projection(point))
         dc.DrawLines(newpoints)
         
-        
     #project to wxpython coordinatate top-left is (0,0)
     def Projection(self, p):
         x = p[0]
@@ -130,60 +114,3 @@ class PlotWindow(wx.Window):
         x = self.zeroX+x*self.unitX;
         y = self.zeroY+(self.rect.height-y*self.unitY)
         return (x,y)
-    
-    def OnLeftDown(self, event):
-        self.StartDragOpperation()
-        
-    def UpdateDragTarget(self):
-        self.GetParent().UpdateDragTarget(self.sourceID)
-
-
-    def StartDragOpperation(self):
-
-        # create our own data format and use it in a
-        # custom data object
-        data = wx.CustomDataObject("anomalyID")
-        data.SetData(str(self.sourceID))
-
-        # And finally, create the drop source and begin the drag
-        # and drop opperation
-        dropSource = wx.DropSource(self)
-        dropSource.SetData(data)
-        #print "Begining DragDrop\n"
-        result = dropSource.DoDragDrop(wx.Drag_AllowMove)
-        #print "DragDrop completed:\n"
-
-        #if result == wx.DragMove:
-    def SetSwapSource(self, sourceID):
-        self.GetParent().OnGridChange(int(sourceID), self.GetParent().dragTarget)
-    
-class DropTarget(wx.PyDropTarget):
-    def __init__(self, window):
-        wx.PyDropTarget.__init__(self)
-        self.dv = window
-
-        # specify the type of data we will accept
-        self.data = wx.CustomDataObject("anomalyID")
-        self.SetDataObject(self.data)
-        
-    def OnEnter(self, x, y, d):
-        self.dv.UpdateDragTarget()
-        return d
-
-
-    # Called when OnDrop returns True.  We need to get the data and
-    # do something with it.
-    def OnData(self, x, y, d):
-
-        # copy the data from the drag source to our data object
-        if self.GetData():
-            # convert it back to a list of lines and give it to the viewer
-            anomalyID = self.data.GetData()
-            self.dv.UpdateDragTarget()
-            self.dv.SetSwapSource(anomalyID)
-            
-        # what is returned signals the source what to do
-        # with the original data (move, copy, etc.)  In this
-        # case we just return the suggested value given to us.
-        return d  
-        

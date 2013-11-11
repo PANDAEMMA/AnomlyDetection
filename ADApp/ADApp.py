@@ -7,7 +7,7 @@ class ADApp(wx.App):
         return True
     
     def MakeFrame(self, event=None):
-        mainframe = ADFrame(size=(700, 650))
+        mainframe = ADFrame(size=(1000, 700))
         mainframe.Show(True)
         self.SetTopWindow(mainframe)
     

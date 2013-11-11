@@ -73,9 +73,12 @@ class ADFrame(wx.Frame):
             #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
             partition = self.ParNum
             top_k = self.AnomalNum
-            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
+            #self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
+            self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
+            self.timelineData = self.PackTimelineData();
             self.DrawComicMap(self.anomaliesData)
+            self.DrawTimeline(self.timelineData)
         dlg.Destroy()
         
     def UpdateAttribute(self, attr):
@@ -105,7 +108,7 @@ class ADFrame(wx.Frame):
 # 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
 #       Using index, and temp_anomaly to draw the graph
 
-        N = len(anomalies)
+        '''N = len(anomalies)
         for i in range(N):
             dic = dict()
             r = random.randint(100, 255)
@@ -115,8 +118,8 @@ class ADFrame(wx.Frame):
             #dic['color'] = 'red'
             dic['points'] = anomalies[i]
             data.append([dic])
-        return data
-        '''#mimic Data
+        return data'''
+        #mimic Data
         #genData mimic data here, will by read later
         list = []
         dic = dict()
@@ -131,16 +134,35 @@ class ADFrame(wx.Frame):
         dic1['points'] = [(-20, 10),(0, 40), (30, 60), (40, 50)]
         dic2['points'] = [(-10, 30),(20, 90), (30, -40), (40, 90)]
         dic3['points'] = [(-40, 30),(0, -40), (30, 80), (40, 90)]
+        dic['anomolies'] = [1]
+        dic1['anomolies'] = [2]
+        dic2['anomolies'] = [0,2]
+        dic3['anomolies'] = [3]
         list.append([dic])
         list.append([dic1])
         list.append([dic2])
         list.append([dic3])
-        return list'''
-            
+        return list
+    
+    def PackTimelineData(self):
+        #[{labels:[list], color:, points: [list], nomolies: [list]}]
+        # the data part is the information you need to give me
+        list = []
+        data = dict()
+        data['color'] = 'green'
+        data['labels'] = [(0,'03/02/10'), (10, '05/01/10'), (20, '09/01/10')]
+        data['points'] = [(-20, 10),(-10, 30),(0, 40), (20, -40), (30, 90), (40, 50),(60, 20)]
+        data['anomolies'] = [0,3,4,5]
+        list.append(data)
+        return list
+        
     #analyze functions
     def DrawComicMap(self, data):
         #TODO need to maintain comic maps ID globally here
         self.AnalyzePanel.AddComicMap(200, data)
+        
+    def DrawTimeline(self, data):
+        self.AnalyzePanel.AddTimeline(300, data)
     
     def SetAnomalyNum(self, num):
         self.AnomalNum = num
@@ -150,5 +172,4 @@ class ADFrame(wx.Frame):
         
     def SetGridEffect(self, effect):
         self.GridEffect = effect
-        print self.GridEffect
     

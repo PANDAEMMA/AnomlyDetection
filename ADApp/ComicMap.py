@@ -25,11 +25,29 @@ class ComicMap(wx.Panel):
     def UpdateDragTarget(self, target):
         self.dragTarget = target
         
+    def OnGridChange(self, source, target):
+        self.effect = self.GetTopLevelParent().GridEffect
+        if (self.effect == "swap"):
+            self.Swap(source, target)
+        if(self.effect == "merge"):
+            self.Merge(source, target)
+        
     def Swap(self, source, target):
         sourceDataID = self.plots[source].dataID
         targetDataID = self.plots[target].dataID
         self.plots[source].ReDraw(targetDataID, self.data[targetDataID])
         self.plots[target].ReDraw(sourceDataID, self.data[sourceDataID])
+        
+    def Merge(self, source, target):
+        print "in merge"
+        sourceDataID = self.plots[source].dataID
+        targetDataID = self.plots[target].dataID
+        i = 0;
+        while (i<len(self.data[sourceDataID])):
+            self.data[targetDataID].append(self.data[sourceDataID][i])
+            i=i+1
+        self.plots[source].ReDraw(sourceDataID, self.data[sourceDataID])
+        self.plots[target].ReDraw(targetDataID, self.data[targetDataID])
         
         
         
