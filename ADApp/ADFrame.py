@@ -12,6 +12,7 @@ class ADFrame(wx.Frame):
         self.AnomalNum = 4
         self.ParNum = 4
         self.GridEffect = 'swap'
+        self.DataType = TEMPER
         #init main menu
         self.SetMenuBar(self.CreateMenuBar())
         #set panels
@@ -73,7 +74,7 @@ class ADFrame(wx.Frame):
             #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
             partition = self.ParNum
             top_k = self.AnomalNum
-            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
+            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, self.DataType)
             #self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             #self.timelineData = self.PackTimelineData();
@@ -111,20 +112,20 @@ class ADFrame(wx.Frame):
         N = len(anomalies)
         for i in range(N):
             dic = dict()
-	    anomaly_data = []
+            anomaly_data = []
             r = random.randint(100, 255)
             g = random.randint(30, 255)
             b = random.randint(30, 255)
             dic['color'] = (r,g,b)
             #dic['color'] = 'red'
             dic['points'] = anomalies[i]
-	    # Adding anomaly data index
-	    it = [item[1] for item in anomalies[i]]
-	    maxdata = getMaxIndex(it)
-	    anomaly_data.append(maxdata)
-	    mindata = getMinIndex(it)
-	    anomaly_data.append(mindata)
-	    dic['anomolies'] = anomaly_data
+            # Adding anomaly data index
+            it = [item[1] for item in anomalies[i]]
+            maxdata = getMaxIndex(it)
+            anomaly_data.append(maxdata)
+            mindata = getMinIndex(it)
+            anomaly_data.append(mindata)
+            dic['anomolies'] = anomaly_data
             data.append([dic])
 	    anomaly_data = []
         return data
@@ -182,6 +183,14 @@ class ADFrame(wx.Frame):
         
     def SetGridEffect(self, effect):
         self.GridEffect = effect
+        
+    def SetDataType(self, type):
+        if type == 'TEMPER':
+            self.DataType = TEMPER
+        if type == 'HUMID':
+            self.DataType = HUMID
+        if type == 'PRESS':
+            self.DataType = PRESS
         
     def OnZoom(self, zoom):
         if self.AnalyzePanel.comicMap is None:

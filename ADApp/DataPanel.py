@@ -36,6 +36,12 @@ class DataSourcePanel(wx.Panel):
         self.par_spin.SetValue(self.GetTopLevelParent().ParNum)
         self.Bind(wx.EVT_SPINCTRL, self.OnSpinPar, self.par_spin)
         
+        self.dataType = wx.RadioBox(
+                self, -1, "Choose Data: ", wx.DefaultPosition, wx.DefaultSize,
+                ['Temperature', 'Humidity', 'Pressure'], 1, wx.RA_SPECIFY_COLS
+                )
+        self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dataType)
+        
         self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
         self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
         
@@ -49,6 +55,7 @@ class DataSourcePanel(wx.Panel):
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.par_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.dataType, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 50)
         self.SetSizer(self.vsizer)
     
@@ -60,6 +67,15 @@ class DataSourcePanel(wx.Panel):
         
     def OnSpinPar(self,e):
         self.GetTopLevelParent().SetParNum(self.par_spin.GetValue())
+    
+    def EvtRadioBox(self, event):
+        if event.GetInt() == 0:
+            self.GetTopLevelParent().SetDataType('TEMPER')
+        if event.GetInt() == 1:
+            self.GetTopLevelParent().SetDataType('HUMID')
+        if event.GetInt() == 2:
+            self.GetTopLevelParent().SetDataType('PRESS')
+            
         
 class AttributePanel(wx.Panel):
     def __init__(self, parent):
