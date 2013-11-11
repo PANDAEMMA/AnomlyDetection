@@ -73,10 +73,10 @@ class ADFrame(wx.Frame):
             #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
             partition = self.ParNum
             top_k = self.AnomalNum
-            #self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
-            self.anomalies = []
+            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, TEMPER)
+            #self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
-            self.timelineData = self.PackTimelineData();
+            #self.timelineData = self.PackTimelineData();
             self.DrawComicMap(self.anomaliesData)
             #self.DrawTimeline(self.timelineData)
         dlg.Destroy()
@@ -108,18 +108,28 @@ class ADFrame(wx.Frame):
 # 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
 #       Using index, and temp_anomaly to draw the graph
 
-        '''N = len(anomalies)
+        N = len(anomalies)
         for i in range(N):
             dic = dict()
+	    anomaly_data = []
             r = random.randint(100, 255)
             g = random.randint(30, 255)
             b = random.randint(30, 255)
             dic['color'] = (r,g,b)
             #dic['color'] = 'red'
             dic['points'] = anomalies[i]
+	    # Adding anomaly data index
+	    it = [item[1] for item in anomalies[i]]
+	    maxdata = getMaxIndex(it)
+	    anomaly_data.append(maxdata)
+	    mindata = getMinIndex(it)
+	    anomaly_data.append(mindata)
+	    dic['anomolies'] = anomaly_data
             data.append([dic])
-        return data'''
-        #mimic Data
+	    anomaly_data = []
+        return data
+
+        '''#mimic Data
         #genData mimic data here, will by read later
         list = []
         dic = dict()
@@ -142,7 +152,7 @@ class ADFrame(wx.Frame):
         list.append([dic1])
         list.append([dic2])
         list.append([dic3])
-        return list
+        return list'''
     
     def PackTimelineData(self):
         #[{labels:[list], color:, points: [list], nomolies: [list]}]
