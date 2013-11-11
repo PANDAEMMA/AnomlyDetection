@@ -78,7 +78,7 @@ class ADFrame(wx.Frame):
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             self.timelineData = self.PackTimelineData();
             self.DrawComicMap(self.anomaliesData)
-            self.DrawTimeline(self.timelineData)
+            #self.DrawTimeline(self.timelineData)
         dlg.Destroy()
         
     def UpdateAttribute(self, attr):
@@ -172,4 +172,10 @@ class ADFrame(wx.Frame):
         
     def SetGridEffect(self, effect):
         self.GridEffect = effect
+        
+    def OnZoom(self, zoom):
+        if self.AnalyzePanel.comicMap is None:
+            return false
+        else:
+            self.AnalyzePanel.OnZoom(zoom)
     

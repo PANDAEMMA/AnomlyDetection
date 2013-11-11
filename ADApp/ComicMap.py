@@ -11,15 +11,17 @@ class ComicMap(wx.Panel):
         self.plots =[]
         self.dragTarget = 0
         self.window_init_id = 1000
+        self.plotSize = 150
+        self.scale = 1
         i = 0
         while (i<len(data)):
             self.plots.append(PlotWindow(self, self.window_init_id+i, data=data[i]))
             i=i+1
         self.nInRow = math.sqrt(len(data))
-        sizer = wx.GridSizer(rows=math.ceil(float(len(data))/self.nInRow))
+        self.sizer = wx.GridSizer(rows=math.ceil(float(len(data))/self.nInRow))
         for plot in self.plots:
-            sizer.Add(plot, 0, 0)
-        self.SetSizer(sizer)
+            self.sizer.Add(plot, 0, 0)
+        self.SetSizer(self.sizer)
         self.Fit()
         
     def UpdateDragTarget(self, target):
@@ -48,6 +50,21 @@ class ComicMap(wx.Panel):
             i=i+1
         self.plots[source].ReDraw(sourceDataID, self.data[sourceDataID])
         self.plots[target].ReDraw(targetDataID, self.data[targetDataID])
+        
+    def OnZoom(self, zoom):
+        if zoom == "in":
+            self.plotSize = self.plotSize+10
+        if zoom == "out":
+            self.plotSize = self.plotSize-10
+        i=0
+        self.newSizer =  wx.GridSizer(rows=math.ceil(float(len(self.data))/self.nInRow))
+        while (i<len(self.plots)):
+            self.plots[i].SetSize((self.plotSize,self.plotSize))
+            i=i+1
+        for plot in self.plots:
+            self.newSizer.Add(plot, 0, 0)
+        self.SetSizer(self.newSizer)
+        self.Fit()
         
         
         

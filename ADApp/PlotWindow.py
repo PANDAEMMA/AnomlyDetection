@@ -127,6 +127,7 @@ class PlotWindow(wx.Window):
         y = p[1]
         x = x-self.minW
         y = y-self.minH
+
         x = self.zeroX+x*self.unitX;
         y = self.zeroY+(self.rect.height-y*self.unitY)
         return (x,y)

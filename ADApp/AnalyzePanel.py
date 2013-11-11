@@ -22,3 +22,13 @@ class AnalyzePanel(wx.Panel):
         self.sizer.AddSpacer(10)
         self.sizer.Add(self.timeline, 0, wx.LEFT, 10)
         self.Layout()
+        
+    def OnZoom(self, zoom):
+        #self.sizer.Clear()
+        self.comicMap.OnZoom(zoom)
+        #self.sizer.AddSpacer(10)
+        #self.sizer.Add(self.comicMap, 0, wx.LEFT, 10)
+        #self.sizer.AddSpacer(10)
+        #self.sizer.Add(self.timeline, 0, wx.LEFT, 10)
+        #self.Layout()
+        
