@@ -113,27 +113,19 @@ def stderr(raw, model, N):
 	return math.sqrt(std_k/(N - 1))
 
 def getTopKIndex(data, k):
-        maxIndex = 0
 	lst = []
-	buf = []
 	N = len(data)
-	for x in range(N):
-		buf.append(data[x])
+	buf = []
+	for i in range(N):
+		buf.append((float)(data[i]))
 	for j in range(k):
-        	lenn = len(data)
-        	for i in range(lenn):
-            		if((float)(data[i])>(float)(data[maxIndex])):
-				maxIndex = i
-		flag = 0
+		maxdata = max(buf)
 		for t in range(N):
-			if ((float)(buf[t]) == (float)(data[maxIndex])):
-				NN = len(lst)
-				if (flag == 0):
-               				lst.append(t)
-					flag = 1
-					data.pop(maxIndex)
+			if (data[t] == maxdata):
+				lst.append(t)
+		buf.remove(maxdata)
 		maxIndex = 0
-	buf =[]
+	buf = []
         return lst
 
 def getMaxIndex(data):
@@ -144,19 +136,19 @@ def getMaxIndex(data):
                 maxIndex = i
         return maxIndex
 
+def getMinIndex(data):
+        minIndex = 0
+        lenn = len(data)
+        for i in range(lenn):
+            if(data[i] < data[minIndex]):
+                minIndex = i
+        return minIndex
+
 def getMaxValue(data, maxIndex):
         return data[maxIndex]
 
-def getExtremedata_index(anomaly, chunk_index, k):
-	temp = []
-	#it = [item[2] for item in res_data[chunk_index]]
-	#an = [item[3] for item in res_data[chunk_index]]
-	#top = getTopKIndex(an, 3)
-	#for i in range(len(top)):
-	#	temp.append(an[top[i]])
-	#zipped = zip(top, temp)
-	#temp = []
-	#return zipped
+def getMinValue(data, minIndex):
+        return data[minIndex]
 
 def read_out(fd, d_list, k):
 	seek_size = 0
@@ -185,7 +177,7 @@ if __name__ == '__main__':
         # chunkComp is the number of data in one chunk
         chunkComp = N / chunk_num
 	# top k
-	top_k = 3
+	top_k = 9
 	# Divide
 	# d_list is the bytes of each data chunk
         d_list = calc_chunk(fd, chunkComp, chunk_num)
@@ -216,6 +208,7 @@ if __name__ == '__main__':
 	# Get the top k index of std data
 	rank_i = getTopKIndex(std_list, top_k)
         fd.close()
+
 	index = range(N1)
 	anomalies = []
 	res_data = []
@@ -233,10 +226,12 @@ if __name__ == '__main__':
 		anomalies = []
 		res_data.append(zipped)
 		fd.close()
-	it = getExtremedata_index(res_data, 2, 1)
-	print res_data[0]
-	# Got the max Index in one certain range of data
+	it = [item[1] for item in res_data[chunk_index]]
+
+	print it
+
 '''
+	# Got the max Index in one certain range of data
 	max_data = []
 	buff = StringIO.StringIO(out_data)
 	for i in range(chunkComp):

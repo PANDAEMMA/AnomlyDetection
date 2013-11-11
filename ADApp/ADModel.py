@@ -171,6 +171,22 @@ def getTopKIndex(data, k):
         buf = []
         return lst
 
+def getMaxIndex(data):
+        maxIndex = 0
+        lenn = len(data)
+        for i in range(lenn):
+            if(data[i]>data[maxIndex]):
+                maxIndex = i
+        return maxIndex
+
+def getMinIndex(data):
+        minIndex = 0
+        lenn = len(data)
+        for i in range(lenn):
+            if(data[i] < data[minIndex]):
+                minIndex = i
+        return minIndex
+
 def getMaxValue(data, maxIndex):
         return data[maxIndex]
 
