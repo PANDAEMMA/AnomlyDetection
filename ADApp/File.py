@@ -1,3 +1,8 @@
+#-------------------------------------------
+#
+# Physical file object operation
+#
+#-------------------------------------------
 import sys
 import fileinput
 import StringIO

@@ -1,5 +1,11 @@
 #!/usr/bin/python
 
+#---------------------------------------
+#
+# Input data definition and parse
+#
+#---------------------------------------
+
 import sys
 import re
 
@@ -83,7 +89,3 @@ def get_year_daily_num(a, flag, start, stop):
         return num_index
 
 	
-def get_year_day_num(fd, year_f, day_f, year):
-	year_list = get_num_index(fd, year_f)
-	lines = [year_list[year], year_list[year + 1]]
-	result = get_year_daily_num()
