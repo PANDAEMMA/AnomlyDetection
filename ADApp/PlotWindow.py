@@ -16,7 +16,7 @@ class PlotWindow(wx.Window):
         #drop target
         self.dropTarget = DropTarget(self)
         self.SetDropTarget(self.dropTarget)
-        self.SetSize((150,150))
+        self.SetSize((200,200))
         self.SetBackgroundColour(wx.WHITE)
         self.data = data
         
