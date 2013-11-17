@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
 #-----------------------------------------------
-#
-# The analysis results showing in each cells
+# ADAnRecordLabel.py
+# The analysis results showing in each Record cells
+# Data: 1. Miss data count. 2. Max data avg. 3. Residual
+# Plot: 1. x-axis ratio of each item in one month
 #
 #------------------------------------------------
 

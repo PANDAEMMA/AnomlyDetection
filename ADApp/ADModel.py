@@ -1,6 +1,7 @@
 #----------------------------------------------
 #
 # The anomaly data analysis model
+# 1. FFT, 2 Golden section search
 #
 #----------------------------------------------
 import math
@@ -12,84 +13,11 @@ from numpy import *
 from numpy.fft import *
 
 from File import *
-from ADAnalysis import *
 
 
 phi = (1 + math.sqrt(5)) / 2
 resphi = 2 - phi
 RANK = 5
-#This function should return a list of anomaly datas, if there is only 1, only one image will show
-#TODO need to deliver multiple possible data ranges -- done
-# top_k is the number of data which we want to return
-# chunk_num is the number of partitions
-# dataObj_i is the category of data index. e.g. TEMPER = 8
-def AnalyzeData(fileObj, top_k, chunk_num, dataObj_i):
-    anomalies = []
-    index = []
-    signal = []
-
-    fd = open(fileObj, 'r')
-    # N is the total number of data in a file
-    N = calc_file(fileObj)
-
-    # chunkComp is the number of data in one chunk
-    chunkComp = N / chunk_num
-
-    # Divide
-    # d_list is the bytes of each data chunk
-    d_list = calc_chunk(fd, chunkComp, N)
-    # Note: Should close the file, and open it again
-    fd.close()
-
-    fd = open(fileObj, 'r')
-    std_list = []
-    for i in range(chunk_num):
-    # Conquer
-	result = readInChunks(fd, d_list[i])
-        buf = StringIO.StringIO(result)
-        input_data = []
-        for i in range(chunkComp):
-		a = re.split(',|\n| ', buf.readline())
-		if (a[dataObj_i]):
-                	input_data.append(float(a[dataObj_i]))
-
-	N1 = len(input_data)
-        #Calculate model
-        model = FFT_Model(input_data, N1)
-        #Calculate std between real data and model data
-        std = stderr(input_data, model, N1)
-        std_list.append(std)
-    #Merge
-    # Get the number of top k index of std data
-    rank_i = getTopKIndex(std_list, top_k)
-    fd.close()
-
-    index = range(N1)
-    # Read out the suspect data
-    temp_anomaly = []
-    for i in range(top_k):
-    	fd = open(fileObj, 'r')
-	# seek to the particular file position, and read data out
-       	out_data = read_out(fd, d_list, rank_i[i])
-	buff = StringIO.StringIO(out_data)
-	for j in range(N1):
-		a = re.split(',|\n| ', buff.readline())
-		temp_anomaly.append(float(a[dataObj_i]))
-#	t = [i] * N1
-#	r = [rank[i]] * N1
-	# t is the index of top_k, e.g. 1, 2, 3, ...
-	# index is the x-axis
-	# r is the index of data chunk
-	# temp_anomaly is the temperature in one data chunk
-	# zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
-	zipped = zip(index, temp_anomaly)
-	# clean the temp buffer
-	temp_anomaly = []
-	# return the number of top_k data chunk
-	anomalies.append(zipped)
-        fd.close()
-    
-    return anomalies
 
 # Model builder
 def FFT_Model(signal, N):
