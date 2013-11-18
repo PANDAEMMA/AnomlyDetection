@@ -131,7 +131,7 @@ class ADFrame(wx.Frame):
 	    # start date
 	    start_date = anomalies[i][0][2]
 	    # end date
-            end_date = anomalies[i][0][length_index - 1][2]
+            end_date = anomalies[i][length_index - 1][2]
 	    # add date label
             dic['label'] = label
 	    # add anomaly data
