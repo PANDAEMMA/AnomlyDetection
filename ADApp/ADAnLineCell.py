@@ -15,6 +15,9 @@ import re
 
 from ADModel import *
 from File import *
+from ADParse import *
+
+from scipy.stats.stats import pearsonr
 
 # the anomaly data in each cell (top_k = 6, partition = 10)
 # dataObj_i is the category of data index. e.g. TEMPER = 8
@@ -70,19 +73,15 @@ def AnalyzeData(fileObj, dataObj_i):
         # seek to the particular file position, and read data out
         out_data = read_out(fd, d_list, rank_i[i])
         buff = StringIO.StringIO(out_data)
+	date = []
         for j in range(N1):
                 a = re.split(',|\n| ', buff.readline())
                 temp_anomaly.append(float(a[dataObj_i]))
-#       t = [i] * N1
-#       r = [rank[i]] * N1
-        # t is the index of top_k, e.g. 1, 2, 3, ...
-        # index is the x-axis
-        # r is the index of data chunk
-        # temp_anomaly is the temperature in one data chunk
-        # zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
-        zipped = zip(index, temp_anomaly)
+		date.append(a[YEAR]+'-'+a[MON]+'-'+a[DAY]+'-'+a[HOUR]+':'+a[MIN])
+        zipped = zip(index, temp_anomaly, date)
         # clean the temp buffer
         temp_anomaly = []
+	date = []
         # return the number of top_k data chunk
         anomalies.append(zipped)
         fd.close()
@@ -104,6 +103,11 @@ def stdcal(data, N):
 	for i in range(N):
 		std_sum = std_sum + math.pow((data[i] - average), 2.0)
 	return math.sqrt(std_sum/(N - 1))
+
+# Calculate pearson correlation 
+def corr(x, y):
+	cov = pearsonr(input_data, model)
+	return cov[0]
 
 # start date
 	

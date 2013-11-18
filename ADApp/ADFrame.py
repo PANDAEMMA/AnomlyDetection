@@ -119,13 +119,27 @@ class ADFrame(wx.Frame):
             b = random.randint(30, 255)
             dic['color'] = (r,g,b)
             #dic['color'] = 'red'
-            dic['points'] = anomalies[i]
-            dic['labels'] = ['avg:12','min:23','dates:12/01-12/23']
             # Adding anomaly data index
-            it = [item[1] for item in anomalies[i]]
-            maxdata = getMaxIndex(it)
+	    # decompose the anomaly data array
+	    index = [item[0] for item in anomalies[i]]
+	    an_data = [item[1] for item in anomalies[i]]
+	    date = [item[2] for item in anomalies[i]]
+	    label = zip(index, date)
+	    points = zip(index, an_data)
+	    
+	    length_index = len(index)
+	    # start date
+	    start_date = anomalies[i][0][2]
+	    # end date
+            end_date = anomalies[i][0][length_index - 1][2]
+	    # add date label
+            dic['label'] = label
+	    # add anomaly data
+            dic['points'] = points
+	    # add extreme data
+            maxdata = getMaxIndex(an_data)
             anomaly_data.append(maxdata)
-            mindata = getMinIndex(it)
+            mindata = getMinIndex(an_data)
             anomaly_data.append(mindata)
             dic['anomolies'] = anomaly_data
             data.append([dic])
