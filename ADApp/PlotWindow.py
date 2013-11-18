@@ -124,7 +124,8 @@ class PlotWindow(wx.Window):
             self.DrawMask(dc)
 
     def DrawLabel(self, dc):
-        for label in 
+        for dataset in self.dataToDraw:
+            print dataset['label'] 
             
     def DrawAxis(self, dc):
         #find origin
