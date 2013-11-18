@@ -2,8 +2,9 @@ import wx
 import math
 from DataPanel import *
 from AnalyzePanel import *
-from ADModel import *
 from ADParse import *
+from ADAnLineCell import *
+
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
@@ -74,7 +75,7 @@ class ADFrame(wx.Frame):
             #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
             partition = self.ParNum
             top_k = self.AnomalNum
-            self.anomalies = AnalyzeData(self.openFilePath, top_k, partition, self.DataType)
+            self.anomalies = AnalyzeData(self.openFilePath, self.DataType)
             #self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             #self.timelineData = self.PackTimelineData();
