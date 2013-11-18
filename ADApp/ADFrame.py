@@ -120,6 +120,7 @@ class ADFrame(wx.Frame):
             dic['color'] = (r,g,b)
             #dic['color'] = 'red'
             dic['points'] = anomalies[i]
+            dic['labels'] = ['avg:12','min:23','dates:12/01-12/23']
             # Adding anomaly data index
             it = [item[1] for item in anomalies[i]]
             maxdata = getMaxIndex(it)

@@ -117,9 +117,14 @@ class PlotWindow(wx.Window):
         #draw data
         for dataset in self.dataToDraw:
             self.DrawData(dataset, dc)
+        #draw Label
+        self.DrawLabel(dc)
         #draw mask
         if not self.selectionStart == 0 and not self.selectionEnd == 0:
             self.DrawMask(dc)
+
+    def DrawLabel(self, dc):
+        for label in 
             
     def DrawAxis(self, dc):
         #find origin
