@@ -12,23 +12,38 @@ class PlotWindow(wx.Window):
         self.id = id
         self.sourceID = id-1000
         self.dataID = id-1000
+        #draw default setting
+        self.mask_colour = wx.Colour( 0, 0, 0, 92 )
         self.radius = 3
+        self.selectionStart = 0
+        self.selectionEnd = 0
+        self.projectedData = []
+        self.selected = False
         #drop target
         self.dropTarget = DropTarget(self)
         self.SetDropTarget(self.dropTarget)
-        self.SetSize((150,150))
+        self.SetSize((200,200))
         self.SetBackgroundColour(wx.WHITE)
+    
         self.data = data
+        self.dataToDraw = data[:]
+        self.GetProjectionData(False)
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)#drag     
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)#drag   
+        self.Bind(wx.EVT_LEFT_UP,  self.OnLeftUp)
+        self.Bind(wx.EVT_MOTION, self.OnMotion)  
         
     #def redefineInputData(self, data):
     
-    def getMaxData(self):
-        #define maxH and maxW for Axis
-        self.maxH = self.maxW = 0
-        self.findMaxHW(self.data)
+    def getMaxData(self, redefineW):
+        #define maxH and maxW for Axi, get from the unified value from parent
+        self.maxH = self.GetParent().maxH
+        if redefineW == True:
+            self.findMaxW(self.dataToDraw)
+        else:
+            self.maxW = self.GetParent().maxW
+        #self.findMaxHW(self.data)
         self.minH = 0 #here to use maxH(=0) or self.maxH??
         self.minW = 0
         self.findMinHW(self.data)
@@ -37,6 +52,8 @@ class PlotWindow(wx.Window):
         self.dataID = dataID
         #define maxH and maxW for Axis
         self.data = data
+        self.dataToDraw = data[:]
+        self.GetProjectionData(False)
         self.Refresh()
         
     def findMaxHW(self, list):
@@ -55,6 +72,19 @@ class PlotWindow(wx.Window):
                 
         self.maxH = self.maxH+5
         self.maxW = self.maxW+5
+        
+    def findMaxW(self, list):
+        for l in list:
+            c = l['points']
+            for point in c:
+                if point[0]>self.maxW:
+                    self.maxW = point[0]
+                elif point[0]>self.maxW:
+                    self.maxW = point[0]
+                else:
+                    continue
+                
+        self.maxW = self.maxW+5
                 
     def findMinHW(self, list):
         for l in list:
@@ -72,19 +102,24 @@ class PlotWindow(wx.Window):
         self.minH = self.minH-5
         self.minW = self.minW-5
         
-    def OnPaint(self, event):
-        #init paint 
-        dc = wx.PaintDC(self)
+    def GetProjectionData(self, redefineW):
         self.rect = self.GetClientRect()
         self.zeroX = self.rect.x
         self.zeroY = self.rect.y
-        self.getMaxData()
+        self.getMaxData(redefineW)
         self.unitX = float(self.rect.width)/(self.maxW-self.minW)
         self.unitY = float(self.rect.height)/(self.maxH-self.minH)
-        #dc.DrawLine(0,0,2,2)
-        self.DrawAxis(dc)
-        for dataset in self.data:
+        
+    def OnPaint(self, event):
+        #init paint 
+        pdc = wx.PaintDC(self)
+        dc = wx.GCDC(pdc)
+        #draw data
+        for dataset in self.dataToDraw:
             self.DrawData(dataset, dc)
+        #draw mask
+        if not self.selectionStart == 0 and not self.selectionEnd == 0:
+            self.DrawMask(dc)
             
     def DrawAxis(self, dc):
         #find origin
@@ -116,9 +151,44 @@ class PlotWindow(wx.Window):
             dc.SetPen(wx.Pen(wx.Colour(data['color'][0], data['color'][1], data['color'][2])))
         points = data['points']
         newpoints = []
-        for point in points:
-            newpoints.append(self.Projection(point))
+        for i in range(len(points)):
+            newPoint = self.Projection(points[i])
+            newpoints.append(newPoint)
         dc.DrawLines(newpoints)
+        
+    def DrawMask(self,dc):
+        dc.SetPen( wx.Pen(self.mask_colour) )
+        dc.SetBrush( wx.Brush(self.mask_colour) )
+        dc.DrawRectangle( self.selectionStart, self.GetClientRect().y, self.selectionEnd-self.selectionStart, self.GetClientRect().height)
+    
+    def DoneZoom(self):
+        for set in range(len(self.dataToDraw)):
+            selected = []
+            dataset = self.dataToDraw[set]
+            for i in range(len(dataset['points'])):
+                point = dataset['points'][i]
+                if self.Projection(point)[0]>= self.selectionStart and self.Projection(point)[0]>= self.selectionEnd:
+                    selected.append(point)
+            #resort
+            diff = selected[0][0]-0
+            for j in range(len(selected)):
+                newpoint = (j,selected[j][1])
+                selected[j] = newpoint
+            self.dataToDraw[set]['points']= selected
+            newAnomalies = []
+            for anomly in self.dataToDraw[set]['anomolies']:
+                anomly = anomly-diff
+                if anomly<0 or anomly>len(self.dataToDraw[set]['points']):
+                    continue
+                else:
+                    newAnomalies.append(anomly)
+            self.dataToDraw[set]['anomolies']= newAnomalies       
+        
+        self.selectionStart = 0
+        self.selectionEnd = 0
+        
+        self.GetProjectionData(True)
+        self.Refresh()
         
         
     #project to wxpython coordinatate top-left is (0,0)
@@ -133,14 +203,31 @@ class PlotWindow(wx.Window):
         return (x,y)
     
     def OnLeftDown(self, event):
-        self.StartDragOpperation()
-        
+        if self.GetTopLevelParent().GridEffect == "swap" or self.GetTopLevelParent().GridEffect == "merge":
+            self.StartDragOpperation()
+        if self.GetTopLevelParent().GridEffect == "zoom":
+            self.selection = []
+            x, y = event.GetPositionTuple()
+            self.selectionStart = x;
+            self.CaptureMouse()
+            
+    def OnMotion(self, event):
+        if self.HasCapture() and event.Dragging() and self.GetTopLevelParent().GridEffect == "zoom":
+            x, y = event.GetPositionTuple()
+            self.selectionEnd = x
+            self.Refresh()
+            
+    
+    def OnLeftUp(self, event):
+        if self.HasCapture():
+            self.ReleaseMouse()
+            self.DoneZoom()
+            
     def UpdateDragTarget(self):
         self.GetParent().UpdateDragTarget(self.sourceID)
 
 
     def StartDragOpperation(self):
-
         # create our own data format and use it in a
         # custom data object
         data = wx.CustomDataObject("anomalyID")
@@ -150,11 +237,8 @@ class PlotWindow(wx.Window):
         # and drop opperation
         dropSource = wx.DropSource(self)
         dropSource.SetData(data)
-        #print "Begining DragDrop\n"
         result = dropSource.DoDragDrop(wx.Drag_AllowMove)
-        #print "DragDrop completed:\n"
 
-        #if result == wx.DragMove:
     def SetSwapSource(self, sourceID):
         self.GetParent().OnGridChange(int(sourceID), self.GetParent().dragTarget)
     

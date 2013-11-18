@@ -20,7 +20,7 @@ class DataSourcePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         
-        self.spinLabel = wx.StaticText(self, -1, "Anomalies No: ", (15, 10))
+        '''self.spinLabel = wx.StaticText(self, -1, "Anomalies No: ", (15, 10))
         font = wx.Font(12,  wx.DEFAULT, wx.NORMAL, wx.NORMAL)
         self.spinLabel.SetFont(font)
         self.k_spin = wx.SpinCtrl(self, -1, "", (30, 50))
@@ -34,7 +34,7 @@ class DataSourcePanel(wx.Panel):
         self.par_spin = wx.SpinCtrl(self, -1, "", (30, 50))
         self.par_spin.SetRange(1,50)
         self.par_spin.SetValue(self.GetTopLevelParent().ParNum)
-        self.Bind(wx.EVT_SPINCTRL, self.OnSpinPar, self.par_spin)
+        self.Bind(wx.EVT_SPINCTRL, self.OnSpinPar, self.par_spin)'''
         
         self.dataType = wx.RadioBox(
                 self, -1, "Choose Data: ", wx.DefaultPosition, wx.DefaultSize,
@@ -46,15 +46,15 @@ class DataSourcePanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
         
         # Layout
-        self.k_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.k_spin_sizer.Add(self.spinLabel,1,wx.ALIGN_CENTER_VERTICAL)
-        self.k_spin_sizer.Add(self.k_spin,0,wx.ALIGN_CENTER_VERTICAL)
-        self.par_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.par_spin_sizer.Add(self.parLabel,1,wx.ALIGN_CENTER_VERTICAL)
-        self.par_spin_sizer.Add(self.par_spin,0,wx.ALIGN_CENTER_VERTICAL)
+        #self.k_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        #self.k_spin_sizer.Add(self.spinLabel,1,wx.ALIGN_CENTER_VERTICAL)
+        #self.k_spin_sizer.Add(self.k_spin,0,wx.ALIGN_CENTER_VERTICAL)
+        #self.par_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        #self.par_spin_sizer.Add(self.parLabel,1,wx.ALIGN_CENTER_VERTICAL)
+        #self.par_spin_sizer.Add(self.par_spin,0,wx.ALIGN_CENTER_VERTICAL)
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
-        self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.par_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.par_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.dataType, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 50)
         self.SetSizer(self.vsizer)
@@ -83,19 +83,19 @@ class AttributePanel(wx.Panel):
     
         self.dragEffect = wx.RadioBox(
                 self, -1, "Comic Map Effect: ", wx.DefaultPosition, wx.DefaultSize,
-                ['swap', 'merge'], 2, wx.RA_SPECIFY_COLS
+                ['swap', 'merge', 'zoom'], 1, wx.RA_SPECIFY_COLS
                 )
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dragEffect)
-        self.zoomIn = wx.Button(self, 501, "Zoom In", (20,150), style=wx.NO_BORDER)
-        self.Bind(wx.EVT_BUTTON, self.OnClickZoomIn, self.zoomIn)
-        self.zoomOut = wx.Button(self, 502, "Zoom Out", (20,150), style=wx.NO_BORDER)
-        self.Bind(wx.EVT_BUTTON, self.OnClickZoomOut, self.zoomOut)
+        #self.zoomIn = wx.Button(self, 501, "Zoom In", (20,150), style=wx.NO_BORDER)
+        #self.Bind(wx.EVT_BUTTON, self.OnClickZoomIn, self.zoomIn)
+        #self.zoomOut = wx.Button(self, 502, "Zoom Out", (20,150), style=wx.NO_BORDER)
+        #self.Bind(wx.EVT_BUTTON, self.OnClickZoomOut, self.zoomOut)
     
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.vsizer.Add(self.dragEffect, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.zoomIn , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.zoomOut , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.zoomIn , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.zoomOut , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.SetSizer(self.vsizer)
     
     def EvtRadioBox(self, event):
@@ -103,6 +103,8 @@ class AttributePanel(wx.Panel):
             self.GetTopLevelParent().SetGridEffect('swap')
         if event.GetInt() == 1:
             self.GetTopLevelParent().SetGridEffect('merge')
+        if event.GetInt() == 2:
+            self.GetTopLevelParent().SetGridEffect('zoom')
             
     def OnClickZoomIn(self, event):
         self.GetTopLevelParent().OnZoom("in")
