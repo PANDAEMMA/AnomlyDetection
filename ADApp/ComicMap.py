@@ -81,7 +81,7 @@ class ComicMap(wx.Panel):
         if zoom == "out":
             self.plotSize = self.plotSize-10
         i=0
-        self.newSizer =  wx.GridSizer(rows=math.ceil(float(len(self.data))/self.nInRow))
+        self.newSizer =  wx.GridSizer(self.row,self.col)
         while (i<len(self.plots)):
             self.plots[i].SetSize((self.plotSize,self.plotSize))
             i=i+1
