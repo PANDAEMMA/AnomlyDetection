@@ -17,7 +17,7 @@ from ADModel import *
 from File import *
 from ADParse import *
 
-from scipy.stats.stats import pearsonr
+#from scipy.stats.stats import pearsonr
 
 # the anomaly data in each cell (top_k = 6, partition = 10)
 # dataObj_i is the category of data index. e.g. TEMPER = 8
@@ -105,14 +105,11 @@ def stdcal(data, N):
 	return math.sqrt(std_sum/(N - 1))
 
 # Calculate pearson correlation 
-def corr(x, y):
+'''def corr(x, y):
 	cov = pearsonr(input_data, model)
-	return cov[0]
-
-# start date
+	return cov[0]'''
 	
 	
-
 # Objective: Residual calc. to determinate k possible abnormal regions
 def stderr(raw, model, N):
         std_k = 0.0
