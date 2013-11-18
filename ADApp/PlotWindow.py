@@ -124,15 +124,15 @@ class PlotWindow(wx.Window):
             self.DrawMask(dc)
 
     def DrawLabel(self, dc):
-        self.labelFont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        self.labelFont = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(self.labelFont)
         dc.SetPen(wx.BLACK_PEN)
         for j in range(len(self.dataToDraw)):
-            lables = self.dataToDraw[j]['labels']
-            print lables 
+            labels = self.dataToDraw[j]['labels'][0]
+            print labels 
             for i in range(len(labels)):
-                pos = self.Projection((0, 0))
-                labelText = label[1]
+                pos = (self.zeroX, self.zeroY)
+                labelText = labels[i]
                 tw, th = dc.GetTextExtent(labelText)
                 dc.DrawText(labelText, pos[0]+3+(tw*j), pos[1]+i*(th+3))
         
