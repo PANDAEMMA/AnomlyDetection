@@ -127,7 +127,12 @@ class ADFrame(wx.Frame):
 	    label = zip(index, date)
 	    points = zip(index, an_data)
 	    
-	    # add time label
+	    length_index = len(index)
+	    # start date
+	    start_date = anomalies[i][0][2]
+	    # end date
+            end_date = anomalies[i][0][length_index - 1][2]
+	    # add date label
             dic['label'] = label
 	    # add anomaly data
             dic['points'] = points
