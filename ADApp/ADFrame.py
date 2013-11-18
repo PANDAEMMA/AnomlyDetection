@@ -124,15 +124,19 @@ class ADFrame(wx.Frame):
 	    index = [item[0] for item in anomalies[i]]
 	    an_data = [item[1] for item in anomalies[i]]
 	    date = [item[2] for item in anomalies[i]]
-	    label = zip(index, date)
 	    points = zip(index, an_data)
 	    
 	    length_index = len(index)
+            # std cal.
+	    std = stdcal(an_data, length_index)
+            # avg cal.
+	    avg = avg(an_data, length_index)
 	    # start date
 	    start_date = anomalies[i][0][2]
 	    # end date
             end_date = anomalies[i][length_index - 1][2]
-	    # add date label
+	    label = zip(std, avg, start_date, end_date)
+	    # add std, avg, and date into label
             dic['label'] = label
 	    # add anomaly data
             dic['points'] = points
