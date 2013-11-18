@@ -86,16 +86,16 @@ class AttributePanel(wx.Panel):
                 ['swap', 'merge', 'zoom'], 1, wx.RA_SPECIFY_COLS
                 )
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dragEffect)
-        self.zoomIn = wx.Button(self, 501, "Zoom In", (20,150), style=wx.NO_BORDER)
-        self.Bind(wx.EVT_BUTTON, self.OnClickZoomIn, self.zoomIn)
-        self.zoomOut = wx.Button(self, 502, "Zoom Out", (20,150), style=wx.NO_BORDER)
-        self.Bind(wx.EVT_BUTTON, self.OnClickZoomOut, self.zoomOut)
+        #self.zoomIn = wx.Button(self, 501, "Zoom In", (20,150), style=wx.NO_BORDER)
+        #self.Bind(wx.EVT_BUTTON, self.OnClickZoomIn, self.zoomIn)
+        #self.zoomOut = wx.Button(self, 502, "Zoom Out", (20,150), style=wx.NO_BORDER)
+        #self.Bind(wx.EVT_BUTTON, self.OnClickZoomOut, self.zoomOut)
     
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.vsizer.Add(self.dragEffect, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.zoomIn , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.zoomOut , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.zoomIn , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.zoomOut , 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.SetSizer(self.vsizer)
     
     def EvtRadioBox(self, event):
