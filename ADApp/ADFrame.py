@@ -128,16 +128,23 @@ class ADFrame(wx.Frame):
 	    
 	    length_index = len(index)
             # std cal.
-	    std = stdcal(an_data, length_index)
+	    std = []
+	    aa = stdcal(an_data, length_index)
+	    std.append('std:'+ (str)(aa))
             # avg cal.
-	    avg = avg(an_data, length_index)
+            average = []
+	    av = avg(an_data, length_index)
+	    average.append('mean:' + (str)(av))
 	    # start date
-	    start_date = anomalies[i][0][2]
+	    start_date = []
+	    start_date.append('sdate:'+ (str)(anomalies[i][0][2]))
 	    # end date
-            end_date = anomalies[i][length_index - 1][2]
-	    label = zip(std, avg, start_date, end_date)
+            end_date = []
+	    end_date.append('edate:' + (str)(anomalies[i][length_index - 1][2]))
+	    label = zip(std, average, start_date, end_date)
+	    print label
 	    # add std, avg, and date into label
-            dic['label'] = label
+            dic['labels'] = label
 	    # add anomaly data
             dic['points'] = points
 	    # add extreme data
