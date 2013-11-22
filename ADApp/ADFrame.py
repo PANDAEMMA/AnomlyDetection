@@ -142,7 +142,7 @@ class ADFrame(wx.Frame):
             end_date = []
 	    end_date.append('edate:' + (str)(anomalies[i][length_index - 1][2]))
 	    label = zip(std, average, start_date, end_date)
-	    print label
+	    print label[0]
 	    # add std, avg, and date into label
             dic['labels'] = label
 	    # add anomaly data

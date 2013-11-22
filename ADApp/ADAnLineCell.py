@@ -106,7 +106,7 @@ def stdcal(data, N):
 
 # Calculate pearson correlation 
 '''def corr(x, y):
-	cov = pearsonr(input_data, model)
+	cov = pearsonr(x, y)
 	return cov[0]'''
 	
 	
