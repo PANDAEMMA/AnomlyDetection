@@ -11,6 +11,10 @@ import re
 
 from numpy import *
 from numpy.fft import *
+import numpy as np
+import heapq
+
+from math import sqrt
 
 from File import *
 
@@ -19,39 +23,59 @@ phi = (1 + math.sqrt(5)) / 2
 resphi = 2 - phi
 RANK = 5
 
-# Model builder
-def FFT_Model(signal, N):
+# FFT calculation
+def fft_model(signal, N):
         sp = fft(signal, N)
-        b = sorted(abs(sp), key=lambda x: (x.real),reverse=True)
-        Ind = [0]*int(RANK)
+        return sp
 
-        for i in range(RANK):
-                for j in range(N):
-                        if  (int)(b[i]) == (int)(abs(sp[j])):
-                                if i > 0:
-                                        if Ind[i - 1] != j:
-                                                Ind[i] = j
-                                else:
-                                        Ind[i] = j
+# return the top k maximum index
+def top_k_index(data, RANK):
+        index = [t[0] for t in heapq.nlargest(RANK, enumerate((abs)(data)), lambda t: t[1])]
+        return index
 
-        a_1 = [0]*int(RANK)
-        a_2 = [0]*int(RANK)
-        r = [0]*int(N)
-        sum_1 = 0.0
-        sum_2 = 0.0
+# return the top k maximum value
+def top_k_value(data, RANK):
+        value = heapq.nlargest(RANK, data)
+        return value
+
+# return max index
+def max_index(data):
+        return data.argmax()
+
+# least square
+def least_square(signal, Ind, RANK, N):
+        a = []
         for j in range(RANK):
-                for i in range(N):
-                        x = (cos(2*pi*((i*Ind[j]))/N)+sin(2*pi*((i*Ind[j]))/N))
-			sum_1 = sum_1 + x * signal[i]
-                        sum_2 = sum_2 + x * x
-                a_2[j] = sum_1/sum_2
                 sum_1 = 0.0
                 sum_2 = 0.0
+                for i in range(N):
+                        x = (cos(2*pi*((i*Ind[j]))/N)+sin(2*pi*((i*Ind[j]))/N))
+                        sum_1 = sum_1 + x * signal[i]
+                        sum_2 = sum_2 + x * x
+                a.append(sum_1/sum_2)
+        return a
 
+# Superposition
+def superposition(a, Ind, RANK, N):
+        r = [0]*int(N)
         for j in range(RANK):
                 for i in range(N):
-                        r[i] = r[i]+a_2[j]*(cos(2*pi*((i*Ind[j]))/N)+sin(2*pi*((i*Ind[j]))/N))
+                     r[i] = r[i]+a[j]*(cos(2*pi*((i*Ind[j]))/N)+sin(2*pi*((i*Ind[j]))/N))
+        return r
 
+# Model builder
+def FFT_Model(signal, N):
+	# FFT: transform to frequency domain
+        sp = fft_model(signal, N)
+
+	# Obtain top _k frequency index
+        index = top_k_index(sp, RANK)
+
+	# Least square to obtain a -- y = ax + c
+        a = least_square(signal, index, RANK, N)
+
+	 # Superposition
+        r = superposition(a, index, RANK, N)
         return r
     
 # Maximizer Search algorithm
