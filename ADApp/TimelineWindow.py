@@ -1,116 +1,117 @@
 import wx
 
-#Data should be a list of dictionaries
-#each dictionary is like {color:, labels:[list], anomolies: [list], points: [list]}
-# points:[(w1,h1) (w2,h2) (w3,h3)]
-# need a id to maintain
-# maxH to define the Y scale, default will be largest number+5
+#Data should be a dictionary
+#dictionary is like {labels:[list], anomolies: [list]}
+
 class TimelineWindow(wx.Window):
-    def __init__(self, parent, id, data):
+    def __init__(self, parent, id):
         wx.Window.__init__(self, parent, id=id, style=wx.SUNKEN_BORDER)
         self.id = id
-        self.SetSize((600,100))
+        self.SetSize((600,60))
         self.radius = 3 #mark circle size
-        self.SetBackgroundColour(wx.WHITE)
-        self.data = data
-        self.maxH = self.maxW = self.minH = self.minW = 0
-        self.findMax(self.data)
+        self.SetBackgroundColour(wx.Colour(235,235,235))
+        self.data = None
+        self.maxW = self.minW = 0
+        #draw in the middle
+        self.midY = 30
+        self.mask = False
+        self.eColor = wx.RED
+        self.gColor = wx.Colour(47,79,47)
+        self.mColor = wx.BLUE
+        self.maskColor = wx.Colour(255,255,0, 92 )
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
     
-    def findMax(self, list):
-        for l in list:
-            c = l['points']
-            for point in c:
-                if point[1]>self.maxH and point[0]>self.maxW:
-                    self.maxH = point[1]
-                    self.maxW = point[0]
-                elif point[0]>self.maxW:
-                    self.maxW = point[0]
-                elif point[1]>self.maxH:
-                    self.maxH = point[1]
-                else:
-                    continue
+    def FindBound(self):
+        c = self.data['labels']
+        for label in c:
+            if  label[0]>self.maxW:
+                self.maxW = label[0]
+            elif label[0]<self.minW:
+                self.minW = label[0]
+            else:
+                continue
                 
-        self.maxH = self.maxH+5
-        self.maxW = self.maxW+5
+        self.maxW = self.maxW+2
+        self.minW = self.minW
         
-        for l in list:
-            c = l['points']
-            for point in c:
-                if point[1]<self.minH and point[0]<self.minW:
-                    self.minH = point[1]
-                    self.minW = point[0]
-                elif point[0]<self.minW:
-                    self.minW = point[0]
-                elif point[1]<self.minH:
-                    self.minH = point[1]
-                else:
-                    continue
-        self.minH = self.minH-5
-        self.minW = self.minW-5
+    def GetProjectionData(self):
+        self.rect = self.GetClientRect()
+        self.midY = float(self.rect.height)/2
+        self.zeroX = self.rect.x
+        self.zeroY = self.rect.y
+        self.FindBound()
+        self.unitX = float(self.rect.width)/(self.maxW-self.minW)
+        
+    def OnGetData(self, data):
+        self.data = data
+        self.GetProjectionData()
+        self.Refresh()
+        
+    def OnMask(self, ids):
+        self.mask = True
+        self.maskIDs = ids
+        self.Refresh()
         
     def OnPaint(self, event):
         #init paint 
-        dc = wx.PaintDC(self)
-        self.rect = self.GetClientRect()
-        self.zeroX = self.rect.x
-        self.zeroY = self.rect.y
-        self.unitX = float(self.rect.width)/(self.maxW-self.minW)
-        self.unitY = float(self.rect.height)/(self.maxH-self.minH)
-        #dc.DrawLine(0,0,2,2)
-        self.DrawAxis(dc)
-        for dataset in self.data:
-            self.DrawData(dataset, dc)
+        pdc = wx.PaintDC(self)
+        dc = wx.GCDC(pdc)
+        if self.data is None:
+            return 
+        else:
+            self.DrawAxis(dc)
+            #draw data
+            self.DrawData(self.data, dc)
+            #draw mask
+            if self.mask == True:
+                self.DrawMask(dc)
             
     def DrawAxis(self, dc):
-        #find origin
-        p = self.Projection((0, 0))
         #draw x axis
         dc.SetPen(wx.BLACK_PEN)
-        if p[1] >self.zeroY:
-            dc.DrawLine(self.zeroX,p[1],self.zeroX+self.rect.width,p[1])
+        dc.DrawLine(self.zeroX,self.midY,self.zeroX+self.rect.width,self.midY)
+    
+    def DrawMask(self, dc):
+        l = self.data['dates']
+        for id in self.maskIDs:
+            startx = self.ProjectX(l[id][0])
+            endx = self.ProjectX(l[id][1])
+            dc.SetPen( wx.Pen(self.maskColor) )
+            dc.SetBrush( wx.Brush(self.maskColor) )
+            dc.DrawRectangle( startx, self.GetClientRect().y, endx-startx, self.GetClientRect().height)
+    
             
     def DrawData(self, data, dc):
         #draw label
         self.labelFont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(self.labelFont)
-        dc.SetPen(wx.BLACK_PEN)
+        self.penWidth = 1
+        dc.SetPen(wx.Pen(wx.BLACK, self.penWidth))
         labels = data['labels']
         for label in labels:
-            pos = self.Projection((label[0], 0))
-            dc.DrawCircle(pos[0], pos[1], 2)
+            x = self.ProjectX(label[0])
+            dc.DrawCircle(x, self.midY, 2)
             labelText = label[1]
             tw, th = dc.GetTextExtent(labelText)
-            dc.DrawText(labelText, pos[0], pos[1])
+            dc.DrawText(labelText, x, self.midY)
         #mark anomalies
-        dc.SetPen(wx.RED_PEN)
+        self.penWidth = 5
         anomalies = data['anomolies']
-        for dotID in anomalies:
-            dotPos = data['points'][dotID] 
-            ppos = self.Projection(dotPos)
-            dc.DrawCircle(ppos[0], ppos[1], self.radius)
-        #draw lines
-        if data['color'] == 'red':
-            dc.SetPen(wx.RED_PEN)
-        if data['color'] == 'green':
-            dc.SetPen(wx.GREEN_PEN)
-        if data['color'] == 'blue':
-            dc.SetPen(wx.BLUE_PEN)
-        if type(data['color']) == tuple:
-            dc.SetPen(wx.Pen(wx.Colour(data['color'][0], data['color'][1], data['color'][2])))
-        points = data['points']
-        newpoints = []
-        for point in points:
-            newpoints.append(self.Projection(point))
-        dc.DrawLines(newpoints)
-        
+        for anomaly in anomalies:
+            type = anomaly[0]
+            if type == 0:
+                dc.SetPen(wx.Pen(self.eColor, self.penWidth))
+            elif type == 1:
+                dc.SetPen(wx.Pen(self.gColor, self.penWidth))
+            elif type == 2:
+                dc.SetPen(wx.Pen(self.mColor, self.penWidth))
+            x1 = self.ProjectX((anomaly[1]))
+            x2 = self.ProjectX((anomaly[2]))
+            dc.DrawLine(x1,self.midY,x2,self.midY)
+    
     #project to wxpython coordinatate top-left is (0,0)
-    def Projection(self, p):
-        x = p[0]
-        y = p[1]
+    def ProjectX(self, x):
         x = x-self.minW
-        y = y-self.minH
-        x = self.zeroX+x*self.unitX;
-        y = self.zeroY+(self.rect.height-y*self.unitY)
-        return (x,y)
+        x = self.zeroX+x*self.unitX        
+        return x

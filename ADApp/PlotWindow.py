@@ -9,9 +9,9 @@ import wx
 class PlotWindow(wx.Window):
     def __init__(self, parent, id, data):
         wx.Window.__init__(self, parent, id=id, style=wx.SUNKEN_BORDER)
-        self.id = id
+        self.id = id-1000
         self.sourceID = id-1000
-        self.dataID = id-1000
+        self.dataID = [id-1000]
         #draw default setting
         self.mask_colour = wx.Colour( 0, 0, 0, 92 )
         self.radius = 3
@@ -19,6 +19,7 @@ class PlotWindow(wx.Window):
         self.selectionEnd = 0
         self.projectedData = []
         self.selected = False
+        self.clicked = False
         #drop target
         self.dropTarget = DropTarget(self)
         self.SetDropTarget(self.dropTarget)
@@ -122,6 +123,9 @@ class PlotWindow(wx.Window):
         #draw mask
         if not self.selectionStart == 0 and not self.selectionEnd == 0:
             self.DrawMask(dc)
+        #draw outline
+        if self.clicked == True:
+            self.DrawOutline(dc)
 
     def DrawLabel(self, dc):
         self.labelFont = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
@@ -129,12 +133,25 @@ class PlotWindow(wx.Window):
         dc.SetPen(wx.BLACK_PEN)
         for j in range(len(self.dataToDraw)):
             labels = self.dataToDraw[j]['labels'][0]
-            print labels 
             for i in range(len(labels)):
                 pos = (self.zeroX, self.zeroY)
                 labelText = labels[i]
                 tw, th = dc.GetTextExtent(labelText)
                 dc.DrawText(labelText, pos[0]+3+(tw*j), pos[1]+i*(th+3))
+                
+    def DrawOutline(self, dc):
+        penWidth = 1
+        add = 5
+        dc.SetPen(wx.Pen(wx.RED, penWidth))
+        pos1 = (self.zeroX, self.zeroY)
+        pos2 = (self.zeroX, self.zeroY+self.rect.height-add)
+        pos3 = (self.zeroX+self.rect.width-add, self.zeroY+self.rect.height-add)
+        pos4 = (self.zeroX+self.rect.width-add, self.zeroY)
+        
+        dc.DrawLine(pos1[0], pos1[1],pos2[0], pos2[1])
+        dc.DrawLine(pos2[0], pos2[1],pos3[0], pos3[1])
+        dc.DrawLine(pos3[0], pos3[1],pos4[0], pos4[1])
+        dc.DrawLine(pos4[0], pos4[1],pos1[0], pos1[1])
         
             
     def DrawAxis(self, dc):
@@ -219,6 +236,7 @@ class PlotWindow(wx.Window):
         return (x,y)
     
     def OnLeftDown(self, event):
+        self.GetParent().UpdateClick(self.id)
         if self.GetTopLevelParent().GridEffect == "swap" or self.GetTopLevelParent().GridEffect == "merge":
             self.StartDragOpperation()
         if self.GetTopLevelParent().GridEffect == "zoom":
@@ -226,16 +244,16 @@ class PlotWindow(wx.Window):
             x, y = event.GetPositionTuple()
             self.selectionStart = x;
             self.CaptureMouse()
+            #self.GetTopLevelParent().UpDateTimeline
             
     def OnMotion(self, event):
         if self.HasCapture() and event.Dragging() and self.GetTopLevelParent().GridEffect == "zoom":
             x, y = event.GetPositionTuple()
             self.selectionEnd = x
             self.Refresh()
-            
     
     def OnLeftUp(self, event):
-        if self.HasCapture():
+        if self.HasCapture() and self.GetTopLevelParent().GridEffect == "zoom":
             self.ReleaseMouse()
             self.DoneZoom()
             
@@ -257,6 +275,10 @@ class PlotWindow(wx.Window):
 
     def SetSwapSource(self, sourceID):
         self.GetParent().OnGridChange(int(sourceID), self.GetParent().dragTarget)
+        
+    def UpdateClicke(self, click):
+        self.clicked = click
+        self.Refresh()
     
 class DropTarget(wx.PyDropTarget):
     def __init__(self, window):

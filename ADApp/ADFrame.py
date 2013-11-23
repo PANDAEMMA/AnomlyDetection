@@ -8,7 +8,7 @@ from ADAnLineCell import *
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
-        wx.Frame.__init__(self, None, -1, 'Anomaly Detection Tool', size = size)
+        wx.Frame.__init__(self, None, -1, 'Anomaly Detection Tool', size = size, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
         #init data for app
         self.AnomalNum = 4
         self.ParNum = 4
@@ -78,9 +78,9 @@ class ADFrame(wx.Frame):
             self.anomalies = AnalyzeData(self.openFilePath, self.DataType)
             #self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
-            #self.timelineData = self.PackTimelineData();
+            self.timelineData = self.PackTimelineData();
             self.DrawComicMap(self.anomaliesData)
-            #self.DrawTimeline(self.timelineData)
+            self.DrawTimeline(self.timelineData)
         dlg.Destroy()
         
     def UpdateAttribute(self, attr):
@@ -120,41 +120,41 @@ class ADFrame(wx.Frame):
             dic['color'] = (r,g,b)
             #dic['color'] = 'red'
             # Adding anomaly data index
-	    # decompose the anomaly data array
-	    index = [item[0] for item in anomalies[i]]
-	    an_data = [item[1] for item in anomalies[i]]
-	    date = [item[2] for item in anomalies[i]]
-	    points = zip(index, an_data)
-	    
-	    length_index = len(index)
+            # decompose the anomaly data array
+            index = [item[0] for item in anomalies[i]]
+            an_data = [item[1] for item in anomalies[i]]
+            date = [item[2] for item in anomalies[i]]
+            points = zip(index, an_data)
+    
+            length_index = len(index)
             # std cal.
-	    std = []
-	    aa = stdcal(an_data, length_index)
-	    std.append('std:'+ (str)(aa))
+            std = []
+            aa = stdcal(an_data, length_index)
+            std.append('std:'+ (str)(aa))
             # avg cal.
             average = []
-	    av = avg(an_data, length_index)
-	    average.append('mean:' + (str)(av))
-	    # start date
-	    start_date = []
-	    start_date.append('sdate:'+ (str)(anomalies[i][0][2]))
-	    # end date
+            av = avg(an_data, length_index)
+            average.append('mean:' + (str)(av))
+            # start date
+            start_date = []
+            start_date.append('sdate:'+ (str)(anomalies[i][0][2]))
+            # end date
             end_date = []
-	    end_date.append('edate:' + (str)(anomalies[i][length_index - 1][2]))
-	    label = zip(std, average, start_date, end_date)
-	    print label
-	    # add std, avg, and date into label
+            end_date.append('edate:' + (str)(anomalies[i][length_index - 1][2]))
+            label = zip(std, average, start_date, end_date)
+            # add std, avg, and date into label
             dic['labels'] = label
-	    # add anomaly data
+            # add anomaly data
             dic['points'] = points
-	    # add extreme data
+            # add extreme data
             maxdata = getMaxIndex(an_data)
             anomaly_data.append(maxdata)
             mindata = getMinIndex(an_data)
             anomaly_data.append(mindata)
             dic['anomolies'] = anomaly_data
             data.append([dic])
-	    anomaly_data = []
+            anomaly_data = []
+            
         return data
 
         '''#mimic Data
@@ -183,16 +183,16 @@ class ADFrame(wx.Frame):
         return list'''
     
     def PackTimelineData(self):
-        #[{labels:[list], color:, points: [list], nomolies: [list]}]
+        #{labels:[list], anomolies: [list]}
         # the data part is the information you need to give me
-        list = []
         data = dict()
-        data['color'] = 'green'
+        #1st and last should be the start and end time, if no lable, can be like [(0, '')]
         data['labels'] = [(0,'03/02/10'), (10, '05/01/10'), (20, '09/01/10')]
-        data['points'] = [(-20, 10),(-10, 30),(0, 40), (20, -40), (30, 90), (40, 50),(60, 20)]
-        data['anomolies'] = [0,3,4,5]
-        list.append(data)
-        return list
+        #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
+        data['anomolies'] = [(0,1,1), (1,8,8), (0,15,15), (0,18,19)]
+        #same as timeframe in comic map, for hightlight, (start date, end date)
+        data['dates'] = [(2, 4), (6, 9), (12, 15), (18, 19)]
+        return data
         
     #analyze functions
     def DrawComicMap(self, data):

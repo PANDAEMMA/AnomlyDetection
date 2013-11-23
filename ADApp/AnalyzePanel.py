@@ -1,6 +1,6 @@
 import wx
-from ComicMap import *
 from TimelineWindow import *
+from ComicMapWindow import *
 
 class AnalyzePanel(wx.Panel):
     def __init__(self,parent,id):
@@ -11,20 +11,20 @@ class AnalyzePanel(wx.Panel):
         # Layout
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
+        self.comicMapWindow = ComicMapWindow(self, 900)
+        self.sizer.Add(self.comicMapWindow, 1, wx.EXPAND)
+        self.timeline = TimelineWindow(self, 901)
+        self.sizer.Add(self.timeline, 0, wx.ALIGN_BOTTOM | wx.ALIGN_LEFT |wx.EXPAND)
+        self.Layout()
         
     def AddComicMap(self, id, data):
-        self.sizer.Clear(True)
-        self.comicMap = ComicMap(self, id, data)
-        self.sizer.AddSpacer(10)
-        self.sizer.Add(self.comicMap, 0, wx.LEFT, 10)
-        self.Layout()
-        self.comicMapAddedBefore = True
+        self.comicMapWindow.AddComicMap(id, data)
         
     def AddTimeline(self, id, data):
-        self.timeline = TimelineWindow(self, id, data)
-        self.sizer.AddSpacer(10)
-        self.sizer.Add(self.timeline, 0, wx.LEFT, 10)
-        self.Layout()
+        self.timeline.OnGetData(data)
+        
+    def UpdateTimeline(self, ids):
+        self.timeline.OnMask(ids)
         
     def OnZoom(self, zoom):
         #self.sizer.Clear()

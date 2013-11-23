@@ -62,18 +62,31 @@ class ComicMap(wx.Panel):
     def Swap(self, source, target):
         sourceDataID = self.plots[source].dataID
         targetDataID = self.plots[target].dataID
-        self.plots[source].ReDraw(targetDataID, self.data[targetDataID])
-        self.plots[target].ReDraw(sourceDataID, self.data[sourceDataID])
+        sourceData = []
+        targetData = []
+        for s in range(len(sourceDataID)):
+            sourceData = sourceData + self.data[sourceDataID[s]]
+        for t in range(len(targetDataID)):
+            targetData = targetData + self.data[targetDataID[t]]
+        self.plots[source].ReDraw(targetDataID, targetData)
+        self.plots[target].ReDraw(sourceDataID, sourceData)
         
     def Merge(self, source, target):
         sourceDataID = self.plots[source].dataID
         targetDataID = self.plots[target].dataID
-        i = 0;
-        while (i<len(self.data[sourceDataID])):
-            self.data[targetDataID].append(self.data[sourceDataID][i])
-            i=i+1
-        self.plots[source].ReDraw(sourceDataID, self.data[sourceDataID])
-        self.plots[target].ReDraw(targetDataID, self.data[targetDataID])
+        #i = 0;
+        #while (i<len(self.data[sourceDataID])):
+            #self.data[targetDataID].append(self.data[sourceDataID][i])
+            #i=i+1
+        targetDataID = targetDataID+sourceDataID
+        sourceData = []
+        targetData = []
+        for s in range(len(sourceDataID)):
+            sourceData = sourceData + self.data[sourceDataID[s]]
+        for t in range(len(targetDataID)):
+            targetData = targetData + self.data[targetDataID[t]]
+        self.plots[source].ReDraw(sourceDataID, sourceData)
+        self.plots[target].ReDraw(targetDataID, targetData)
         
     def OnZoom(self, zoom):
         if zoom == "in":
@@ -89,6 +102,17 @@ class ComicMap(wx.Panel):
             self.newSizer.Add(plot, 0, 0)
         self.SetSizer(self.newSizer)
         self.Fit()
+        
+    def UpdateClick(self, id):
+        i = 0
+        while (i<len(self.plots)):
+            if i == id:
+                self.plots[i].UpdateClicke(True)
+            else:
+                self.plots[i].UpdateClicke(False)
+            i=i+1
+        self.GetParent().GetParent().UpdateTimeline(self.plots[id].dataID)
+        
         
         
         
