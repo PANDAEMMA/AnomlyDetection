@@ -4,6 +4,7 @@ from DataPanel import *
 from AnalyzePanel import *
 from ADParse import *
 from ADAnLineCell import *
+from DataWindow import *
 
 
 class ADFrame(wx.Frame):
@@ -33,7 +34,9 @@ class ADFrame(wx.Frame):
         #menus
         file_menu = wx.Menu()
         MENU_QUIT = wx.NewId()
+        MENU_DATAWINDOW = wx.NewId()
         file_menu.Append(MENU_QUIT,"&Exit")
+        file_menu.Append(MENU_DATAWINDOW,"&Data")
         menu_bar.Append(file_menu,"&File")
         
         help_menu = wx.Menu()
@@ -42,6 +45,7 @@ class ADFrame(wx.Frame):
         menu_bar.Append(help_menu,"&Help")
         self.Bind(wx.EVT_MENU, self.OnQuit, id=MENU_QUIT)
         self.Bind(wx.EVT_MENU, self.OnAbout, id=MENU_ABOUT)
+        self.Bind(wx.EVT_MENU, self.OnDataWindow, id=MENU_DATAWINDOW)
         return menu_bar
         
     #event handlers
@@ -56,6 +60,10 @@ class ADFrame(wx.Frame):
         dlg.SetFont(wx.Font(8, wx.NORMAL, wx.NORMAL, wx.NORMAL, False, "Verdana"))
         dlg.ShowModal()
         dlg.Destroy()
+        
+    def OnDataWindow(self, event):
+        self.dataWindow = DataWindow(parent=None, id=-1000)
+        self.dataWindow.Show()
         
     def OnImport(self, event):
         self.dirname = ''
@@ -176,6 +184,10 @@ class ADFrame(wx.Frame):
         dic1['anomolies'] = [2]
         dic2['anomolies'] = [0,2]
         dic3['anomolies'] = [3]
+        dic['labels'] = [("test")]
+        dic1['labels'] = [("test")]
+        dic2['labels'] = [("test")]
+        dic3['labels'] = [("test")]
         list.append([dic])
         list.append([dic1])
         list.append([dic2])
