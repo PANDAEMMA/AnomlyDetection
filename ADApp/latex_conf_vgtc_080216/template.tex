@@ -167,35 +167,34 @@ Considerable visual analytics research which is related to the time-series visua
 	The scalability is getting to become a critical issue in big data visual analytics. It is hard to display all big data, because the overwhelming computational and memory overhead. The visual analysts can help to narrow down the size and range of data analysis based on the statistical view recommendation. In this paper, we work out a new visual analytics pipeline, which enable analysis participants join the iterative anomaly detection, and set up a possible abnormal time-series range to explore anomaly.
 
 
-\section{A-Dector}
-\subsection{What is A-Dector?}
+\section{ADetector}
 
-A-Dector is an anomaly visual exploration tool. Since the overwhelming anomaly detection costs in the massive data sets, A-Dector combines an approximate statistical regression model, anomaly diagnostics, and visual analytics to narrow down the size of anomaly analysis, take insight into the complex structure of errors, and at last unveil abnormal data. Thus, A-Dector is consist of data clean, reduction and comparison widgets to tackle on the time-series weather anomaly detection, and convey possible anomaly data to visual analysts to figure out the patterns of anomaly collaboratively.
+ADetector is an anomaly visual exploration tool. Since the overwhelming anomaly detection costs in the massive data sets, ADetector combines an approximate statistical regression model, anomaly diagnostics, and visual analytics to narrow down the size of anomaly analysis, take insight into the complex structure of errors, and at last unveil abnormal data. Thus, ADetector is consist of data clean, reduction and comparison widgets to tackle on the time-series weather anomaly detection, and convey possible anomaly data to visual analysts to figure out the patterns of anomaly collaboratively.
 
 \subsection{Anomaly diagnosis workflow}
 
-In order to take insight into the patterns of abnormal data. A-Dector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus A-Dector is composed of five steps -- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
+In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps -- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
  \begin{figure}[htb]
 	\centering
   \includegraphics[width=0.49\textwidth]{workflow.png}
-  \caption{The anomaly detection workflow of A-Dector tool}
+  \caption{The anomaly detection workflow of ADetector tool}
 \end{figure}
 
 
-Data table includes a series data manipulation options such as the selection of input and the type of weather data. Since A-Dector tackles on missing, extreme, and latent anomaly, in the type inference step provides options to specify one of anomaly, then A-Dector will use the specified analysis tool to analyze the selected one. Afterward, in the anomaly region search step, based on the selected anomaly, A-Dector leverages statistical analysis to work out some statistical results that are related to the behavior of data to let users select a certain time interval (e.g. one year) to delve in to the micro-level. At last step, A-Dector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, exetreme data statistics are showed in timeline widget, and users also can pick out data in one of time interval to view in cells in comic cells. Altoghether, A-Dector workflow is composed of selection, reduction, and comparsion steps.
+Data table includes a series data manipulation options such as the selection of input and the type of weather data. Since ADetector tackles on missing, extreme, and latent anomaly, in the type inference step provides options to specify one of anomaly, then ADetector will use the specified analysis tool to analyze the selected one. Afterward, in the anomaly region search step, based on the selected anomaly, ADetector leverages statistical analysis to work out some statistical results that are related to the behavior of data to let users select a certain time interval (e.g. one year) to delve in to the micro-level. At last step, ADetector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, extreme data statistics are showed in timeline widget, and users also can pick out data in one of time interval to view in cells in comic cells. Altogether, ADetector workflow is composed of selection, reduction, and comparison steps.
 
-\subsection{The composition of A-dector}
+\subsection{The composition of ADetector}
 \subsubsection{Data clean tool}
 
-Data clean tool aims to find out all missing data in the data sets and show their timestamp. Users are able to figure out the occurrance frequency and time from this data clean tool. Furthermore, users also can remove the missing records from this data clean tool. Altoghether, the data clean tool gives users an overview of the information about missing data, and allows users to remove them. 
+Data clean tool aims to find out all missing data in the data sets and show their timestamp. Users are able to figure out the occurrence frequency and time from this data clean tool. Furthermore, users also can remove the missing records from this data clean tool. Altogether, the data clean tool gives users an overview of the information about missing data, and allows users to remove them. 
 
 \subsubsection{Abnormal region reduction tool}
 
-The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histogram, and show the proportion of multiple statistical analysis results in each year. ADapps give three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data, and fitting curve model to help users determinate which year is supposed to pay attention to. Afterward, users can delve into one specific year, and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis.
+The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histogram, and show the proportion of multiple statistical analysis results in each year. ADetector give three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data, and fitting curve model to help users determinate which year is supposed to pay attention to. Afterward, users can delve into one specific year, and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis.
 
 \subsubsection{Data comparison tool}
 
-The data comparison tool consists of comic map, which includes multiple line graph cells. Importing the selected monthly data from susceptible abnormal region reduction tool, A-Dector proceeds residual calculation toward selected data, and show a number of possible abnormal region in each comic map cells. In addition, this tool also supports cell swicth and multiple line graph merge functionalities. From this tool, users are able to compare the fluctuation of each comic map cell. Furthermore, ADApps data comparison tool also includes stack zooming functionality. Users can select one certain time interval to zoom in and zoom out. 
+The data comparison tool consists of comic map, which includes multiple line graph cells. Importing the selected monthly data from susceptible abnormal region reduction tool, ADetector proceeds residual calculation toward selected data, and show a number of possible abnormal region in each comic map cells. In addition, this tool also supports cell switch and multiple line graph merge functionalities. From this tool, users are able to compare the fluctuation of each comic map cell. Furthermore, ADApps data comparison tool also includes stack zooming functionality. Users can select one certain time interval to zoom in and zoom out. 
 
 % \begin{figure}[htb]
 %\centering
@@ -245,7 +244,7 @@ The same as merge interaction, stack zooming is also revertible by just clicking
 
 \section{Matching pursuit -- regressive anomaly detector}
 
-Regression analysis is used to estimate the trends among variables with the change of the time. Regression analysis model is often used to predict or interrept observed data. Matching is one nonlinear regression model used in A-Dector to figure out possible anomaly. The role of regression model is being a baseline to account for the data, and distinguish anomaly from normal one. Least-square fitting curve aims to work out a best-fit formula to describe the distribution or behavior of data. Linear regression model such as ordinary least squares, and weighted least square. However, these linear models sometimes are not applied in nonlinear time-series data, such as financial data, and weather data. In order to find out anomaly from massive data, the nonlinear regression model is supposed to meet scalable, low complexity, and feasible requirements.
+Regression analysis is used to estimate the trends among variables with the change of the time. Regression analysis model is often used to predict or interrept observed data. Matching is one nonlinear regression model used in ADetector to figure out possible anomaly. The role of regression model is being a baseline to account for the data, and distinguish anomaly from normal one. Least-square fitting curve aims to work out a best-fit formula to describe the distribution or behavior of data. Linear regression model such as ordinary least squares, and weighted least square. However, these linear models sometimes are not applied in nonlinear time-series data, such as financial data, and weather data. In order to find out anomaly from massive data, the nonlinear regression model is supposed to meet scalable, low complexity, and feasible requirements.
 
 \subsection{Approximate nonlinear regression model}
 
@@ -266,7 +265,7 @@ The advantages of matching pursuit regression model is it uses the number of fre
 \subsection{Anomaly diagnostic logics}
 	Only matching pursuit regressin model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler, there is supposed to be a method to figure out how to use this ruler to measure.
 	
-		(a) Systemmatic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. A-Dector use residual obtained from the matching procedure, and determine possible anomaly.
+		(a) Systemmatic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. ADetector use residual obtained from the matching procedure, and determine possible anomaly.
 			
 	\begin{equation}
 	 res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \overline(x)^2))}
@@ -281,7 +280,7 @@ In future work, we plan to support adaptive model tuning based on the feedback f
       Moreover, for the data representation in the current version of our tool, we only support data aggregation in the overview window. For example, the overview of year shows first, if user clicks on a year data, detailed monthly data shows up. But in analyze workspace, an overview map only shows up for monthly view.  We may continue investigate a suitable aggregation representation in the analyze workspace map representation as well, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
 
-In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparision technique called comic map. The quality of data play a critical role in scientific and enginerring systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. A-Dector combine signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. A-Dector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, A-Dector also supports interactive actions such as timeline navigation, swap, multi-variable comparision, and collaboration. A-Dector enable the workflow of time-series anomaly detection become efficient and interactive.
+In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data play a critical role in scientific and engineering systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combine signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, ADetector also supports interactive actions such as timeline navigation, swap, multi-variable comparison, and collaboration. ADetector enable the workflow of time-series anomaly detection become efficient and interactive.
 
 
 %% if specified like this the section will be ommitted in review mode
