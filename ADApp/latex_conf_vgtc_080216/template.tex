@@ -119,21 +119,22 @@
 
 	Error analysis aims to measure the quality of the scientific experiments and engineering systems, find out abnormal data hidden in a set of measurements, and get rid of these unexpected errors. However, it is not easy to figure out uncertain errors hidden in the big amount of data, and analyzing the complete set of data could be computationally expensive. The results from a thorough analysis of this big data may not be worth the cost for completeness. In addition, we are not able to know what the exact value is in the measurement. However, in fact, we can make sure the correct value exists in a specified likelihood\cite{ifan2012}. Thus, an approximate clue from big data is supposed to be enough for us to obtain perfect answers to pinpoint errors similar to results from a thorough analysis.
 	
-	Time-series analysis aims to understand the underlying time-series data structure, and then exploits the results of analysis to interpret and forecast the trends of events. Time-series data used to be collected from monitoring procedures for an event, and problematic errors always mislead prediction results. Nonlinear regression fitting curve methods, such as Gauss–Newton algorithm, and Levenberg Marquardt algorithm are often used in nonlinear regression analysis. However, the divergence problem and improper parameters often slow down their convergence speeds. In addition, Kalman filter is usually used in signal noise elimination. However, Kalman filter needs to include a predefined noise-free model. Thus, complexity, feasibility, and efficiency should be taken into consideration in nonlinear regression model design.
-	
 	The great numbers of uncertainties in the measurement increase the challenge of error diagnosis due to the limited erroneous data knowledge base. In general, the taxonomy of anomaly in the scientific experiments includes random errors, systematic errors, and mistakes. The impact of random errors on the precision of the measurement in which indicates the experimental results are close to the average one in the repeated measurements. For instance, the malfunctioned instrument often leads to the fundamental random noises, and cause the bad degree of precision. Furthermore, the systematic error means the measurement quantity is inaccurate, which is away from the accepted or predicted values. For example, the interference arises from environment often distract the measurement results from the expected one. The last one is the mistakes, which is often caused by some unpredictable conditions such as incorrect manual records, and is difficult to detect. These hatred errors could be solved by integrating visual representation, data analysis, and human interaction.
+
 	
 	The least-square fitting methods, regression model and signal processing filters are often used to measure the relationship between two or more phenomena. The residual value among variables is usually being a baseline to estimate outliers included in a set of measurement. Furthermore, the previous research always pursue a best-fit model to predict or estimate the trends or patterns of data. However, the computational costs and convergence speeds of these curve fitting methods are getting to be a concern in big data analysis. In fact, the amount of noises or errors is usually less than the correct ones in various applications. In other words, the noise is not the principle characteristics of the measurement. In addition, we never obtain the exact measurement and the erroneous patterns are often shift away from the expected value. Thus, an approximate solution is enough to diagnose the experimental data. In this paper, we present an approximate nonlinear regression -- matching pursuit, which integrate Fourier Transform and approximate least square method for anomaly inference.
 
 	Visual analytics is used to reduce the size of data analysis, to audit the data, and to detect anomaly interactively. Even if statistical inference methods are helpful for the recognition of abnormal data, however, some kinds of spurious data which are hard to be recognized by numerical model. For instance, the small glitch, or a series stark unchanged measurement. The visualisation enables human-beings to extract additional characteristics via data comparison efficiently. Moreover, the statistical evidence and view highlights allow people to determining a specified region of data that is susceptible to errors to check and avoid the thorough analysis. We present an anomaly visual analytics pipeline, and a data comparison graphical interface -- comic map to take insight into the complex measurement data.
+	
+	In addition to the data reduction supports, visual exploration tool also includes the visual comparison functionality. Stack zooming \cite{javed2010stack} exploits the stack hierarchy to serve as a tangible graphical history to proceed the visual comparison. In constast with stack zooming, the comic map visual comparison we used in our anomaly detection tool unrestrains the direction or hierarchy of visual comparison. Comic map provides more freedom for users to cluster cells with the similar attributes, and merge multiple variables in one cells to compare data, and understand the characteristics of time-series data easily. In general, exploring, querying, and comparing are steps to figure out the patterns of anomaly hidden in time-series data.
 		
 In sum, this paper includes the following contribution. 
 
-1. The approximate nonlinear fitting curve model: This model combines signal processing approach, and leverages fitting curve to predict abnormal data hidden in time-series climate data. 
-
-2. Time-series abnormal data diagnosis: The buggy region localization is a divide-and-conquer method to reduce the regions of data checking.
+1. The approximate nonlinear fitting curve model: This model combines signal processing approach, and leverages fitting curve to predict abnormal data hidden in time-series climate data.  
  
-3. Visual analytics pipeline for anomaly detection: Showing the possible abnormal data in line graph comic map cells, and exploits various interactions such as zoom in/out, swapping, and merging to allow human-being recognize abnormal data patterns.
+2. Visual analytics pipeline for anomaly detection: Showing the possible abnormal data in line graph comic map cells, and exploits various interactions such as zoom in/out, swapping, and merging to allow human-being recognize abnormal data patterns.
+
+3. Visual anomaly exploration, and timeline navigation: Time is a nice clue to understand the time-seris data. Hence, we support the a visual timeline navigation to explore the abnormal data.    
 
 \section{Background}
 
@@ -322,9 +323,40 @@ The advantages of matching pursuit regression model is it uses the number of fre
 
 \section{Results}
 
+We have conducted the eveluation of A-Dector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
+
+\subsection{The performance validataion}
+
+	In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
+
+Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variable. In this experiment, we input 3 year time-series weather data (the total number is 14600), and we change the number of k (the number of iteration) in the model construction, then measure the variations of MSE and Pearson correlation coefficient. 
+\begin{figure}[htb]
+\fbox{
+	\centering
+  \includegraphics[width=0.23\textwidth]{chart_1.png}
+  \includegraphics[width=0.23\textwidth]{chart_2.png}
+	}
+	\caption{The MSE and Pearson correlation coefficient}
+\end{figure}
+
+	At first, we can find the correlation in each experiemnt result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regresion algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
+\subsection{The performance validation}
+In this validation, we want to see the performance of the anomaly detection in different size of data sets. We can see A-Detector can complete the anomaly data less than one minute. 
+
+\begin{figure}[htb]
+\begin{center}
+\fbox{
+	\centering
+  \includegraphics[width=0.30\textwidth]{chart_3.png}
+	}
+\end{center}
+	\caption{The workflow of matching pursuit regression model}
+\end{figure} 
+
 \section{Future works}
 
 In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don’t have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the value of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
+
       Moreover, for the data representation in the current version of our tool, we only support data aggregation in the overview window. For example, the overview of year shows first, if user clicks on a year data, detailed monthly data shows up. But in analyze workspace, an overview map only shows up for monthly view.  We may continue investigate a suitable aggregation representation in the analyze workspace map representation as well, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
 
