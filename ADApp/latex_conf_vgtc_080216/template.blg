@@ -1,0 +1,92 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: template.aux
+The style file: abbrv.bst
+Database file #1: ref.bib
+Warning--string name "july" is undefined
+--line 163 of file ref.bib
+You're missing a field part---line 166 of file ref.bib
+ :   pages = 
+ :           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 169 of file ref.bib
+ : @inproceedings{shafer2012rainmon
+ :                                 ,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 182 of file ref.bib
+ :   month = 
+ :           ,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 192 of file ref.bib
+ :   month = 
+ :           ,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 202 of file ref.bib
+ :   month = 
+ :           ,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 212 of file ref.bib
+ :   month = 
+ :           ,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 222 of file ref.bib
+ :   month = 
+ :           ,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 232 of file ref.bib
+ :   month = 
+ :           ,
+I'm skipping whatever remains of this entry
+Name 1 in "IFan G. Huges, and Thomas P.A. Hase" has a comma at the end for entry ifan2012
+while executing---line 1049 of file abbrv.bst
+Name 1 in "Liao, Zicheng, Yizhou Yu, and Baoquan Chen" has a comma at the end for entry Liao2010
+while executing---line 1049 of file abbrv.bst
+Name 1 in "IFan G. Huges, and Thomas P.A. Hase" has a comma at the end for entry ifan2012
+while executing---line 1090 of file abbrv.bst
+Warning--empty booktitle in Kandel2012
+Warning--empty booktitle in Liao2011
+Name 1 in "Liao, Zicheng, Yizhou Yu, and Baoquan Chen" has a comma at the end for entry Liao2010
+while executing---line 1090 of file abbrv.bst
+Warning--empty booktitle in Liao2010
+Warning--empty booktitle in sip2012
+You've used 20 entries,
+            2118 wiz_defined-function locations,
+            607 strings with 7515 characters,
+and the built_in function-call counts, 8045 in all, are:
+= -- 806
+> -- 352
+< -- 15
++ -- 141
+- -- 118
+* -- 501
+:= -- 1232
+add.period$ -- 70
+call.type$ -- 20
+change.case$ -- 116
+chr.to.int$ -- 0
+cite$ -- 24
+duplicate$ -- 354
+empty$ -- 662
+format.name$ -- 118
+if$ -- 1786
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 23
+newline$ -- 103
+num.names$ -- 40
+pop$ -- 176
+preamble$ -- 1
+purify$ -- 99
+quote$ -- 0
+skip$ -- 258
+stack$ -- 0
+substring$ -- 470
+swap$ -- 126
+text.length$ -- 15
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 74
+warning$ -- 4
+while$ -- 74
+width$ -- 22
+write$ -- 225
+(There were 12 error messages)
