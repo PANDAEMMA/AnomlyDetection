@@ -157,8 +157,8 @@ class ADFrame(wx.Frame):
             # add extreme data
             maxdata = getMaxIndex(an_data)
             anomaly_data.append(maxdata)
-            mindata = getMinIndex(an_data)
-            anomaly_data.append(mindata)
+            #mindata = getMinIndex(an_data)
+            #anomaly_data.append(mindata)
             dic['anomolies'] = anomaly_data
             data.append([dic])
             anomaly_data = []
