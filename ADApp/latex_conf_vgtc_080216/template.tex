@@ -151,7 +151,7 @@ The category of time-series anomaly is dependent on the objective and monitoring
 
 Considerable visual analytics research which is related to the time-series visual visualization, and exploration, and the relevant surveys include \cite{silva2000visualization}. The basic line graph \cite{tufte1983visual}is widely in temporal visualization. However, in recent year, in order to delve into the time-series, different visual representation techniques have been worked out\cite{bremm2011interactive}, \cite{mclachlan2008liverac}, \cite{javed2010stack}, \cite{sip2012}, \cite{Liao2010}, \cite{Liao2011}. These graphical representation methods improves the efficiency and effectiveness for time-series data analysis. Furthermore, the massive time-series visual analytics has also became a consideration in ATLAS \cite{chan2008maintaining} system.
  
-	Query and exploration also plays a key role in time-series visual analytics. LifeLine\cite{plaisant1996lifelines} is an eary visual system for personal history record exploration. TimeSearcher\cite{hochheiser2004dynamic} is an interactive time-series query tool, and uses the time-box to explore the data sets. PatternFinder \cite{fails2006visual} includes an visual interface to query the medical records. LiveRAC \cite{mclachlan2008liverac} designed an interactive visual interface to explore the data collected from computer systems. Data quality assessment is also getting to become an important topics in visual analytics research. Profiler\cite{Kandel2012}, and RainMon\cite{shafer2012rainmon} integrated statistical analysis and visual representation to find out abnormal hidden in database and computer systems. 
+	Query and exploration also plays a key role in time-series visual analytics. LifeLine\cite{plaisant1996lifelines} is an early visual system for personal history record exploration. TimeSearcher\cite{hochheiser2004dynamic} is an interactive time-series query tool, and uses the time-box to explore the data sets. PatternFinder \cite{fails2006visual} includes an visual interface to query the medical records. LiveRAC \cite{mclachlan2008liverac} designed an interactive visual interface to explore the data collected from computer systems. Data quality assessment is also getting to become an important topics in visual analytics research. Profiler\cite{Kandel2012}, and RainMon\cite{shafer2012rainmon} integrated statistical analysis and visual representation to find out abnormal hidden in database and computer systems. 
 	
 	The above projects concentrate mainly on the interactive visual explorations, and visual representation for time-series data. However, beyond the high-level visualization tasks, temporal visual exploration also requires additional attention to the pipeline of the data analytics for special properties. In particular, additional important time-series visual analytics tasks include (a) multi-variable relationship (b) dynamic time-series hierarchies (c) large-scale support\cite{javed2010stack}. Few of the above visualization tools support all these requirement, except Stack Zooming\cite{javed2010stack}, and Live RAC\cite{mclachlan2008liverac}. 
 	
@@ -228,17 +228,17 @@ The basic component of the comic map is every comic map cell. For time series da
   \caption{Comic Map Cell}
 \end{figure}
 
-Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start date of the data in this grid and end data of this grid cell, etc. There is no axis along with timestamp labels is shown due to the space limit of the grid cell. Then the start date and end date is given to provide the user the information about the time. All these information are trying to help analyst get a better understanding of the dataset in the cell.
+Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start date of the data in this grid and end data of this grid cell, etc. There is no axis along with timestamp labels is shown due to the space limit of the grid cell. Then the start date and end date are given to provide the user the information about the time. All these information are trying to help analyst get a better understanding of the dataset in the cell.
 \subsection{Layout}
 Cells of comic map are laid out as comic book grid (Figure 2). In this way, each cell has three (corner cell), five (edge cell) or eight neighbors around it. This kind of layout is more helpful for comparison. Since usually users prefer to set objects side by side to compare it. In our layout, each cell can be easily compared with their neighbors and the number of neighbors is bigger than the traditional horizontal or vertical layout. This is efficient since analyst can do more comparison in comic map layout with less cells moving around.
 
-The comic map tries to maintain a layout more like a square, which is not only efficient of using the visual space, but also guarantees the aggregation of cells for comparison mentioned before. For example, if there are 4 anomalies in total, a 2x2 comic map will be shown, and if the anomalies number is 9, the comic map is a 3x3 grid. More specific, comic map will be chosen as the closest square based on anomalies number. For example, anomalies number between 10 and 16 results in a 4x4 grid.
+The comic map tries to maintain a layout more like a square, which is not only efficient of using the visual space, but also guarantees the clustering of cells for comparison mentioned before. For example, if there are 4 anomalies in total, a 2x2 comic map will be shown, and if the anomalies number is 9, the comic map is a 3x3 grid. More specific, comic map will be chosen as the closest square based on anomalies number. For example, anomalies number between 10 and 16 results in a 4x4 grid.
 
 Moreover, in order to reduce the work of swap, our backend model sorts all anomalies by putting anomalies with similar pattern besides each other. During analysis process, analyst can also rearrange cells for comparison by simply swapping cells. Our layout is very flexible, which provides the analyst a lot of freedom.
 
 \subsection{Timeline overview}
 
-For each cell, some information related to the specific anomaly can be obtained, but analyst still lacking information of this anomaly related to the whole dataset. So we introduce a timeline overview corresponding to the comic map grid (Figure 3). 
+For each cell, some information related to the specific anomaly can be obtained, but analyst still lacks information about this anomaly related to the whole dataset. So we introduce a timeline overview corresponding to the comic map grid (Figure 3). 
 Since the dataset is a time-series climate data, time information should be an understandable choice for an overall representation. In the timeline overview, an axis of timestamp is used as the main visualization. Some timestamps are shown to give analyst an overview of time. On the time axis, anomalies are marked corresponding to their happening time. Specifically, different type of anomalies are marked using different colors. Through this overview visualization, analyst gains information of anomalies based on the whole dataset, like the frequency of anomaly in a specific timeframe, the occurrence of different type of anomalies, etc. 
 The comic map cells are also tightly connected with this timeline overview. When a comic map cell is selected, the corresponding timeframe of data in the cell will be highlighted in the overview. More information can be obtained for analyst to analyze anomaly in the cell (Figure 5). 
 
@@ -252,7 +252,7 @@ The comic map cells are also tightly connected with this timeline overview. When
 As mentioned before, comparison plays an important role in anomaly analysis. Our comic map visual representation provides advanced interactions to support comparison, which gives the analyst more freedom of doing comparison and increases the efficiency of analyzing process.
 
 \subsubsection{Swap}
-The first interaction for comic map is swap. Analyst can swap any two cells by simply drag and drop. By using this interaction, analyst can put any cells beside to do a comparison.  Also, analyst can rearrange the comic map to put similar anomalies together (Figure 6).  
+The first interaction for comic map is swap. Analyst can swap any two cells by simply drag and drop. By using this interaction, analyst can put any cells together to do a comparison.  Also, analyst can rearrange the comic map to put similar anomalies together (Figure 6).  
 
  \begin{figure}[htb]
 	\centering
@@ -261,7 +261,7 @@ The first interaction for comic map is swap. Analyst can swap any two cells by s
 \end{figure}
 
 \subsubsection{Merge}
-The second interaction for comic map is merge. Comparison can be done by putting objects side by side, but can also be done shown two datasets in one view. The introduction of merge interaction enables the ability of doing comparison in one cell. 
+The second interaction for comic map is merge. Comparison can be done by putting objects side by side, but can also be done by showing two datasets in one view. The introduction of merge interaction enables the ability of doing comparison in one cell. 
 In order to merge two cells into one cell, analyst can just pick up one cell and drag-and-drop it onto the cell that he wants to merge with. For example, if the analyst wants to merge first, second and third cell, he can drag-and-drop the first cell to the third cell, and then drag-and-drop the second cell to the third cell. A merged view is automatically generated in the third cell (Figure 7).
 
  \begin{figure}[htb]
@@ -281,7 +281,7 @@ The merged view is also revertible. There is a cross sign on the upper-right cor
 \subsubsection{Stack zooming}
 The third interaction for comic map is stack zooming. Analyst often needs to see closer to the anomaly by zooming. The way of doing zooming in our comic map representation is stack zooming.
 
-In order to zoom in a specific subset of data, analyst select the region (stack) he wants to zoom in (Figure 9). Then the cell will be automatically updated showing that portion of data. 
+In order to zoom into a specific subset of data, analyst select the region (stack) he wants to zoom in (Figure 9). Then the cell will be automatically updated showing that portion of data. 
 The same as merge interaction, stack zooming is also revertible by just clicking on the cross sign on the upper-right corner. Then, the original whole dataset of anomaly will be shown.
 
  \begin{figure}[htb]
@@ -311,20 +311,19 @@ Matching pursuit is composed of the following five steps. The first step is to u
 The advantages of matching pursuit regression model is it uses the number of frequency to build up the nonlinear fitting curve, and reduce the computational analysis costs. Furthermore, matching pursuit is non-parameter or unsupervised learning algorithm, there is no any training data requirement. At last, matching pursuit algorithm is also scalable, because it can be run in divide-and-conquer approach and in parallel way. Matching pursuit regression model provides us a rapid method to estimate the anomaly in massive time-series data. 
 
 \subsection{Anomaly diagnostic logics}
-	Only matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler, there is supposed to be a method to figure out how to use this ruler to measure.
+Only matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler, there is supposed to be a method to figure out how to use this ruler to measure.
 	
-		(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. ADetector use residual obtained from the matching procedure, and determine possible anomaly.
-	
-
+(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. ADetector use residual obtained from the matching procedure, and determine possible anomaly.
 			
-	\begin{equation}
-	 res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \overline(x)^2))}
-	\end{equation}		 
-		(b) Latent anomaly data: Latent anomaly data is easy to unaware of because the characteristic of this anomaly is not revalent. In order to look for this anomaly, we calculate heteroskedasticity, and use cook's distance to understand the influential relation between real data and model, and visualize them in comic map cells. 
+\begin{equation}
+res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \overline(x)^2))}
+\end{equation}		 
+
+(b) Latent anomaly data: Latent anomaly data is easy to unaware of because the characteristic of this anomaly is not relevant. In order to look for this anomaly, we calculate heteroskedasticity, and use cook's distance to understand the influential relation between real data and model, and visualize them in comic map cells. 
 
 \section{Results}
 
-We have conducted the evaluation of ADector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
+We have conducted the evaluation of ADetector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
 
 \subsection{The correlation validation}
 
@@ -357,9 +356,9 @@ In this validation, we want to see the performance of the anomaly detection in d
 
 \section{Future works}
 
-In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don't have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the values of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.                                                                                                 overview
+In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don't have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the values of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
 
-      Moreover, for the data representation in the current version of our tool, we don?t support data aggregation. In analyze workspace, the comic map shows all anomalies by cells. When the amount of anomalies data becomes very large, we still show every one of them and the whole view may become very large. We may continue investigate a suitable aggregation representation in the comic map representation, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
+Moreover, for the data representation in the current version of our tool, we don?t support data aggregation. In analyze workspace, the comic map shows all anomalies by cells. When the amount of anomalies data becomes very large, we still show every one of them and the whole view may become very large. We may continue investigate a suitable aggregation representation in the comic map representation, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
 
 In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data plays a critical role in scientific and engineering systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combines signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, ADetector also supports interactive actions such as timeline navigation, swap, multi-variable comparison, and collaboration. ADetector enables the workflow of time-series anomaly detection become efficient and interactive.
