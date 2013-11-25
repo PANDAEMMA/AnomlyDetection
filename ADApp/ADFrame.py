@@ -4,7 +4,7 @@ from DataPanel import *
 from AnalyzePanel import *
 from ADParse import *
 from ADAnLineCell import *
-
+from File import *
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
@@ -184,8 +184,13 @@ class ADFrame(wx.Frame):
     
     def PackTimelineData(self):
         #{labels:[list], anomolies: [list]}
+	
         # the data part is the information you need to give me
+	#fd = open(self.openFilePath)
+	data_len = calc_file(self.openFilePath)
+	print data_len
         data = dict()
+
         #1st and last should be the start and end time, if no lable, can be like [(0, '')]
         data['labels'] = [(0,'03/02/10'), (10, '05/01/10'), (20, '09/01/10')]
         #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs

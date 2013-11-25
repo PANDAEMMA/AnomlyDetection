@@ -26,8 +26,8 @@ def AnalyzeData(fileObj, dataObj_i):
     index = []
     signal = []
 
-    top_k = 4
-    chunk_num = 4
+    top_k = 9
+    chunk_num = 999
 
     fd = open(fileObj, 'r')
     # N is the total number of data in a file
@@ -76,8 +76,9 @@ def AnalyzeData(fileObj, dataObj_i):
 	date = []
         for j in range(N1):
                 a = re.split(',|\n| ', buff.readline())
-                temp_anomaly.append(float(a[dataObj_i]))
-		date.append(a[YEAR]+'-'+a[MON]+'-'+a[DAY]+'-'+a[HOUR]+':'+a[MIN])
+		if (a[dataObj_i]):
+                	temp_anomaly.append(float(a[dataObj_i]))
+			date.append(a[YEAR]+'-'+a[MON]+'-'+a[DAY]+'-'+a[HOUR]+':'+a[MIN])
         zipped = zip(index, temp_anomaly, date)
         # clean the temp buffer
         temp_anomaly = []
