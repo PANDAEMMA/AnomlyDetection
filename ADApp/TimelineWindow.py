@@ -118,12 +118,16 @@ class TimelineWindow(wx.Window):
         self.penWidth = 1
         dc.SetPen(wx.Pen(wx.BLACK, self.penWidth))
         labels = data['labels']
-        for label in labels:
+        for i in range(len(labels)):
+            label = labels[i]
             x = self.ProjectX(label[0])
             dc.DrawCircle(x, self.midY, 2)
             labelText = label[1]
             tw, th = dc.GetTextExtent(labelText)
-            dc.DrawText(labelText, x, self.midY)
+            if i == len(labels)-1:
+                dc.DrawText(labelText, x-tw/2-10, self.midY)
+            else:
+                dc.DrawText(labelText, x, self.midY)
         #mark anomalies
         self.penWidth = 5
         anomalies = data['anomolies']
