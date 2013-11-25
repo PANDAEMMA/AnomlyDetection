@@ -68,8 +68,6 @@ class ADFrame(wx.Frame):
             self.openFilePath = os.path.join(self.dirname, self.filename)
 	    data = self.File.FileRead(self.openFilePath)
  	    dataSize = len(data)	
-	    result = self.Search.goldenSectionSearch(data, 0, dataSize/2, dataSize, 1)
-	    print result
             #TODO handle data read and data parser by call utility functions here
             #TODO need a new draw function pass in data here
 	    #TODO need to deliver multiple possible data ranges
