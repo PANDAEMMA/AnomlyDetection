@@ -6,6 +6,7 @@ from ADParse import *
 from ADAnLineCell import *
 from DataWindow import *
 
+from time import clock,time
 
 class ADFrame(wx.Frame):
     def __init__(self, size):
@@ -66,6 +67,7 @@ class ADFrame(wx.Frame):
         self.dataWindow.Show()
         
     def OnImport(self, event):
+	start = clock()
         self.dirname = ''
         dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
@@ -89,6 +91,8 @@ class ADFrame(wx.Frame):
             self.timelineData = self.PackTimelineData();
             self.DrawComicMap(self.anomaliesData)
             self.DrawTimeline(self.timelineData)
+	    elapsed = clock() - start
+            print "Anomaly analysis:", elapsed
         dlg.Destroy()
         
     def UpdateAttribute(self, attr):

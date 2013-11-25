@@ -274,9 +274,40 @@ The advantages of matching pursuit regression model is it uses the number of fre
 
 \section{Results}
 
+We have conducted the eveluation of A-Dector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
+
+\subsection{The performance validataion}
+
+	In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
+
+Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variable. In this experiment, we input 3 year time-series weather data (the total number is 14600), and we change the number of k (the number of iteration) in the model construction, then measure the variations of MSE and Pearson correlation coefficient. 
+\begin{figure}[htb]
+\fbox{
+	\centering
+  \includegraphics[width=0.23\textwidth]{chart_1.png}
+  \includegraphics[width=0.23\textwidth]{chart_2.png}
+	}
+	\caption{The MSE and Pearson correlation coefficient}
+\end{figure}
+
+	At first, we can find the correlation in each experiemnt result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regresion algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
+\subsection{The performance validation}
+In this validation, we want to see the performance of the anomaly detection in different size of data sets. We can see A-Detector can complete the anomaly data less than one minute. 
+
+\begin{figure}[htb]
+\begin{center}
+\fbox{
+	\centering
+  \includegraphics[width=0.30\textwidth]{chart_3.png}
+	}
+\end{center}
+	\caption{The workflow of matching pursuit regression model}
+\end{figure} 
+
 \section{Future works}
 
 In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don’t have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the value of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
+
       Moreover, for the data representation in the current version of our tool, we only support data aggregation in the overview window. For example, the overview of year shows first, if user clicks on a year data, detailed monthly data shows up. But in analyze workspace, an overview map only shows up for monthly view.  We may continue investigate a suitable aggregation representation in the analyze workspace map representation as well, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
 

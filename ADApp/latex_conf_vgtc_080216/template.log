@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.2)  24 NOV 2013 21:36
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.2)  25 NOV 2013 00:16
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -150,19 +150,19 @@ File: epstopdf-sys.cfg 2009/10/26 v1.1 Configuration of epstopdf for TeX Live
 (./template.aux)
 \openout1 = `template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 105.
-LaTeX Font Info:    ... okay on input line 105.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 105.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 107.
 
  (/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
@@ -182,58 +182,58 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 \MPnumerator=\count92
 \everyMPtoPDFconversion=\toks16
 )
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 113.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 115.
 
  (/usr/share/texmf-texlive/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 115.
 LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 11
-3.
+5.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 11
-3.
+5.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 11
-3.
+5.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 11
-3.
+5.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
-LaTeX Font Info:    Calculating math sizes for size <7.4> on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
+LaTeX Font Info:    Calculating math sizes for size <7.4> on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5.47603> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <4.44003> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <9> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/phv/bx/sc' in size <9> not available
-(Font)              Font shape `OT1/phv/b/sc' tried instead on input line 113.
+(Font)              Font shape `OT1/phv/b/sc' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no “ in font ptmr7t!
@@ -241,20 +241,19 @@ Missing character: There is no “ in font ptmr7t!
 
 
 ]
-Underfull \hbox (badness 1596) in paragraph at lines 163--164
+Underfull \hbox (badness 1596) in paragraph at lines 165--166
 \OT1/ptm/m/n/9 to solve some hard prob-lems. Fur-ther-more, the dis-tributed
  []
 
 
-Underfull \hbox (badness 1365) in paragraph at lines 171--172
-\OT1/ptm/m/n/9 Dector com-bines an ap-prox-i-mate sta-tis-ti-cal re-gres-sion m
-odel,
+Underfull \hbox (badness 1072) in paragraph at lines 172--173
+\OT1/ptm/m/n/9 ADetector is an anomaly vi-sual ex-plo-ration tool. Since the
  []
 
 <workflow.png, id=10, 595.22375pt x 149.55875pt>
 File: workflow.png Graphic file (type png)
  <use workflow.png>
-Overfull \hbox (6.94388pt too wide) in paragraph at lines 178--179
+Overfull \hbox (6.94388pt too wide) in paragraph at lines 179--180
  [][] 
  []
 
@@ -263,7 +262,7 @@ Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no “ in font ptmr7t!
  [3 <./workflow.png (PNG copy)>]
-Underfull \hbox (badness 1028) in paragraph at lines 227--228
+Underfull \hbox (badness 1028) in paragraph at lines 228--229
 \OT1/ptm/m/n/9 As men-tioned be-fore, com-par-i-son plays an im-por-tant role i
 n
  []
@@ -272,31 +271,47 @@ n
 File: fft.png Graphic file (type png)
  <use fft.png> [4 <./fft.png (PNG copy)>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 269.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 270.
+ <chart_1.png, id=21, 451.6875pt x 321.2pt>
+File: chart_1.png Graphic file (type png)
+ <use chart_1.png>
+<chart_2.png, id=22, 451.6875pt x 321.2pt>
+File: chart_2.png Graphic file (type png)
+ <use chart_2.png>
+Overfull \hbox (5.31004pt too wide) in paragraph at lines 289--290
+[][] 
+ []
+
+<chart_3.png, id=23, 451.6875pt x 321.2pt>
+File: chart_3.png Graphic file (type png)
+ <use chart_3.png>
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
- (./template.bbl) [5] (./template.aux) ) 
+ (./template.bbl
+[5 <./chart_1.png (PNG copy)> <./chart_2.png (PNG copy)> <./chart_3.png (PNG co
+py)>]) [6
+
+] (./template.aux) ) 
 Here is how much of TeX's memory you used:
- 1648 strings out of 495061
- 23011 string characters out of 1182621
- 83287 words of memory out of 3000000
- 4773 multiletter control sequences out of 15000+50000
+ 1663 strings out of 495061
+ 23233 string characters out of 1182621
+ 83457 words of memory out of 3000000
+ 4785 multiletter control sequences out of 15000+50000
  56783 words of font info for 114 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  41i,15n,23p,1107b,336s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvi
-ps/base/8r.enc}</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.p
-fb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sh
-are/texmf-texlive/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-texlive
-/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/
-symbol/usyr.pfb></usr/share/texmf-texlive/fonts/type1/urw/symbol/usyr.pfb></usr
-/share/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive
-/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/tim
-es/utmri8a.pfb>
-Output written on template.pdf (5 pages, 296673 bytes).
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr
+/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf
+-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fo
+nts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/hel
+vetic/uhvr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/symbol/usyr.pfb></us
+r/share/texmf-texlive/fonts/type1/urw/symbol/usyr.pfb></usr/share/texmf-texlive
+/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/tim
+es/utmr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
+Output written on template.pdf (6 pages, 323496 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
+ 63 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
