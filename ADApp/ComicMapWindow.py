@@ -1,24 +1,29 @@
 import  wx
+import  wx.lib.scrolledpanel as scrolled
 from ComicMap import *
 
-class ComicMapWindow(wx.ScrolledWindow):
+class ComicMapWindow(scrolled.ScrolledPanel):
     def __init__(self, parent, id = -1, size = wx.DefaultSize):
-        wx.ScrolledWindow.__init__(self, parent, id, (0, 0), size=size, style=wx.SUNKEN_BORDER)
+        #wx.ScrolledWindow.__init__(self, parent, id, (0, 0), size=size, style=wx.SUNKEN_BORDER)
+        scrolled.ScrolledPanel.__init__(self, parent, id, (0, 0), size=size)
 
-        self.maxWidth  = 1000
-        self.maxHeight = 1000
-        self.x = self.y = 0
+        #self.maxWidth  = 1000
+        #self.maxHeight = 1000
+        #self.x = self.y = 0
 
         self.SetBackgroundColour("WHITE")
 
-        self.SetVirtualSize((self.maxWidth, self.maxHeight))
-        self.SetScrollRate(20,20)
+        #self.SetVirtualSize((self.maxWidth, self.maxHeight))
+        #self.SetScrollRate(20,20)
 
-        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftButtonEvent)
+        #self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftButtonEvent)
         
         #layout
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
+        self.sizer.Fit(self)
+        self.SetAutoLayout(1)
+        self.SetupScrolling()
         
     def AddComicMap(self, id, data):
         self.sizer.Clear(True)
@@ -26,7 +31,7 @@ class ComicMapWindow(wx.ScrolledWindow):
         self.sizer.AddSpacer(10)
         self.sizer.Add(self.comicMap, 0, wx.LEFT, 10)
         self.Layout()
-        self.comicMapAddedBefore = True
+        self.FitInside()
 
 
     def getWidth(self):

@@ -12,6 +12,7 @@ class AnalyzePanel(wx.Panel):
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
         self.comicMapWindow = ComicMapWindow(self, 900)
+        self.comicMapWindow.SetScrollbars(1, 1, 1, 1)
         self.sizer.Add(self.comicMapWindow, 1, wx.EXPAND)
         self.timeline = TimelineWindow(self, 901)
         self.sizer.Add(self.timeline, 0, wx.ALIGN_BOTTOM | wx.ALIGN_LEFT |wx.EXPAND)
@@ -28,7 +29,7 @@ class AnalyzePanel(wx.Panel):
         
     def OnZoom(self, zoom):
         #self.sizer.Clear()
-        self.comicMap.OnZoom(zoom)
+        self.comicMapWindow.OnZoom(zoom)
         #self.sizer.AddSpacer(10)
         #self.sizer.Add(self.comicMap, 0, wx.LEFT, 10)
         #self.sizer.AddSpacer(10)

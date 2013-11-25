@@ -15,9 +15,9 @@ class TimelineWindow(wx.Window):
         #draw in the middle
         self.midY = 30
         self.mask = False
-        self.eColor = wx.RED
-        self.gColor = wx.Colour(47,79,47)
-        self.mColor = wx.BLUE
+        self.eColor = wx.Colour(255, 50, 50)
+        self.gColor = wx.Colour(50,255,50)
+        self.mColor = wx.Colour(50, 50, 255)
         self.maskColor = wx.Colour(255,255,0, 92 )
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
@@ -60,12 +60,41 @@ class TimelineWindow(wx.Window):
         if self.data is None:
             return 
         else:
+            self.DrawLabel(dc)
             self.DrawAxis(dc)
             #draw data
             self.DrawData(self.data, dc)
             #draw mask
             if self.mask == True:
                 self.DrawMask(dc)
+                
+    def DrawLabel(self, dc):
+        self.labelFont = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        dc.SetFont(self.labelFont)
+        dc.SetPen(wx.BLACK_PEN)
+        labelText = "Extreme:"
+        tw, th = dc.GetTextExtent(labelText)
+        pos1 = (3, 3)
+        dc.DrawText(labelText, pos1[0], pos1[1])
+        dc.SetPen(wx.Pen(self.eColor))
+        dc.SetBrush( wx.Brush(self.eColor) )
+        dc.DrawCircle(pos1[0]+tw+5, 8, 3)
+        dc.SetPen(wx.BLACK_PEN)
+        labelText = "Glitch:"
+        tw, th = dc.GetTextExtent(labelText)
+        pos2 = (pos1[0]+50, 3)
+        dc.DrawText(labelText, pos2[0], pos2[1])
+        dc.SetPen(wx.Pen(self.gColor))
+        dc.SetBrush( wx.Brush(self.gColor) )
+        dc.DrawCircle(pos2[0]+tw+5, 8, 3)
+        dc.SetPen(wx.BLACK_PEN)
+        labelText = "Miss:"
+        tw, th = dc.GetTextExtent(labelText)
+        pos3 = (pos2[0]+50, 3)
+        dc.DrawText(labelText, pos3[0], pos3[1])
+        dc.SetPen(wx.Pen(self.mColor))
+        dc.SetBrush( wx.Brush(self.mColor) )
+        dc.DrawCircle(pos3[0]+tw+5, 8, 3)
             
     def DrawAxis(self, dc):
         #draw x axis

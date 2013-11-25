@@ -17,13 +17,16 @@ class PlotWindow(wx.Window):
         self.radius = 3
         self.selectionStart = 0
         self.selectionEnd = 0
+        self.scaleX = 1
+        self.offsetX = 0
         self.projectedData = []
         self.selected = False
         self.clicked = False
         #drop target
         self.dropTarget = DropTarget(self)
         self.SetDropTarget(self.dropTarget)
-        self.SetSize((200,200))
+        self.size = 250
+        self.SetSize((self.size,self.size))
         self.SetBackgroundColour(wx.WHITE)
     
         self.data = data
@@ -115,6 +118,7 @@ class PlotWindow(wx.Window):
         #init paint 
         pdc = wx.PaintDC(self)
         dc = wx.GCDC(pdc)
+        #dc.SetUserScale(self.scaleX, self.scaleY)
         #draw data
         for dataset in self.dataToDraw:
             self.DrawData(dataset, dc)
@@ -152,18 +156,6 @@ class PlotWindow(wx.Window):
         dc.DrawLine(pos2[0], pos2[1],pos3[0], pos3[1])
         dc.DrawLine(pos3[0], pos3[1],pos4[0], pos4[1])
         dc.DrawLine(pos4[0], pos4[1],pos1[0], pos1[1])
-        
-            
-    def DrawAxis(self, dc):
-        #find origin
-        p = self.Projection((0, 0))
-        #draw
-        dc.SetPen(wx.BLACK_PEN)
-        if p[1] >self.zeroY:
-            dc.DrawLine(self.zeroX,p[1],self.zeroX+self.rect.width,p[1])
-        #no y Axis, cuz it is not exactly zero
-        #if p[0] >self.zeroX:
-            #dc.DrawLine(p[0],self.zeroY,p[0],self.zeroY+self.rect.height)
             
     def DrawData(self, data, dc):
         #mark anomalies
@@ -200,6 +192,11 @@ class PlotWindow(wx.Window):
             dataset = self.dataToDraw[set]
             for i in range(len(dataset['points'])):
                 point = dataset['points'][i]
+                print "-----------"
+                print self.Projection(point)[0]
+                print self.selectionStart
+                print self.selectionEnd
+                print "-----------"
                 if self.Projection(point)[0]>= self.selectionStart and self.Projection(point)[0]>= self.selectionEnd:
                     selected.append(point)
             #resort
