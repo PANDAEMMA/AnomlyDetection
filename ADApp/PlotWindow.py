@@ -25,7 +25,7 @@ class PlotWindow(wx.Window):
         #drop target
         self.dropTarget = DropTarget(self)
         self.SetDropTarget(self.dropTarget)
-        self.size = 250
+        self.size = 200
         self.SetSize((self.size,self.size))
         self.SetBackgroundColour(wx.WHITE)
     
@@ -53,6 +53,8 @@ class PlotWindow(wx.Window):
         self.findMinHW(self.data)
     
     def ReDraw(self, dataID, data):
+        print "in redraw"
+        print dataID
         self.dataID = dataID
         #define maxH and maxW for Axis
         self.data = data
@@ -142,17 +144,21 @@ class PlotWindow(wx.Window):
                 labelText = labels[i]
                 tw, th = dc.GetTextExtent(labelText)
                 dc.DrawText(labelText, pos[0]+3+(tw*j), pos[1]+i*(th+3))
-        cross1 = (self.rect.width-30, self.zeroY)
-        cross2 = (self.rect.width-10, self.zeroY)
-        cross3 = (self.rect.width-10, self.zeroY+20)
-        cross4 = (self.rect.width-30, self.zeroY+20)
-        dc.DrawLine(cross1[0], cross1[1], cross2[0], cross2[1])
-        dc.DrawLine(cross2[0], cross2[1], cross3[0], cross3[1])
-        dc.DrawLine(cross3[0], cross3[1], cross4[0], cross4[1])
-        dc.DrawLine(cross4[0], cross4[1], cross1[0], cross1[1])
+        #cross
+        print len(self.dataID)
+        print self.dataID
+        if (len(self.dataID))> 1:
+            cross1 = (self.rect.width-25, self.zeroY)
+            cross2 = (self.rect.width-5, self.zeroY)
+            cross3 = (self.rect.width-5, self.zeroY+20)
+            cross4 = (self.rect.width-25, self.zeroY+20)
+            dc.DrawLine(cross1[0], cross1[1], cross2[0], cross2[1])
+            dc.DrawLine(cross2[0], cross2[1], cross3[0], cross3[1])
+            dc.DrawLine(cross3[0], cross3[1], cross4[0], cross4[1])
+            dc.DrawLine(cross4[0], cross4[1], cross1[0], cross1[1])
         
-        dc.DrawLine(cross1[0], cross1[1], cross3[0], cross3[1])
-        dc.DrawLine(cross2[0], cross2[1], cross4[0], cross4[1])
+            dc.DrawLine(cross1[0], cross1[1], cross3[0], cross3[1])
+            dc.DrawLine(cross2[0], cross2[1], cross4[0], cross4[1])
                 
     def DrawOutline(self, dc):
         penWidth = 1

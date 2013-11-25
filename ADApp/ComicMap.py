@@ -72,21 +72,24 @@ class ComicMap(wx.Panel):
         self.plots[target].ReDraw(sourceDataID, sourceData)
         
     def Merge(self, source, target):
-        sourceDataID = self.plots[source].dataID
-        targetDataID = self.plots[target].dataID
-        #i = 0;
-        #while (i<len(self.data[sourceDataID])):
-            #self.data[targetDataID].append(self.data[sourceDataID][i])
-            #i=i+1
-        targetDataID = targetDataID+sourceDataID
-        sourceData = []
-        targetData = []
-        for s in range(len(sourceDataID)):
-            sourceData = sourceData + self.data[sourceDataID[s]]
-        for t in range(len(targetDataID)):
-            targetData = targetData + self.data[targetDataID[t]]
-        self.plots[source].ReDraw(sourceDataID, sourceData)
-        self.plots[target].ReDraw(targetDataID, targetData)
+        if source == target:
+            return
+        else:
+            sourceDataID = self.plots[source].dataID
+            targetDataID = self.plots[target].dataID
+            #i = 0;
+            #while (i<len(self.data[sourceDataID])):
+                #self.data[targetDataID].append(self.data[sourceDataID][i])
+                #i=i+1
+            targetDataID = targetDataID+sourceDataID
+            sourceData = []
+            targetData = []
+            for s in range(len(sourceDataID)):
+                sourceData = sourceData + self.data[sourceDataID[s]]
+            for t in range(len(targetDataID)):
+                targetData = targetData + self.data[targetDataID[t]]
+            self.plots[source].ReDraw(sourceDataID, sourceData)
+            self.plots[target].ReDraw(targetDataID, targetData)
         
     def OnZoom(self, zoom):
         if zoom == "in":
