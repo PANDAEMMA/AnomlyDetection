@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.2)  25 NOV 2013 00:16
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.2)  25 NOV 2013 00:59
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -234,9 +234,6 @@ LaTeX Font Info:    Font shape `OT1/phv/bx/sc' in size <9> not available
 (Font)              Font shape `OT1/phv/b/sc' tried instead on input line 115.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 115.
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no “ in font ptmr7t!
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
@@ -261,43 +258,68 @@ Overfull \hbox (6.94388pt too wide) in paragraph at lines 179--180
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no “ in font ptmr7t!
- [3 <./workflow.png (PNG copy)>]
-Underfull \hbox (badness 1028) in paragraph at lines 228--229
+ <comicMap9Cell.jpg, id=14, 615.29875pt x 612.2875pt>
+File: comicMap9Cell.jpg Graphic file (type jpg)
+
+<use comicMap9Cell.jpg>
+File: comicMap9Cell.jpg Graphic file (type jpg)
+ <use comicMap9Cell.jpg>
+<onecell.jpg, id=15, 207.77625pt x 207.77625pt>
+File: onecell.jpg Graphic file (type jpg)
+ <use onecell.jpg> [3 <./workflow.png (PNG copy)> <./comicMap9Cell.jpg (PNG cop
+y)>]
+File: onecell.jpg Graphic file (type jpg)
+ <use onecell.jpg>
+Underfull \hbox (badness 1028) in paragraph at lines 253--254
 \OT1/ptm/m/n/9 As men-tioned be-fore, com-par-i-son plays an im-por-tant role i
 n
  []
 
-<fft.png, id=17, 1154.3125pt x 487.8225pt>
+<swap.jpg, id=19, 575.14874pt x 258.9675pt>
+File: swap.jpg Graphic file (type jpg)
+ <use swap.jpg> [4 <./onecell.jpg (PNG copy)> <./swap.jpg (PNG copy)>] <merge.j
+pg, id=23, 469.755pt x 350.30875pt>
+File: merge.jpg Graphic file (type jpg)
+
+<use merge.jpg> <merge2.jpg, id=25, 386.44376pt x 175.65625pt>
+File: merge2.jpg Graphic file (type jpg)
+
+<use merge2.jpg> <zoom.jpg, id=26, 170.6375pt x 172.645pt>
+File: zoom.jpg Graphic file (type jpg)
+ <use zoom.jpg>
+<fft.png, id=27, 1154.3125pt x 487.8225pt>
 File: fft.png Graphic file (type png)
- <use fft.png> [4 <./fft.png (PNG copy)>]
+ <use fft.png> [5 <./merge.jpg> <./merge2.jpg> <./zoom.jpg (PNG copy)> <./fft.p
+ng (PNG copy)>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 270.
- <chart_1.png, id=21, 451.6875pt x 321.2pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 319.
+
+<chart_1.png, id=33, 451.6875pt x 321.2pt>
 File: chart_1.png Graphic file (type png)
  <use chart_1.png>
-<chart_2.png, id=22, 451.6875pt x 321.2pt>
+<chart_2.png, id=34, 451.6875pt x 321.2pt>
 File: chart_2.png Graphic file (type png)
  <use chart_2.png>
-Overfull \hbox (5.31004pt too wide) in paragraph at lines 289--290
+Overfull \hbox (5.31004pt too wide) in paragraph at lines 338--339
 [][] 
  []
 
-<chart_3.png, id=23, 451.6875pt x 321.2pt>
+<chart_3.png, id=35, 451.6875pt x 321.2pt>
 File: chart_3.png Graphic file (type png)
  <use chart_3.png>
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
  (./template.bbl
-[5 <./chart_1.png (PNG copy)> <./chart_2.png (PNG copy)> <./chart_3.png (PNG co
-py)>]) [6
+[6 <./chart_1.png (PNG copy)> <./chart_2.png (PNG copy)> <./chart_3.png (PNG co
+py)>]) [7
 
 ] (./template.aux) ) 
 Here is how much of TeX's memory you used:
- 1663 strings out of 495061
- 23233 string characters out of 1182621
+ 1693 strings out of 495061
+ 23662 string characters out of 1182621
  83457 words of memory out of 3000000
- 4785 multiletter control sequences out of 15000+50000
+ 4809 multiletter control sequences out of 15000+50000
  56783 words of font info for 114 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  41i,15n,23p,1107b,336s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -309,9 +331,9 @@ vetic/uhvr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/symbol/usyr.pfb></us
 r/share/texmf-texlive/fonts/type1/urw/symbol/usyr.pfb></usr/share/texmf-texlive
 /fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/tim
 es/utmr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
-Output written on template.pdf (6 pages, 323496 bytes).
+Output written on template.pdf (7 pages, 559628 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
+ 77 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
