@@ -199,11 +199,11 @@ class ADFrame(wx.Frame):
         # the data part is the information you need to give me
         data = dict()
         #1st and last should be the start and end time, if no lable, can be like [(0, '')]
-        data['labels'] = [(0,'03/02/10'), (10, '05/01/10'), (20, '09/01/10')]
+        data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
         #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
-        data['anomolies'] = [(0,1,1), (1,8,8), (0,15,15), (0,18,19)]
+        data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
         #same as timeframe in comic map, for hightlight, (start date, end date)
-        data['dates'] = [(2, 4), (6, 9), (12, 15), (18, 19)]
+        data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
         return data
         
     #analyze functions
