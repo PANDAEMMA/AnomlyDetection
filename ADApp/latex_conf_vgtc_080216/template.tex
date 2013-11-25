@@ -1,6 +1,7 @@
 % $Id: template.tex 11 2007-04-03 22:25:53Z jpeltier $
 
 \documentclass{vgtc}                          % final (conference style)
+\let\ifpdf\relax
 %\documentclass[review]{vgtc}                 % review
 %\documentclass[widereview]{vgtc}             % wide-spaced review
 %\documentclass[preprint]{vgtc}               % preprint
@@ -49,7 +50,7 @@
 
 %% Paper title.
 
-\title{Comic Map: An interactive visual analytic debugger for time-series climate anomaly data detection with human}
+\title{ADetector: An interactive visual analytic debugger for time-series climate anomaly data detection with human}
 
 %% This is how authors are specified in the conference style
 
@@ -80,7 +81,8 @@
 %}
 
 %% Abstract section.
-\abstract{Data quality play an important on the data analysis results. However, finding and fixing anomaly data is time-consuming in time-series big data. There should be a systemmatic approach to narrow down the data checking regions. In addition to the expected abnormal data, such as missing data, and extreme data, the time-series data also includes some unpredictable and latent erroneous data. The patterns of unpredictable data are difficult to predict and recognize. ADApps combines the nonlinear regression model, statistical data analysis, and visual analytics methodologies to identify abnormal time-series data. ADApps exploits visual analytics interface and iterative anomaly detection pipeline to pick out possible latent abnormal data.
+\abstract{Data quality play an important on the data analysis results. However, finding and fixing anomaly data is time-consuming in big data. There should be a systematic approach to narrow down the data checking regions. In addition to the expected abnormal data, such as missing data, and extreme data, the time-series data also includes some unpredictable and latent erroneous data. The patterns of unpredictable data are difficult to predict and recognize. We present ADetector, a visual analysis tool for anomalies identification in complex and large time-series 
+datasets . This tool applies the nonlinear regression model to fast locate potential anomalies in big tim-series data, introduces a novel data representation of comic map grid for anomalies analysis to identify anomalies. ADetector exploits visual analytics interface and iterative anomaly detection pipeline to pick out possible latent abnormal data.
 } % end of abstract
 
 %% ACM Computing Classification System (CCS). 
