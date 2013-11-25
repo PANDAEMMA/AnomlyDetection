@@ -81,7 +81,7 @@
 %}
 
 %% Abstract section.
-\abstract{Data quality play an important role on the data analysis results. However, finding and fixing anomaly data is time-consuming in big data. There should be a systematic approach to narrow down the data checking regions. In addition to the expected abnormal data, such as missing data, and extreme data, the time-series data also includes some unpredictable and latent erroneous data. The patterns of unpredictable data are difficult to predict and recognize. We present ADetector, a visual analysis tool for anomalies identification in complex and large time-series datasets. This tool applies the nonlinear regression model to fast locate potential anomalies in big tim-series data, introduces a novel data representation of comic map grid for anomalies analysis to identify anomalies. ADetector exploits visual analytics interface and iterative anomaly detection pipeline to pick out possible latent abnormal data.
+\abstract{Data quality play an important role on the data analysis results. However, finding and fixing anomaly data is time-consuming in big data. There should be a systematic approach to narrow down the data checking regions. In addition to the expected abnormal data, such as missing data, and extreme data, the time-series data also includes some unpredictable and latent erroneous data. The patterns of unpredictable data are difficult to predict and recognize. We present ADetector, a visual analysis tool for anomalies identification in complex and large time-series datasets. This tool applies the nonlinear regression model to fast locate potential anomalies in big tim-series data, introduces a novel data representation of comic map grid for anomalies analysis to identify anomalies. ADetector exploits visual analytics interface and iterative anomaly detection pipeline to pick out possible latent abnormal data. From the time-series weather data anomaly analysis, the correlation of approximate regression model is highly positive, and ADetector is able to complete anomaly analysis tasks over 10 years time-series data in less than one minute.   
 } % end of abstract
 
 %% ACM Computing Classification System (CCS). 
@@ -134,7 +134,7 @@ In sum, this paper includes the following contribution.
  
 2. Visual analytics pipeline for anomaly detection: Showing the possible abnormal data in line graph comic map cells, and exploits various interactions such as zoom in/out, swapping, and merging to allow human-being recognize abnormal data patterns.
 
-3. Visual anomaly exploration, and timeline navigation: Time is a nice clue to understand the time-seris data. Hence, we support the a visual timeline navigation to explore the abnormal data.    
+3. Visual anomaly exploration, and timeline showcase: Time is a nice clue to understand the time-seris data. Hence, we support the a visual timeline navigation to explore the abnormal data.    
 
 \section{Background}
 
@@ -325,7 +325,7 @@ The advantages of matching pursuit regression model is it uses the number of fre
 
 We have conducted the eveluation of A-Dector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
 
-\subsection{The performance validataion}
+\subsection{The correlation validataion}
 
 	In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
 
@@ -340,6 +340,7 @@ Mean square error (MSE) is often used to account for the difference between two 
 \end{figure}
 
 	At first, we can find the correlation in each experiemnt result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regresion algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
+	
 \subsection{The performance validation}
 In this validation, we want to see the performance of the anomaly detection in different size of data sets. We can see A-Detector can complete the anomaly data less than one minute. 
 
