@@ -133,21 +133,17 @@ In sum, this paper includes the following contribution.
  
 2. Visual analytics pipeline for anomaly detection: Showing the possible abnormal data in line graph comic map cells, and exploits various interactions such as zoom in/out, swapping, and merging to allow human-being recognize abnormal data patterns.
 
-<<<<<<< HEAD
-3. Visual anomaly exploration, and timeline overview: Time is a nice clue to understand the time-series data. Hence, we support the a visual timeline highlight to explore the abnormal data.    
-=======
-3. Visual anomaly exploration, and timeline showcase: Time is a nice clue to understand the time-series data. Hence, we support the a visual timeline window to display the time relativity of the abnormal data.    
->>>>>>> 241189515346f7c71effe0aaf39f36fc921b9c16
+3. Visual anomaly exploration, and timeline showcase: Time is a nice clue to understand the time-series data. Hence, we support the a visual timeline window to display the time relativity of the abnormal data.
 
 \section{Background}
 
 \subsection{Anomaly data classification}
 
-The category of time-series anomaly is opt to the objective, and monitoring procedure of data collection. The time-series data we are focus on is weather data sets, which are collected by MesoWest weather data service settled by University of Utah. MesoWest weather data service collects numerous weather data such as temperature, humidity, and wind pressure etc.. at thousands of locations around the United States, and provides weather history records over 10 years at each measurement locations. According to the observation of the weather data from MesoWest service, we sum up time-series anomaly in weather data as follows.
+The category of time-series anomaly is opt to the objective, and monitoring procedure of data collection. The time-series data we are focusing on is weather data sets, which are collected by MesoWest weather data service settled by University of Utah. MesoWest weather data service collects numerous weather data such as temperature, humidity, and wind pressure etc. at thousands of locations around the United States, and provides weather history records over 10 years at each measurement locations. According to the observation of the weather data from MesoWest service, we sum up time-series anomaly in weather data as follows.
 
-{\bf a. Missing data} results from unexpected status of climate sensors, and causes the value of collecting data becomes null. The problem of the missing data is to interrupt the numerical calculation in data analysis, and to induce the wrong analysis results. Thus, the missing data is often removed before the start of data analysis via data clean tool. However, the missing data occurrence frequency, and time record can be the inference of abnormal data, and evaluation of the status of measure instruments. 
+{\bf a. Missing data} results from unexpected status of climate sensors and causes the value of the collecting data to become null. The problem of the missing data is to interrupt the numerical calculation in data analysis and to induce the wrong analysis results. Thus, the missing data is often removed before the start of data analysis via a data clean tool. However, the missing data occurrence frequency and time record can be the inference of abnormal data and evaluation of the status of measure instruments. 
 
-{\bf b. Extreme data} is the outlier \cite{rousseeuw2005robust}in a set of time-series data. The extreme data can be undermined by the robust data analysis. Although the outlier is often looked as an anomaly in signal processing or image processing, since many environmental factors influence the change of the weather data patterns, the extreme data is not always an error in climate data sets. The spurious extreme data impacts on the accuracy of results of analysis. However, to visualize the extreme data is able to help for finding additional characteristics in the weather data sets. In addition, time-series visual comparison is also helpful for anomaly judgement.
+{\bf b. Extreme data} are the outliers \cite{rousseeuw2005robust}in a set of time-series data. The extreme data can be undermined by the robust data analysis. Although the outliers are often looked as an anomaly in signal processing or image processing, since many environmental factors influence the change of the weather data patterns, the extreme data are not always errors in climate data sets. The spurious extreme data impacts on the accuracy of results of analysis. However, to visualize the extreme data is able to help for finding additional characteristics in the weather data sets. In addition, time-series visual comparison is also helpful for anomaly judgement.
  
 {\bf c. Latent abnormal data} indicates some unpredictable data and even the regression model is hard to discern this type of error. For instance, the small glitch or a set of unchanged measurement occurred in a continuous time interval. The latent abnormal data influence the precision of the measurement, and cause the incorrect trend estimation. The visualization is an efficient approach to understand the fluctuation of time-series data, and figure out more characteristic about latent abnormal data.
 
@@ -172,11 +168,11 @@ Considerable visual analytics research which is related to the time-series visua
 
 \section{ADetector}
 
-ADetector is an anomaly visual exploration tool. Since the overwhelming anomaly detection costs in the massive data sets, ADetector combines an approximate statistical regression model, anomaly diagnostics, and visual analytics to narrow down the size of anomaly analysis, take insight into the complex structure of errors, and at last unveil abnormal data. Thus, ADetector is consist of data clean, reduction and comparison widgets to tackle on the time-series weather anomaly detection, and convey possible anomaly data to visual analysts to figure out the patterns of anomaly collaboratively.
+ADetector is an anomaly visual exploration tool. Since the overwhelming anomaly detection costs in the massive data sets, ADetector combines an approximate statistical regression model, anomaly diagnostics, and visual analytics to narrow down the size of anomaly analysis, take insight into the complex structure of errors, aoverviewnd at last unveil abnormal data. Thus, ADetector is consist of data clean, reduction and comparison widgets to tackle on the time-series weather anomaly detection, and convey possible anomaly data to visual analysts to figure out the patterns of anomaly collaboratively.
 
 \subsection{Anomaly diagnosis workflow}
 
-In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps -- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series overview, and comparison.
+In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps -- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
  \begin{figure}[htb]
 	\centering
   \includegraphics[width=0.49\textwidth]{workflow.png}
@@ -318,11 +314,12 @@ The advantages of matching pursuit regression model is it uses the number of fre
 	Only matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler, there is supposed to be a method to figure out how to use this ruler to measure.
 	
 		(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. ADetector use residual obtained from the matching procedure, and determine possible anomaly.
+	
+
 			
 	\begin{equation}
 	 res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \overline(x)^2))}
 	\end{equation}		 
-	
 		(b) Latent anomaly data: Latent anomaly data is easy to unaware of because the characteristic of this anomaly is not revalent. In order to look for this anomaly, we calculate heteroskedasticity, and use cook's distance to understand the influential relation between real data and model, and visualize them in comic map cells. 
 
 \section{Results}
@@ -360,12 +357,12 @@ In this validation, we want to see the performance of the anomaly detection in d
 
 \section{Future works}
 
-In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don’t have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the value of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
+In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don’t have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the value of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.                                                                                                 overview
 
       Moreover, for the data representation in the current version of our tool, we only support data aggregation in the overview window. For example, the overview of year shows first, if user clicks on a year data, detailed monthly data shows up. But in analyze workspace, an overview map only shows up for monthly view.  We may continue investigate a suitable aggregation representation in the analyze workspace map representation as well, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
 
-In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data play a critical role in scientific and engineering systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combine signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, ADetector also supports interactive actions such as timeline overview, swap, multi-variable comparison, and collaboration. ADetector enable the workflow of time-series anomaly detection become efficient and interactive.
+In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data play a critical role in scientific and engineering systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combine signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, ADetector also supports interactive actions such as timeline navigation, swap, multi-variable comparison, and collaboration. ADetector enable the workflow of time-series anomaly detection become efficient and interactive.
 
 
 %% if specified like this the section will be ommitted in review mode
