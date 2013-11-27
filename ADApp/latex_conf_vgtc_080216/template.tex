@@ -173,21 +173,22 @@ ADetector is an anomaly visual exploration tool. Due to the overwhelming anomaly
 
 \subsection{Anomaly diagnosis workflow}
 
-In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps --- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
+In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly as shown in Figure ~\ref{fig:workflow}. Thus ADetector is composed of five steps --- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.47\textwidth]{workflow.png}
 	\caption{The anomaly detection workflow of ADetector tool}
+	\label{fig:workflow}
 \end{figure}
 
 \begin{itemize}
 	\item Data Table: This step includes a series data manipulation options such as the selection of input and the type of weather data. 
-	\item Statistical Analysis Diagram: This step provides all anomaly statistical information in a histogram for each year for analysis. Year information can be expanded into monthly information or collapse back.
+	\item Statistical Analysis Diagram: This step provides all anomaly statistical information in a histogram (abnormal region reduction tool) for each year for analysis. Year information can be expanded into monthly information or collapse back.
 	\item Region Selection: Analyst can choose a certain time interval (e.g. one year) to delve in to the micro-level for anomalies analysis by double clicking on region (year or month) on the statistical analysis histogram.
 	\item View Recommendation: At this step, ADetector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, extreme data statistics are shown in timeline widget as well.
 	\item Interactive Analysis: In this step, users can conduct interactive analysis on these anomalies like comparison.
-	\item Data Clean: After interactive analysis, users can choose to use the data clean tool provided by the tool to do clean out anomalies.(optional)
+	\item Data Clean: After interactive analysis, users can choose to use the data clean tool provided by ADetector to do clean out anomalies.(optional)
 \end{itemize}
 Altogether, ADetector workflow is composed of selection, reduction, and comparison steps.
 
@@ -198,7 +199,14 @@ Data clean tool aims to find out all missing data in the data sets and show thei
 
 \subsubsection{Abnormal region reduction tool}
 
-The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histogram, and show the proportion of multiple statistical analysis results in each year. ADetector give three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data, and fitting curve model to help users determine which year is supposed to pay attention to. Afterward, users can delve into one specific year, and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis.
+The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histogram, and show the proportion of multiple statistical analysis results in each year. ADetector give three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data, and fitting curve model to help users determine which year is supposed to pay attention to. Afterward, users can delve into one specific year, and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis (Figure ~\ref{fig:region}).
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.47\textwidth]{region.png}
+	\caption{Abnormal region reduction tool: left one shows only yearly distribution, right one includes expanded monthly distribution}
+	\label{fig:region}
+\end{figure}
 
 \subsubsection{Data comparison tool}
 
@@ -213,91 +221,99 @@ The data comparison tool consists of comic map, which includes multiple line gra
 
 After getting the potential anomalies from the computer, users can step in to analyze each potential anomaly in order to identify if it is actually an anomaly or to find out the reason for the anomaly. In time-series climate data, for example, some abnormal temperature may imply some useful climate phenomena in a specific time frame. In order to find out the pattern or trend behind these anomalies, it is useful to provide the users some method to compare the anomalies. Also, an overview of the relationship of these anomalies with the whole datasets will help the users establish an overall understanding as well. Here we introduce a novel representation of anomalies --– comic map. 
 
+Comic map is composed of several grid cells, each showing detailed information of each anomaly (Figure ~\ref{fig:comicMap9Cell}). With this layout, user can swap and merge cells freely to compare the anomalies with simple drag-and-drop functionality. Moreover, An overview timeline representation of all anomalies is also established that corresponds with the comic map grid to give the user more knowledge of the anomaly based on the overall timeline (Figure ~\ref{fig:timeline})
+
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{comicMap9Cell.jpg}
 	\caption{Comic Map}
+	\label{fig:comicMap9Cell}
 \end{figure}
-
-Comic map is composed of several grid cells. Each shows detailed information of each anomaly (Figure 2). With this layout, user can swap and merge cells freely to compare the anomalies with simple drag-and-drop functionality. Moreover, An overview timeline representation of all anomalies is also established that corresponds with the comic map grid to give the user more knowledge of the anomaly based on the overall timeline (Figure 3)
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{timeline.png}
 	\caption{Timeline Overview}
+	\label{fig:timeline}
 \end{figure}
 
 \subsection{Comic map cells}
 
-The basic component of the comic map is every comic map cell. For time series data, a timeline-based representation is more intuitive for user to receive. Also, in order to better understand the anomaly, the data surrounding this anomaly is needed for the user to get a picture of the trend of this anomaly, like for extreme anomaly, which appears much higher than other data around. So in each cell, anomaly data is shown with some more data before and after it in a time sequence visualized as line graphs. In addition, the anomaly data is marked with a red circle as shown in Figure 4. 
+The basic component of the comic map is every comic map cell. For time series data, a timeline-based representation is more intuitive for user to receive. Also, in order to better understand the anomaly, the data surrounding this anomaly is needed for the user to get a picture of the trend of this anomaly, like for extreme anomaly, which appears much higher than other data around. So in each cell, anomaly data is shown with some more data before and after it in a time sequence visualized as line graphs. In addition, the anomaly data is marked with a red circle as shown in Figure ~\ref{fig:onecell}.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.20\textwidth]{onecell.jpg}
 	\caption{Comic Map Cell}
+	\label{fig:onecell}
 \end{figure}
 
 Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start and end date of the data in this grid cell, etc. The axis is not shown with the timestamp labels due to the space limit of the grid cell. Then, the start and end dates are given to provide the user the information about the time. All these information are included to help analyst get a better understanding of the dataset in the cell.
 
 \subsection{Layout}
-Cells of comic map are laid out as comic book grid (Figure 2). In this way, each cell has three (corner cell), five (edge cell) or eight neighbors around it. This kind of layout is more helpful for comparison. Since usually users prefer to set objects side by side to compare it. In our layout, each cell can be easily compared with their neighbors and the number of neighbors is bigger than the traditional horizontal or vertical layout. This is efficient since analyst can do more comparison in comic map layout with less cells moving around.
+Cells of comic map are laid out as comic book grid (Figure ~\ref{fig:comicMap9Cell}). In this way, each cell has three (corner cell), five (edge cell) or eight neighbors around it. This kind of layout is more helpful for comparison. Since usually users prefer to set objects side by side to compare it. In our layout, each cell can be easily compared with their neighbors and the number of neighbors is bigger than the traditional horizontal or vertical layout. This is efficient since analyst can do more comparison in comic map layout with less cells moving around.
 
-The comic map tries to maintain a layout more like a square, which is not only efficient of using the visual space, but also guarantees the clustering of cells for comparison mentioned before. For example, if there are 4 anomalies in total, a 2x2 comic map will be shown, and if the anomalies number is 9, the comic map is a 3x3 grid. More specific, comic map will be chosen as the closest square based on anomalies number. For example, anomalies number between 10 and 16 results in a 4x4 grid.
+The comic map tries to maintain a layout more like a square, which is not only efficient of using the visual space, but also guarantees the clustering of cells for comparison mentioned before. For example, if there are four anomalies in total, a 2x2 comic map will be shown, and if the anomalies number is 9, the comic map is a 3x3 grid. More specific, comic map will be chosen as the closest square based on anomalies number. For example, anomalies number between 10 and 16 results in a 4x4 grid.
 
 Moreover, in order to reduce the work of swap, our backend model sorts all anomalies by putting anomalies with similar pattern besides each other. During analysis process, analyst can also rearrange cells for comparison by simply swapping cells. Our layout is very flexible, which provides the analyst a lot of freedom.
 
 \subsection{Timeline overview}
 
-For each cell, some information related to the specific anomaly can be obtained, but analyst still lacks information about this anomaly related to the whole dataset. So we introduce a timeline overview corresponding to the comic map grid (Figure 3). 
+For each cell, some information related to the specific anomaly can be obtained, but analyst still lacks information about this anomaly related to the whole dataset. So we introduce a timeline overview corresponding to the comic map grid (Figure ~\ref{fig:timeline}). 
 Since the dataset is a time-series climate data, time information should be an understandable choice for an overall representation. In the timeline overview, an axis of timestamp is used as the main visualization. Some timestamps are shown to give analyst an overview of time. On the time axis, anomalies are marked corresponding to their happening time. Specifically, different type of anomalies are marked using different colors. Through this overview visualization, analyst gains information of anomalies based on the whole dataset, like the frequency of anomaly in a specific timeframe, the occurrence of different type of anomalies, etc. 
-The comic map cells are also tightly connected with this timeline overview. When a comic map cell is selected, the corresponding timeframe of data in the cell will be highlighted in the overview. More information can be obtained for analyst to analyze anomaly in the cell (Figure 5). 
+The comic map cells are also tightly connected with this timeline overview. When a comic map cell is selected, the corresponding timeframe of data in the cell will be highlighted in the overview. More information can be obtained for analyst to analyze anomaly in the cell (Figure ~\ref{fig:timeline2}). 
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{timeline2.png}
 	\caption{Timeline overview: select a cell, the corresponding time will be highlighted (light yellow)}
+	\label{fig:timeline2}
 \end{figure}
 
 \subsection{Comparison interaction}
 As mentioned before, comparison plays an important role in anomaly analysis. Our comic map visual representation provides advanced interactions to support comparison, which gives the analyst more freedom of doing comparison and increases the efficiency of analyzing process.
 
 \subsubsection{Swap}
-The first interaction for comic map is swap. Analyst can swap any two cells by simply drag and drop. By using this interaction, analyst can put any cells together to do a comparison.  Also, analyst can rearrange the comic map to put similar anomalies together (Figure 6).  
+The first interaction for comic map is swap. Analyst can swap any two cells by simply drag and drop. By using this interaction, analyst can put any cells together to do a comparison.  Also, analyst can rearrange the comic map to put similar anomalies together (Figure ~\ref{fig:swap}).  
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{swap.jpg}
 	\caption{Comic Map Swap: upper-left cell swapped with lower-right cell, upper-right cell swapped with lower-left cell}
+	\label{fig:swap}
 \end{figure}
 
 \subsubsection{Merge}
 The second interaction for comic map is merge. Comparison can be done by putting objects side by side, but can also be done by showing two datasets in one view. The introduction of merge interaction enables the ability of doing comparison in one cell. 
-In order to merge two cells into one cell, analyst can just pick up one cell and drag-and-drop it onto the cell that he wants to merge with. For example, if the analyst wants to merge first, second and third cell, he can drag-and-drop the first cell to the third cell, and then drag-and-drop the second cell to the third cell. A merged view is automatically generated in the third cell (Figure 7).
+In order to merge two cells into one cell, analyst can just pick up one cell and drag-and-drop it onto the cell that he wants to merge with. For example, if the analyst wants to merge first, second and third cell, he can drag-and-drop the first cell to the third cell, and then drag-and-drop the second cell to the third cell. A merged view is automatically generated in the third cell (Figure ~\ref{fig:merge}).
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{merge.jpg}
 	\caption{Comic Map Merge: first cell and second cell merged into third cell}
+	\label{fig:merge}
 \end{figure}
  
-The merged view is also revertible. There is a cross sign on the upper-right corner of the merged view. Simply by clicking the cross sign, the merged view will be reverted back to the original dataset view. For example in our former example, after clicking the cross sign, the third cell will show the original anomaly data in that cell (Figure 8).
+The merged view is also revertible. There is a cross sign on the upper-right corner of the merged view. Simply by clicking the cross sign, the merged view will be reverted back to the original dataset view. For example in our former example, after clicking the cross sign, the third cell will show the original anomaly data in that cell (Figure ~\ref{fig:merge2}).
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{merge2.jpg}
 	\caption{Comic Map Merge: revert back to original data by clicking the cross sign}
+	\label{fig:merge2}
 \end{figure}
 
 \subsubsection{Stack zooming}
 The third interaction for comic map is stack zooming. Analyst often needs to see closer to the anomaly by zooming. The way of doing zooming in our comic map representation is stack zooming.
 
-In order to zoom into a specific subset of data, analyst select the region (stack) he wants to zoom in (Figure 9). Then the cell will be automatically updated showing that portion of data. 
+In order to zoom into a specific subset of data, analyst select the region (stack) he wants to zoom in (Figure ~\ref{fig:zoom}). Then the cell will be automatically updated showing that portion of data. 
 The same as merge interaction, stack zooming is also revertible by just clicking on the cross sign on the upper-right corner. Then, the original whole dataset of anomaly will be shown.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.20\textwidth]{zoom.jpg}
 	\caption{Comic Map Stack Zooming: select a region (stack) to zoom}
+	\label{fig:zoom}
 \end{figure}
 
 \section{Matching pursuit -- regressive anomaly detector}
@@ -316,6 +332,7 @@ Matching pursuit is composed of the following five steps. The first step is to u
 		\includegraphics[width=0.45\textwidth]{fft.png}
 	}
 	\caption{The workflow of matching pursuit regression model}
+	\label{fig:fft}
 \end{figure}
 
 The advantages of matching pursuit regression model is it uses the number of frequency to build up the nonlinear fitting curve, and reduce the computational analysis costs. Furthermore, matching pursuit is non-parameter or unsupervised learning algorithm, there is no any training data requirement. At last, matching pursuit algorithm is also scalable, because it can be run in divide-and-conquer approach and in parallel way. Matching pursuit regression model provides us a rapid method to estimate the anomaly in massive time-series data. 
@@ -347,6 +364,7 @@ Mean square error (MSE) is often used to account for the difference between two 
 		\includegraphics[width=0.225\textwidth]{chart_2.png}
 	}
 	\caption{The MSE and Pearson correlation coefficient}
+	\label{fig:MSEandPearsonCorr}
 \end{figure}
 
 At first, we can find the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
@@ -362,6 +380,7 @@ In this validation, we want to see the performance of the anomaly detection in d
 	}
 \end{center}
 	\caption{The performance validation}
+	\label{fig:perfValid}
 \end{figure} 
 
 \section{Future works}
