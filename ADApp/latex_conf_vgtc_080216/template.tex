@@ -181,8 +181,15 @@ In order to take insight into the patterns of abnormal data. ADetector takes adv
 	\caption{The anomaly detection workflow of ADetector tool}
 \end{figure}
 
-
-Data table includes a series data manipulation options such as the selection of input and the type of weather data. Since ADetector tackles on missing, extreme, and latent anomaly, in the type inference step provides options to specify which type of anomaly to investigate. Afterward, in the anomaly region search step, analyst can choose a certain time interval (e.g. one year) to delve in to the micro-level. At last step, ADetector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, extreme data statistics are shown in timeline widget as well. Then users can conduct interactive analysis on these anomalies like comparison. Altogether, ADetector workflow is composed of selection, reduction, and comparison steps.
+\begin{itemize}
+	\item Data Table: This step includes a series data manipulation options such as the selection of input and the type of weather data. 
+	\item Statistical Analysis Diagram: This step provides all anomaly statistical information in a histogram for each year for analysis. Year information can be expanded into monthly information or collapse back.
+	\item Region Selection: Analyst can choose a certain time interval (e.g. one year) to delve in to the micro-level for anomalies analysis by double clicking on region (year or month) on the statistical analysis histogram.
+	\item View Recommendation: At this step, ADetector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, extreme data statistics are shown in timeline widget as well.
+	\item Interactive Analysis: In this step, users can conduct interactive analysis on these anomalies like comparison.
+	\item Data Clean: After interactive analysis, users can choose to use the data clean tool provided by the tool to do clean out anomalies.(optional)
+\end{itemize}
+Altogether, ADetector workflow is composed of selection, reduction, and comparison steps.
 
 \subsection{The composition of ADetector}
 \subsubsection{Data clean tool}
