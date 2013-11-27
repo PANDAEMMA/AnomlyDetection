@@ -20,43 +20,71 @@ class DataSourcePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         
-        '''self.spinLabel = wx.StaticText(self, -1, "Anomalies No: ", (15, 10))
-        font = wx.Font(12,  wx.DEFAULT, wx.NORMAL, wx.NORMAL)
-        self.spinLabel.SetFont(font)
-        self.k_spin = wx.SpinCtrl(self, -1, "", (30, 50))
-        self.k_spin.SetRange(1,50)
-        self.k_spin.SetValue(self.GetTopLevelParent().AnomalNum)
-        self.Bind(wx.EVT_SPINCTRL, self.OnSpinK, self.k_spin)
-        
-        self.parLabel = wx.StaticText(self, -1, "Partition No: ", (15, 10))
-        font = wx.Font(12,  wx.DEFAULT, wx.NORMAL, wx.NORMAL)
-        self.parLabel.SetFont(font)
-        self.par_spin = wx.SpinCtrl(self, -1, "", (30, 50))
-        self.par_spin.SetRange(1,50)
-        self.par_spin.SetValue(self.GetTopLevelParent().ParNum)
-        self.Bind(wx.EVT_SPINCTRL, self.OnSpinPar, self.par_spin)'''
-        
         self.dataType = wx.RadioBox(
                 self, -1, "Choose Data: ", wx.DefaultPosition, wx.DefaultSize,
                 ['Temperature', 'Humidity', 'Pressure'], 1, wx.RA_SPECIFY_COLS
                 )
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dataType)
         
+        self.anost = wx.StaticText(self, -1, "Choose Anomaly Types: ")#, (10, 10))
+        self.ancb1 = wx.CheckBox(self, -1, "Extreme")#, (65, 40), (150, 20), wx.NO_BORDER)
+        self.ancb1.SetValue(True)
+        self.ancb2 = wx.CheckBox(self, -1, "Glitch")#, (65, 60), (150, 20), wx.NO_BORDER)
+        self.ancb2.SetValue(True)
+        self.ancb3 = wx.CheckBox(self, -1, "Missing")#, (65, 80), (150, 20), wx.NO_BORDER)
+        self.ancb3.SetValue(True)
+        
+        
+        self.dst = wx.StaticText(self, -1, "Optional: ")
+        self.sdst = wx.StaticText(self, -1, "Choose Start Date: ")
+        self.sdpc = wx.DatePickerCtrl(self, size=(120,-1),
+                                style = wx.DP_DROPDOWN
+                                      | wx.DP_SHOWCENTURY
+                                      | wx.DP_ALLOWNONE )
+        self.Bind(wx.EVT_DATE_CHANGED, self.OnStartDateChanged, self.sdpc)
+        
+        self.edst = wx.StaticText(self, -1, "Choose End Date: ")
+        self.edpc = wx.DatePickerCtrl(self, size=(120,-1),
+                                style = wx.DP_DROPDOWN
+                                      | wx.DP_SHOWCENTURY
+                                      | wx.DP_ALLOWNONE )
+        self.Bind(wx.EVT_DATE_CHANGED, self.OnEndDateChanged, self.edpc)
+    
+        if 'wxMSW' in wx.PlatformInfo:
+            # In this case the widget used above will be a native date
+            # picker, so show the generic one too.            
+            self.sdpc = wx.GenericDatePickerCtrl(self, size=(120,-1),
+                                           style = wx.TAB_TRAVERSAL
+                                               | wx.DP_DROPDOWN
+                                               | wx.DP_SHOWCENTURY
+                                               | wx.DP_ALLOWNONE )
+            self.Bind(wx.EVT_DATE_CHANGED, self.OnStartDateChanged, self.sdpc)
+            self.edpc = wx.GenericDatePickerCtrl(self, size=(120,-1),
+                                           style = wx.TAB_TRAVERSAL
+                                               | wx.DP_DROPDOWN
+                                               | wx.DP_SHOWCENTURY
+                                               | wx.DP_ALLOWNONE )
+            self.Bind(wx.EVT_DATE_CHANGED, self.OnEndDateChanged, self.edpc)
+            
+        self.dsizer = wx.BoxSizer(wx.VERTICAL)
+        self.dsizer.Add(self.dst)
+        self.dsizer.Add(self.sdst,0, wx.TOP|wx.BOTTOM, 5)
+        self.dsizer.Add(self.sdpc)
+        self.dsizer.Add(self.edst,0, wx.TOP|wx.BOTTOM, 5)
+        self.dsizer.Add(self.edpc)
+        
         self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
         self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
         
         # Layout
-        #self.k_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        #self.k_spin_sizer.Add(self.spinLabel,1,wx.ALIGN_CENTER_VERTICAL)
-        #self.k_spin_sizer.Add(self.k_spin,0,wx.ALIGN_CENTER_VERTICAL)
-        #self.par_spin_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        #self.par_spin_sizer.Add(self.parLabel,1,wx.ALIGN_CENTER_VERTICAL)
-        #self.par_spin_sizer.Add(self.par_spin,0,wx.ALIGN_CENTER_VERTICAL)
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
-        #self.vsizer.Add(self.k_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        #self.vsizer.Add(self.par_spin_sizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.dataType, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 50)
+        self.vsizer.Add(self.anost,0, wx.LEFT, 10)
+        self.vsizer.Add(self.ancb1,0, wx.LEFT, 10)
+        self.vsizer.Add(self.ancb2,0, wx.LEFT, 10)
+        self.vsizer.Add(self.ancb3,0, wx.LEFT, 10)
+        self.vsizer.Add(self.dsizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 20)
         self.SetSizer(self.vsizer)
     
     def OnImport(self,e):
@@ -67,6 +95,12 @@ class DataSourcePanel(wx.Panel):
         
     def OnSpinPar(self,e):
         self.GetTopLevelParent().SetParNum(self.par_spin.GetValue())
+    
+    def OnStartDateChanged(self, evt):
+        self.log.write("OnDateChanged: %s\n" % evt.GetDate())
+    
+    def OnEndDateChanged(self, evt):
+        self.log.write("OnDateChanged: %s\n" % evt.GetDate())
     
     def EvtRadioBox(self, event):
         if event.GetInt() == 0:
