@@ -31,7 +31,8 @@ class DataContent(wx.Window):
         self.scale = 30
         self.num = 17
         self.offset = 50
-        self.addPng = wx.Image(self.opj('add.png'), wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+        #self.addPng = wx.Image(self.opj('add.png'), wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+	self.addPng = wx.Bitmap('add.png')
         self.minusPng = wx.Image(self.opj('minus.png'), wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
@@ -42,11 +43,14 @@ class DataContent(wx.Window):
         self.DrawDivide(dc)
         self.DrawPercent(dc)
         self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
-        #self.DrawButton(dc)
+        self.DrawButton(dc)
         
     def DrawButton(self, dc):
         for i in range(self.num):
-            wx.StaticBitmap(self, -1, self.addPng, (10, 10), (20, 20))
+	    dc = wx.PaintDC(self)
+            dc.SetBackground(wx.Brush("WHITE"))
+	    dc.DrawBitmap(self.addPng, 0, 10, useMask=False)
+            #wx.StaticBitmap(self, -1, self.addPng, (10, 10), (20, 20))
     
     def DrawDivide(self, dc):
         dc.SetPen(wx.BLACK_PEN)

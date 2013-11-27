@@ -1,18 +1,88 @@
 #!/usr/bin/python
 
+import heapq
+from numpy import *
+from ADParse import *
+
 #-----------------------------------------------
 # ADAnRecordLabel.py
 # The analysis results showing in each Record cells
-# Data: 1. Miss data count. 2. Max data avg. 3. Residual
+# Data: 1. Miss data count. 2. Max data avg. count 3. Min data avg count
 # Plot: 1. x-axis ratio of each item in one month
 #
 #------------------------------------------------
 
-# Objective: Be one of label in each cell, show the max data avg of each year
+# Objective: Count the number of maximum data each year
+# Usage: count_year_max_data_avg(fileObj, max_data_avg, cat_flag)
+# Return: [12, 3, 53, 21]
+def count_year_max_data(fileObj, aa, cat_flag):
+	fd = open(fileObj, 'r')
+        count = 0
+        flag = 0
+        ccount = 0
+        count_data = []
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0):
+                        if ((float)(a[cat_flag]) > (float)(aa[ccount])):
+                                count = count + 1
+                if (flag == 0):
+                        temp = (int)(a[YEAR])
+                        flag = 1
+                if(temp != (int)(a[YEAR])):
+                        count_data.append(count)
+                        count = 0
+                        ccount = ccount + 1
+                temp = (int)(a[YEAR])
+	fd.close()
+        return count_data
+
+# Objective: Count the number of minimum data each year
+# Usage: count_year_min_data_avg(fileObj, max_data_avg, cat_flag)
+# Return: [12, 3, 53, 21]
+def count_year_min_data(fileObj, aa, cat_flag):
+	fd = open(fileObj, 'r')
+        count = 0
+        flag = 0
+        ccount = 0
+        count_data = []
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0):
+                        if ((float)(a[cat_flag]) < (float)(aa[ccount])):
+                                count = count + 1
+                if (flag == 0):
+                        temp = (int)(a[YEAR])
+                        flag = 1
+                if(temp != (int)(a[YEAR])):
+                        count_data.append(count)
+                        count = 0
+                        ccount = ccount + 1
+                temp = (int)(a[YEAR])
+	fd.close()
+        return count_data
+
+# Objective: List down the year
+# Usage: get_year(fileObj, YEAR)
+# Return: [1997, 1998, 1999, 2000]
+def get_year(fileObj, cat_flag):
+        year = []
+        temp_year = 0
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0):
+                        if ((int)(a[cat_flag]) != temp_year):
+                                year.append((int)(a[cat_flag]))
+                        temp_year = (int)(a[cat_flag])
+        year.append((int)(a[cat_flag]))
+        return year
+
+# Objective: Show max data avg of each year
 # Calculate 1% maximum data average
-# Usage: count_year_max_data_avg(fd, TEMPER)
+# Usage: count_year_max_data_avg(fileObj, TEMPER)
 # Return : [94.97, 95.64, 95.23, ...]
-def count_year_max_data_avg(fd, cat_flag):
+def count_year_max_data_avg(fileObj, cat_flag):
+	fd = open(fileObj, 'r')
         count = 0
         flag = 0
         avg_data = []
@@ -27,24 +97,29 @@ def count_year_max_data_avg(fd, cat_flag):
                         temp = (int)(a[YEAR])
                         flag = 1
                 if(temp != (int)(a[YEAR])):
-                        length = (int)(count * 0.01)
-                        b_sum = 0
-                        for i in range(length):
-                                b = max(year_data)
-                                b_sum = b_sum + (float)(b)
-                                year_data.remove(b)
-                        avg = b_sum/length
+                        length = (int)(count * RATE)
+                        value = heapq.nlargest(length, year_data)
+                        avg = mean(value)
                         avg_data.append(avg)
                         year_data = []
                         count = 0
                 temp = (int)(a[YEAR])
+        length = (int)(count * RATE)
+        value = heapq.nlargest(length, year_data)
+        avg = mean(value)
+        avg_data.append(avg)
+        year_data = []
+        fd.close()
+
         return avg_data
+
 
 # Objective: Be one of label in each cell, show the min data avg of each year
 # Calculate 1% minimum data
 # Usage: count_year_mix_data_avg(fd, TEMPER)
 # Return: [13.3, 12.2, .....]
-def count_year_mix_data_avg(fd, cat_flag):
+def count_year_min_data_avg(fileObj, cat_flag):
+	fd = open(fileObj, 'r')
         count = 0
         flag = 0
         avg_data = []
@@ -59,17 +134,20 @@ def count_year_mix_data_avg(fd, cat_flag):
                         temp = (int)(a[YEAR])
                         flag = 1
                 if(temp != (int)(a[YEAR])):
-                        length = (int)(count * 0.01)
-                        b_sum = 0
-                        for i in range(length):
-                                b = min(year_data)
-                                b_sum = b_sum + (float)(b)
-                                year_data.remove(b)
-                        avg = b_sum/length
+                        length = (int)(count * RATE)
+                        value = heapq.nsmallest(length, year_data)
+                        avg = mean(value)
                         avg_data.append(avg)
                         year_data = []
                         count = 0
                 temp = (int)(a[YEAR])
+        length = (int)(count * RATE)
+        value = heapq.nlargest(length, year_data)
+        avg = mean(value)
+        avg_data.append(avg)
+        year_data = []
+        fd.close()
+
         return avg_data
 
 # Objective: Show the max data avg each month in one year
@@ -92,27 +170,19 @@ def count_mon_max_data_avg(fd, year, cat_flag):
                                 year_data.append((float)(a[cat_flag]))
                                 count = count + 1
                         if(temp != (int)(a[MON])):
-                                length = (int)(count * 0.01)
-                                b_sum = 0
-                                for i in range(length):
-                                        b = max(year_data)
-                                        b_sum = b_sum + (float)(b)
-                                        year_data.remove(b)
-                                avg = b_sum/length
-                                avg_data.append(avg)
-                                year_data = []
-                                count = 0
+				length = (int)(count * RATE)
+                        	value = heapq.nlargest(length, year_data)
+                       	 	avg = mean(value)
+                        	avg_data.append(avg)
+                        	year_data = []
+                        	count = 0
                         temp = (int)(a[MON])
-        length = (int)(count * 0.01)
-        b_sum = 0
-        for i in range(length):
-                b = max(year_data)
-                b_sum = b_sum + (float)(b)
-                year_data.remove(b)
-        avg = b_sum/length
+	length = (int)(count * RATE)
+        value = heapq.nlargest(length, year_data)
+        avg = mean(value)
         avg_data.append(avg)
         year_data = []
-        count = 0
+
 	return avg_data
 
 # Objective: Show the min data avg each month in one year
@@ -135,27 +205,20 @@ def count_mon_min_data_avg(fd, year, cat_flag):
                                 year_data.append((float)(a[cat_flag]))
                                 count = count + 1
                         if(temp != (int)(a[MON])):
-                                length = (int)(count * 0.01)
-                                b_sum = 0
-                                for i in range(length):
-                                        b = min(year_data)
-                                        b_sum = b_sum + (float)(b)
-                                        year_data.remove(b)
-                                avg = b_sum/length
-                                avg_data.append(avg)
-                                year_data = []
-                                count = 0
+				length = (int)(count * RATE)
+	                        value = heapq.nsmallest(length, year_data)
+        	                avg = mean(value)
+                	        avg_data.append(avg)
+                        	year_data = []
+                       	 	count = 0
                         temp = (int)(a[MON])
-        length = (int)(count * 0.01)
-        b_sum = 0
-        for i in range(length):
-                b = min(year_data)
-                b_sum = b_sum + (float)(b)
-                year_data.remove(b)
-        avg = b_sum/length
+	length = (int)(count * RATE)
+        value = heapq.nsmallest(length, year_data)
+        avg = mean(value)
         avg_data.append(avg)
         year_data = []
         count = 0
+
 	return avg_data
 
 # Objective: Show the number of missing data yearly

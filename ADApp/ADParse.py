@@ -19,6 +19,8 @@ HUMID = 9  # Humidity index
 PRESS = 10  # Pressure index
 
 WEEK_DAY  = 7 # Number of day per week
+
+RATE = 0.01	# The ratio of extreme data (ADAnRecord.py)
 # Get data in a specific index
 def get_data_all(fd, flag):
 	arr = []
