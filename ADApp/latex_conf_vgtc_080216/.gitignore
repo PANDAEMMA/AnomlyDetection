@@ -1,4 +1,6 @@
 template.synctex.gz
-template.aux
-template.pdf
-template.log
+*.aux
+*.pdf
+*.log
+*.bbl
+*.blg
