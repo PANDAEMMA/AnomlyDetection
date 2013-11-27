@@ -26,7 +26,7 @@ class DataSourcePanel(wx.Panel):
                 )
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dataType)
         
-        self.anost = wx.StaticText(self, -1, "Choose Anomaly Types: ")#, (10, 10))
+        '''self.anost = wx.StaticText(self, -1, "Choose Anomaly Types: ")#, (10, 10))
         self.ancb1 = wx.CheckBox(self, -1, "Extreme")#, (65, 40), (150, 20), wx.NO_BORDER)
         self.ancb1.SetValue(True)
         self.ancb2 = wx.CheckBox(self, -1, "Glitch")#, (65, 60), (150, 20), wx.NO_BORDER)
@@ -71,7 +71,7 @@ class DataSourcePanel(wx.Panel):
         self.dsizer.Add(self.sdst,0, wx.TOP|wx.BOTTOM, 5)
         self.dsizer.Add(self.sdpc)
         self.dsizer.Add(self.edst,0, wx.TOP|wx.BOTTOM, 5)
-        self.dsizer.Add(self.edpc)
+        self.dsizer.Add(self.edpc)'''
         
         self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
         self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
@@ -79,11 +79,11 @@ class DataSourcePanel(wx.Panel):
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.vsizer.Add(self.dataType, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.anost,0, wx.LEFT, 10)
-        self.vsizer.Add(self.ancb1,0, wx.LEFT, 10)
-        self.vsizer.Add(self.ancb2,0, wx.LEFT, 10)
-        self.vsizer.Add(self.ancb3,0, wx.LEFT, 10)
-        self.vsizer.Add(self.dsizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.anost,0, wx.LEFT, 10)
+        #self.vsizer.Add(self.ancb1,0, wx.LEFT, 10)
+        #self.vsizer.Add(self.ancb2,0, wx.LEFT, 10)
+        #self.vsizer.Add(self.ancb3,0, wx.LEFT, 10)
+        #self.vsizer.Add(self.dsizer, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 20)
         self.SetSizer(self.vsizer)
     
