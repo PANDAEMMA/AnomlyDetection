@@ -348,13 +348,14 @@ res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \
 
 \section{Results}
 
-We have conducted the evaluation of ADetector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
+We have conducted the evaluation of ADetector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model and the effectiveness of this model.
 
 \subsection{The correlation validation}
 
-In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
+In this validation, we want to see the performance of the anomaly detection in different data set sizes. 
 
-Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variable. In this experiment, we input 3 year time-series weather data (the total number is 14600), and we change the number of k (the number of iteration) in the model construction, then measure the variations of MSE and Pearson correlation coefficient. 
+Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variables. In this experiment, we input 3 years of time-series weather data (the total number is 14600), and we change the number of $k$ (the number of iteration) in the model construction and measure the variations of MSE and Pearson correlation coefficient. 
+
 \begin{figure}[htb]
 	\fbox{
 		\centering
@@ -365,10 +366,10 @@ Mean square error (MSE) is often used to account for the difference between two 
 	\label{fig:MSEandPearsonCorr}
 \end{figure}
 
-At first, we can find the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
+At first, we can find that the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even though the number of iteration is small, the degree of correlation is high positive. Second, we also conducted the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
 	
 \subsection{The performance validation}
-In this validation, we want to see the performance of the anomaly detection in different size of data sets. We can see ADetector can complete the anomaly data less than one minute. 
+In this validation, we want to see the performance of the anomaly detection in different data set sizes. We can see that ADetector can complete the anomaly data in less than one minute. 
 
 \begin{figure}[htb]
 \begin{center}
@@ -382,13 +383,12 @@ In this validation, we want to see the performance of the anomaly detection in d
 \end{figure} 
 
 \section{Future works}
+In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in the backend and users don't have any control over it. Users can only compare the anomalies detected by the backend model, determine whether it is really a anomaly by comparison, and finally decide to delete it or not. So in order to give users the ability to refine the backend model, we can let users add new parameters or change the values of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
 
-In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don't have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the values of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
+Moreover, for the data representation in the current version of our tool, we don't support data aggregation. In the analysis workspace, the comic map shows all the anomalies by cells. When the amount of anomalies data becomes very large, we still show every one of them and the whole view may become very large. We may continue investigate a suitable aggregation representation in the comic map representation, which can give the user a better view of the whole structure for analyzing anomalies data as well.
 
-Moreover, for the data representation in the current version of our tool, we don?t support data aggregation. In analyze workspace, the comic map shows all anomalies by cells. When the amount of anomalies data becomes very large, we still show every one of them and the whole view may become very large. We may continue investigate a suitable aggregation representation in the comic map representation, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
-
-In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data plays a critical role in scientific and engineering systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combines signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, ADetector also supports interactive actions such as timeline navigation, swap, multi-variable comparison, and collaboration. ADetector enables the workflow of time-series anomaly detection become efficient and interactive.
+In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data plays a critical role in scientific and engineering systems, because errors often cause catastrophic consequences. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combines signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly in less than one minute. Furthermore, ADetector also supports interactive actions such as a timeline overview, swap, multi-variable comparison, and collaboration. ADetector enables the workflow of time-series anomaly detection to be efficient and interactive.
 
 
 
