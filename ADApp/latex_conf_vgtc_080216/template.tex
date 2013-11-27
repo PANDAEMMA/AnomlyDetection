@@ -150,7 +150,7 @@ The category of time-series anomaly is dependent on the objective and monitoring
 
 \subsection{Time-series visual exploration}
 
-Considerable visual analytics research which is related to the time-series visual visualization, and exploration, and the relevant surveys include \cite{silva2000visualization}. The basic line graph \cite{tufte1983visual} is widely used in temporal visualization. However, in recent years, in order to delve into the time-series, different visual representation techniques have been worked out\cite{bremm2011interactive,mclachlan2008liverac,javed2010stack,Sip2012,Liao2010,Liao2011}. These graphical representation methods improve the efficiency and effectiveness for time-series data analysis. Furthermore, the massive time-series visual analytics has also became a consideration in ATLAS \cite{chan2008maintaining} system.
+Considerable amount of visual analytics research is related to the time-series visual visualization and exploration, and the relevant survey is seen in \cite{silva2000visualization}. The basic line graph \cite{tufte1983visual} is widely used in temporal visualization. However, in recent years, in order to delve into the time-series, different visual representation techniques have been worked out\cite{bremm2011interactive,mclachlan2008liverac,javed2010stack,Sip2012,Liao2010,Liao2011}. These graphical representation methods improve the efficiency and effectiveness for time-series data analysis. Furthermore, the massive time-series visual analytics has also became a consideration in ATLAS \cite{chan2008maintaining} system.
  
 Query and exploration also play key roles in time-series visual analytics. LifeLine\cite{plaisant1996lifelines} is an early visual system for personal history record exploration. TimeSearcher\cite{hochheiser2004dynamic} is an interactive time-series query tool and uses the time-box to explore the data sets. PatternFinder\cite{fails2006visual} includes a visual interface to query the medical records. LiveRAC\cite{mclachlan2008liverac} designed an interactive visual interface to explore the data collected from computer systems. Data quality assessment is also getting to become an important topics in visual analytics research. Profiler\cite{Kandel2012}, and RainMon\cite{shafer2012rainmon} integrated statistical analysis and visual representation to find out abnormal hidden in database and computer systems. 
 	
@@ -173,7 +173,7 @@ ADetector is an anomaly visual exploration tool. Due to the overwhelming anomaly
 
 \subsection{Anomaly diagnosis workflow}
 
-In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly as shown in Figure ~\ref{fig:workflow}. Thus ADetector is composed of five steps --- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
+In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly as shown in Figure ~\ref{fig:workflow}. Thus ADetector is composed of five steps --- Data Table, Statistical Analysis Diagram, Region Selection, View Recommendation, Interactive Analysis, and Data Clean.
 
 \begin{figure}[htb]
 	\centering
@@ -183,14 +183,14 @@ In order to take insight into the patterns of abnormal data. ADetector takes adv
 \end{figure}
 
 \begin{itemize}
-	\item Data Table: This step includes a series data manipulation options such as the selection of input and the type of weather data. 
+	\item Data Table: This step includes a series of data manipulation options such as the selection of input and the type of weather data. 
 	\item Statistical Analysis Diagram: This step provides all anomaly statistical information in a histogram (abnormal region reduction tool) for each year for analysis. Year information can be expanded into monthly information or collapse back.
-	\item Region Selection: Analyst can choose a certain time interval (e.g. one year) to delve in to the micro-level for anomalies analysis by double clicking on region (year or month) on the statistical analysis histogram.
-	\item View Recommendation: At this step, ADetector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, extreme data statistics are shown in timeline widget as well.
+	\item Region Selection: Analyst can choose a certain time interval (e.g. one year) to delve into the micro-level for anomalies analysis by double clicking on region (year or month) on the statistical analysis histogram.
+	\item View Recommendation: At this step, ADetector exploits regression model to carry out anomaly matching calculation, and then it shows the possible anomaly region in multiple cells. The missing and extreme data statistics are shown in the timeline overview widget as well.
 	\item Interactive Analysis: In this step, users can conduct interactive analysis on these anomalies like comparison.
-	\item Data Clean: After interactive analysis, users can choose to use the data clean tool provided by ADetector to do clean out anomalies.(optional)
+	\item Data Clean: After interactive analysis, users can choose to use the data clean tool provided by ADetector to do clean out anomalies.
 \end{itemize}
-Altogether, ADetector workflow is composed of selection, reduction, and comparison steps.
+Altogether, the ADetector workflow is composed of selection, reduction, and comparison steps.
 
 \subsection{The composition of ADetector}
 \subsubsection{Data clean tool}
@@ -198,7 +198,7 @@ Altogether, ADetector workflow is composed of selection, reduction, and comparis
 Data clean tool aims to find out all missing data in the data sets and show their timestamp. Users are able to figure out the occurrence frequency and time from this data clean tool. Furthermore, users also can remove the missing records from this data clean tool. Altogether, the data clean tool gives users an overview of the information about missing data, and allows users to remove them. 
 
 \subsubsection{Abnormal region reduction tool}
-The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histogram, and show the proportion of multiple statistical analysis results in each year. ADetector give three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data, and fitting curve model to help users determine which year is supposed to pay attention to. Afterward, users can delve into one specific year, and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis (Figure ~\ref{fig:region}).
+The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histograms and shows the proportion of multiple statistical analysis results in each year. ADetector gives three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data and fitting curve model to help users determine which year they are supposed to pay attention to. Afterward, users can delve into one specific year and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis (Figure ~\ref{fig:region}).
 
 \begin{figure}[htb]
 	\centering
@@ -209,7 +209,7 @@ The purpose of possible abnormal region reduction tool is to narrow down the dat
 
 \subsubsection{Data comparison tool}
 
-The data comparison tool consists of comic map, which includes multiple line graph cells. Importing the selected monthly data from susceptible abnormal region reduction tool, ADetector proceeds residual calculation toward selected data, and show a number of possible abnormal region in each comic map cells. In addition, this tool also supports cell switch and multiple line graph merge functionalities. From this tool, users are able to compare the fluctuation of each comic map cell. Furthermore, ADetector data comparison tool also includes stack zooming functionality. Users can select one certain time interval to zoom in and zoom out. 
+The data comparison tool consists of the whole comic map, which includes multiple line graph cells. Importing the selected monthly data from susceptible abnormal region reduction tool, ADetector processes residual calculation toward selected data and show a number of possible abnormal region in each comic map cells. In addition, this tool also supports cell swap and multiple line graph merge functionalities. From this tool, users are able to compare the fluctuation of each comic map cell. Furthermore, the ADetector's data comparison tool also includes the stack zooming functionality. Users can select one certain time interval to zoom in and zoom out. 
 
 % \begin{figure}[htb]
 %\centering
@@ -250,16 +250,16 @@ The basic component of the comic map is every comic map cell. For time series da
 Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start and end date of the data in this grid cell, etc. The axis is not shown with the timestamp labels due to the space limit of the grid cell. Then, the start and end dates are given to provide the user the information about the time. All these information are included to help analyst get a better understanding of the dataset in the cell.
 
 \subsection{Layout}
-Cells of comic map are laid out as comic book grid (Figure ~\ref{fig:comicMap9Cell}). In this way, each cell has three (corner cell), five (edge cell) or eight neighbors around it. This kind of layout is more helpful for comparison. Since usually users prefer to set objects side by side to compare it. In our layout, each cell can be easily compared with their neighbors and the number of neighbors is bigger than the traditional horizontal or vertical layout. This is efficient since analyst can do more comparison in comic map layout with less cells moving around.
+Cells of the comic map are laid out as a comic book grid (Figure ~\ref{fig:comicMap9Cell}). In this way, each cell has three (corner cell), five (edge cell) or eight neighbors around it. This kind of layout is more helpful for comparison. Since usually users prefer to set objects side by side to compare them. In our layout, each cell can be easily compared with their neighbors and the number of neighbors is greater than the traditional horizontal or vertical layout. This is efficient since analyst can do more comparison in comic map layout with less cells moving around.
 
-The comic map tries to maintain a layout more like a square, which is not only efficient of using the visual space, but also guarantees the clustering of cells for comparison mentioned before. For example, if there are four anomalies in total, a 2x2 comic map will be shown, and if the anomalies number is 9, the comic map is a 3x3 grid. More specific, comic map will be chosen as the closest square based on anomalies number. For example, anomalies number between 10 and 16 results in a 4x4 grid.
+The comic map tries to maintain a layout more like a square, which is not only efficient in using the visual space but also guarantees the clustering of cells for comparison mentioned before. For example, if there are four anomalies in total, a 2x2 comic map will be shown, and if the anomalies number is 9, the comic map is a 3x3 grid. More specifically, the comic map will be chosen as the next closest square based on anomalies number. For example, anomalies number between 10 and 16 results in a 4x4 grid.
 
-Moreover, in order to reduce the work of swap, our backend model sorts all anomalies by putting anomalies with similar pattern besides each other. During analysis process, analyst can also rearrange cells for comparison by simply swapping cells. Our layout is very flexible, which provides the analyst a lot of freedom.
+Moreover, in order to reduce the work of swap, our backend model sorts all anomalies by putting anomalies with similar pattern besides each other. During the analysis process, analyst can also rearrange cells for comparison by simply swapping cells. Our layout is very flexible, which provides the analyst a lot of freedom.
 
 \subsection{Timeline overview}
-For each cell, some information related to the specific anomaly can be obtained, but analyst still lacks information about this anomaly related to the whole dataset. So we introduce a timeline overview corresponding to the comic map grid (Figure ~\ref{fig:timeline}). 
-Since the dataset is a time-series climate data, time information should be an understandable choice for an overall representation. In the timeline overview, an axis of timestamp is used as the main visualization. Some timestamps are shown to give analyst an overview of time. On the time axis, anomalies are marked corresponding to their happening time. Specifically, different type of anomalies are marked using different colors. Through this overview visualization, analyst gains information of anomalies based on the whole dataset, like the frequency of anomaly in a specific timeframe, the occurrence of different type of anomalies, etc. 
-The comic map cells are also tightly connected with this timeline overview. When a comic map cell is selected, the corresponding timeframe of data in the cell will be highlighted in the overview. More information can be obtained for analyst to analyze anomaly in the cell (Figure ~\ref{fig:timeline2}).
+For each cell, some information related to the specific anomaly can be obtained, but analysts still lack information about this anomaly relative to the whole dataset. So we introduce a timeline overview corresponding to the comic map grid (Figure ~\ref{fig:timeline}). 
+Since the dataset is a time-series climate data, time information should be an understandable choice for an overall representation. In the timeline overview, an axis of timestamp is used as the main visualization. Some timestamps are shown to give the analysts an overview of time. On the time axis, anomalies are marked corresponding to their happening time. Specifically, different type of anomalies are marked using different colors. Through this overview visualization, the analysts gain information about anomalies based on the whole dataset, like the frequency of anomaly in a specific timeframe, the occurrence of different type of anomalies, etc. 
+The comic map cells are also tightly connected with this timeline overview. When a comic map cell is selected, the corresponding timeframe of data in the cell will be highlighted in the overview. More information can be obtained for analysts to analyze anomaly in the cell (Figure ~\ref{fig:timeline2}).
 
 \begin{figure}[htb]
 	\centering
@@ -269,10 +269,10 @@ The comic map cells are also tightly connected with this timeline overview. When
 \end{figure}
 
 \subsection{Comparison interaction}
-As mentioned before, comparison plays an important role in anomaly analysis. Our comic map visual representation provides advanced interactions to support comparison, which gives the analyst more freedom of doing comparison and increases the efficiency of analyzing process.
+As mentioned before, comparison plays an important role in anomaly analysis. Our comic map visual representation provides advanced interactions to support comparison, which gives the analysts more freedom to do comparisons and increases the efficiency of the analyzing process.
 
 \subsubsection{Swap}
-The first interaction for comic map is swap. Analyst can swap any two cells by simply drag and drop. By using this interaction, analyst can put any cells together to do a comparison.  Also, analyst can rearrange the comic map to put similar anomalies together (Figure ~\ref{fig:swap}).
+The first interaction for comic map is swap. Analysts can swap any two cells by simply drag and drop. By using this interaction, analysts can put any cells together to do a comparison.  Also, analysts can rearrange the comic map to put similar anomalies together (Figure ~\ref{fig:swap}).
 
 \begin{figure}[htb]
 	\centering
@@ -282,9 +282,9 @@ The first interaction for comic map is swap. Analyst can swap any two cells by s
 \end{figure}
 
 \subsubsection{Merge}
-The second interaction for comic map is merge. Comparison can be done by putting objects side by side, but can also be done by showing two datasets in one view. The introduction of merge interaction enables the ability of doing comparison in one cell.
+The second interaction for comic map is merge. Comparisons can be done by putting objects side by side, but can also be done by showing two datasets in one view. The introduction of the merge interaction enables the ability to do comparison in one cell.
 
-In order to merge two cells into one cell, analyst can just pick up one cell and drag-and-drop it onto the cell that he wants to merge with. For example, if the analyst wants to merge first, second and third cell, he can drag-and-drop the first cell to the third cell, and then drag-and-drop the second cell to the third cell. A merged view is automatically generated in the third cell (Figure ~\ref{fig:merge}).
+In order to merge two cells into one cell, analysts can just pick up one cell and drag-and-drop it onto the cell that he wants to merge with. For example, if the analysts want to merge the first, second, and third cell, they can drag-and-drop the first cell to the third cell, and then drag-and-drop the second cell to the third cell. A merged view is automatically generated in the third cell (Figure ~\ref{fig:merge}).
 
 \begin{figure}[htb]
 	\centering
@@ -305,7 +305,7 @@ The merged view is also revertible. There is a cross sign on the upper-right cor
 \subsubsection{Stack zooming}
 The third interaction for comic map is stack zooming. Analyst often needs to see closer to the anomaly by zooming. The way of doing zooming in our comic map representation is stack zooming.
 
-In order to zoom into a specific subset of data, analyst select the region (stack) he wants to zoom in (Figure ~\ref{fig:zoom}). Then the cell will be automatically updated showing that portion of data. The same as merge interaction, stack zooming is also revertible by just clicking on the cross sign on the upper-right corner. Then, the original whole dataset of anomaly will be shown.
+In order to zoom into a specific subset of data, analysts would select the region (stack) they want to zoom in (Figure ~\ref{fig:zoom}). Then, the cell will be automatically updated showing that portion of data. Same as merge interaction, stack zooming is also revertible by just clicking on the cross sign on the upper-right corner. Then, the original whole dataset of anomaly will be shown.
 
 \begin{figure}[htb]
 	\centering
@@ -316,13 +316,13 @@ In order to zoom into a specific subset of data, analyst select the region (stac
 
 \section{Matching pursuit -- regressive anomaly detector}
 
-Regression analysis is used to estimate the trends among variables with the change of the time. Regression analysis model is often used to predict or interpret observed data. Matching is one nonlinear regression model used in ADetector to figure out possible anomaly. The role of regression model is being a baseline to account for the data, and distinguish anomaly from normal one. Least-square fitting curve aims to work out a best-fit formula to describe the distribution or behavior of data. Linear regression model such as ordinary least squares, and weighted least square. However, these linear models sometimes are not applied in nonlinear time-series data, such as financial data, and weather data. In order to find out anomaly from massive data, the nonlinear regression model is supposed to meet scalable, low complexity, and feasible requirements.
+Regression analysis is used to estimate the trends among variables with the change of time. Regression analysis model is often used to predict or interpret observed data. Matching is one nonlinear regression model used in ADetector to figure out possible anomaly. The role of regression model is being a baseline to account for the data and distinguish anomaly from normal one. Least-square fitting curve aims to work out a best-fit formula to describe the distribution or behavior of data. Linear regression models include ordinary least squares and weighted least square. However, these linear models sometimes are not applied in nonlinear time-series data, such as financial data and weather data. In order to find out anomaly from massive data, the nonlinear regression model is supposed to meet scalable, low complexity, and feasible requirements.
 
 \subsection{Approximate nonlinear regression model}
 
-Fourier transform is a well-known tool in engineering and science. The amplitude in the frequency domain is able to represent the characteristic of the data in the time domain. Supposed that the noise is not the principal feature in the data, so the amplitude of noise is low. In addition, Fourier transform can be looked as a noise filter, since in the Fourier frequency domain, high amplitudes usually gather in the initial frequency. Thus, our objective is to leverage the top k big amplitude to reconstruct a fitting curve to estimate the anomaly. 
+Fourier transform is a well-known tool in engineering and science. The amplitude in the frequency domain is able to represent the characteristic of the data in the time domain. For example, noise is not supposed to be the principal feature in the data, so the amplitude of noise is low. In addition, Fourier transform can be looked as a noise filter, since in the Fourier frequency domain, high amplitudes usually gather in the initial frequency. Thus, our objective is to leverage the top $k$ big amplitude to reconstruct a fitting curve to estimate the anomaly. 
 
-Matching pursuit is composed of the following five steps. The first step is to use Fourier transform to convert time-series input data to frequency domain. The second one is to obtain the frequency index of top k high amplitude to be the training data. Since the estimate data is consist of the scalar A, and the Fourier Transform equation, but A is unknown. Thus, in order to get the A scalar, the least square method is used to to get the scalar of A. After getting the number of A, the next step is to use scalar A1 to Ak to work out the number of k eigensolutions. At last, supperpositing these k eigen-solutions and carry out an approximate model that is closed to the original one.
+Matching pursuit is composed of the following five steps. The first step is to use Fourier transform to convert time-series input data to the frequency domain. The second one is to obtain the frequency index of top $k$ high amplitude to be the training data. The estimate data consists of the scalar $A$ and the Fourier Transform equation, but $A$ is unknown. Thus, in order to get the scalar $A$, the least square method is used to get the scalar $A$. After getting $A$, the next step is to use scalar $A_1$ to $A_k$ to work out the $k$ eigensolutions. At last, superpose these $k$ eigensolutions and carry out an approximate model that is close to the original one.
 
 \begin{figure}[htb]
 	\fbox{
@@ -333,28 +333,29 @@ Matching pursuit is composed of the following five steps. The first step is to u
 	\label{fig:fft}
 \end{figure}
 
-The advantages of matching pursuit regression model is it uses the number of frequency to build up the nonlinear fitting curve, and reduce the computational analysis costs. Furthermore, matching pursuit is non-parameter or unsupervised learning algorithm, there is no any training data requirement. At last, matching pursuit algorithm is also scalable, because it can be run in divide-and-conquer approach and in parallel way. Matching pursuit regression model provides us a rapid method to estimate the anomaly in massive time-series data. 
+The advantages of matching pursuit regression model are that it uses the number of frequency to build up the nonlinear fitting curve and that it reduces the computational analysis costs. Furthermore, matching pursuit is a non-parameter or unsupervised learning algorithm, there are no training data requirement. At last, matching pursuit algorithm is also scalable, because it can be run in a divide-and-conquer approach and in a parallel way. Matching pursuit regression model provides us a rapid method to estimate the anomaly in massive time-series data. 
 
 \subsection{Anomaly diagnostic logics}
-Only matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler, there is supposed to be a method to figure out how to use this ruler to measure.
+Only using the matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler; there is supposed to be a method to figure out how to use this ruler to measure.
 	
-(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. ADetector use residual obtained from the matching procedure, and determine possible anomaly.
+(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data and model one to figure out the outliers. ADetector use residual obtained from the matching procedure and determine possible anomaly.
 			
 \begin{equation}
 res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \overline(x)^2))}
 \end{equation}		 
 
-(b) Latent anomaly data: Latent anomaly data is easy to unaware of because the characteristic of this anomaly is not relevant. In order to look for this anomaly, we calculate heteroskedasticity, and use cook's distance to understand the influential relation between real data and model, and visualize them in comic map cells. 
+(b) Latent anomaly data: Latent anomaly data is easy to miss because the characteristic of this anomaly is not relevant. In order to look for this anomaly, we calculate heteroskedasticity, use Cook's distance to understand the influential relation between real data and model, and visualize them in the comic map cells. 
 
 \section{Results}
 
-We have conducted the evaluation of ADetector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model, and the effectiveness of this model.
+We have conducted the evaluation of ADetector on the time-series weather data collected from Meso weather service website. Meso time-series weather data service keeps over 17 years at different locations around the United States. We now want to validate the relationship between the degree of approximate and the quality of matching pursuit nonlinear regression model. In addition, we also want to figure out the analysis performance of this model and the effectiveness of this model.
 
 \subsection{The correlation validation}
 
-In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
+In this validation, we want to see the performance of the anomaly detection in different data set sizes. 
 
-Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variable. In this experiment, we input 3 year time-series weather data (the total number is 14600), and we change the number of k (the number of iteration) in the model construction, then measure the variations of MSE and Pearson correlation coefficient. 
+Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variables. In this experiment, we input 3 years of time-series weather data (the total number is 14600), and we change the number of $k$ (the number of iteration) in the model construction and measure the variations of MSE and Pearson correlation coefficient. 
+
 \begin{figure}[htb]
 	\fbox{
 		\centering
@@ -365,10 +366,10 @@ Mean square error (MSE) is often used to account for the difference between two 
 	\label{fig:MSEandPearsonCorr}
 \end{figure}
 
-At first, we can find the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
+At first, we can find that the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even though the number of iteration is small, the degree of correlation is high positive. Second, we also conducted the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
 	
 \subsection{The performance validation}
-In this validation, we want to see the performance of the anomaly detection in different size of data sets. We can see ADetector can complete the anomaly data less than one minute. 
+In this validation, we want to see the performance of the anomaly detection in different data set sizes. We can see that ADetector can complete the anomaly data in less than one minute. 
 
 \begin{figure}[htb]
 \begin{center}
@@ -382,13 +383,12 @@ In this validation, we want to see the performance of the anomaly detection in d
 \end{figure} 
 
 \section{Future works}
+In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in the backend and users don't have any control over it. Users can only compare the anomalies detected by the backend model, determine whether it is really a anomaly by comparison, and finally decide to delete it or not. So in order to give users the ability to refine the backend model, we can let users add new parameters or change the values of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
 
-In future work, we plan to support adaptive model tuning based on the feedback from users in the anomaly detection process. Currently in our tool, the anomaly detection model is totally processed in backend and users don't have any control on it. Users can only compare the anomalies detected by the backend model, determinate whether it is really a anomaly by comparison and finally decide to delete it or not. So in order to give uses the ability to refine the backend model, we can let user add new parameters or change the values of parameters of the model (like correct data range, slope, etc) after finding out anomalies from visual graph.
+Moreover, for the data representation in the current version of our tool, we don't support data aggregation. In the analysis workspace, the comic map shows all the anomalies by cells. When the amount of anomalies data becomes very large, we still show every one of them and the whole view may become very large. We may continue investigate a suitable aggregation representation in the comic map representation, which can give the user a better view of the whole structure for analyzing anomalies data as well.
 
-Moreover, for the data representation in the current version of our tool, we don?t support data aggregation. In analyze workspace, the comic map shows all anomalies by cells. When the amount of anomalies data becomes very large, we still show every one of them and the whole view may become very large. We may continue investigate a suitable aggregation representation in the comic map representation, which can give the user a better view of the whole structure for analyzing anomalies data as well.  
 \section{Conclusion}
-
-In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data plays a critical role in scientific and engineering systems, because errors often cause catastrophic consequence. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combines signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly less than one minute. Furthermore, ADetector also supports interactive actions such as timeline navigation, swap, multi-variable comparison, and collaboration. ADetector enables the workflow of time-series anomaly detection become efficient and interactive.
+In this paper, we introduced a theoretical regression model, and a practical implementation of multi-focus comparison technique called comic map. The quality of data plays a critical role in scientific and engineering systems, because errors often cause catastrophic consequences. However, in order to meet the requirement of a mountain of data, we should rethink the anomaly detection methodology. ADetector combines signal processing techniques, and visual analytics to work out an anomaly visual exploration pipeline. ADetector is able to complete analysis of over 10 years time-series weather data, and pick out some possible anomaly in less than one minute. Furthermore, ADetector also supports interactive actions such as a timeline overview, swap, multi-variable comparison, and collaboration. ADetector enables the workflow of time-series anomaly detection to be efficient and interactive.
 
 
 
