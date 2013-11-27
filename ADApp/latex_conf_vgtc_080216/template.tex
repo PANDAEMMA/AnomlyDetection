@@ -151,19 +151,19 @@ The category of time-series anomaly is dependent on the objective and monitoring
 
 Considerable visual analytics research which is related to the time-series visual visualization, and exploration, and the relevant surveys include \cite{silva2000visualization}. The basic line graph \cite{tufte1983visual}is widely in temporal visualization. However, in recent year, in order to delve into the time-series, different visual representation techniques have been worked out\cite{bremm2011interactive}, \cite{mclachlan2008liverac}, \cite{javed2010stack}, \cite{sip2012}, \cite{Liao2010}, \cite{Liao2011}. These graphical representation methods improves the efficiency and effectiveness for time-series data analysis. Furthermore, the massive time-series visual analytics has also became a consideration in ATLAS \cite{chan2008maintaining} system.
  
-	Query and exploration also plays a key role in time-series visual analytics. LifeLine\cite{plaisant1996lifelines} is an early visual system for personal history record exploration. TimeSearcher\cite{hochheiser2004dynamic} is an interactive time-series query tool, and uses the time-box to explore the data sets. PatternFinder \cite{fails2006visual} includes an visual interface to query the medical records. LiveRAC \cite{mclachlan2008liverac} designed an interactive visual interface to explore the data collected from computer systems. Data quality assessment is also getting to become an important topics in visual analytics research. Profiler\cite{Kandel2012}, and RainMon\cite{shafer2012rainmon} integrated statistical analysis and visual representation to find out abnormal hidden in database and computer systems. 
+Query and exploration also plays a key role in time-series visual analytics. LifeLine\cite{plaisant1996lifelines} is an early visual system for personal history record exploration. TimeSearcher\cite{hochheiser2004dynamic} is an interactive time-series query tool, and uses the time-box to explore the data sets. PatternFinder \cite{fails2006visual} includes an visual interface to query the medical records. LiveRAC \cite{mclachlan2008liverac} designed an interactive visual interface to explore the data collected from computer systems. Data quality assessment is also getting to become an important topics in visual analytics research. Profiler\cite{Kandel2012}, and RainMon\cite{shafer2012rainmon} integrated statistical analysis and visual representation to find out abnormal hidden in database and computer systems. 
 	
-	The above projects concentrate mainly on the interactive visual explorations, and visual representation for time-series data. However, beyond the high-level visualization tasks, temporal visual exploration also requires additional attention to the pipeline of the data analytics for special properties. In particular, additional important time-series visual analytics tasks include (a) multi-variable relationship (b) dynamic time-series hierarchies (c) large-scale support\cite{javed2010stack}. Few of the above visualization tools support all these requirement, except Stack Zooming\cite{javed2010stack}, and Live RAC\cite{mclachlan2008liverac}. 
+The above projects concentrate mainly on the interactive visual explorations, and visual representation for time-series data. However, beyond the high-level visualization tasks, temporal visual exploration also requires additional attention to the pipeline of the data analytics for special properties. In particular, additional important time-series visual analytics tasks include (a) multi-variable relationship (b) dynamic time-series hierarchies (c) large-scale support\cite{javed2010stack}. Few of the above visualization tools support all these requirement, except Stack Zooming\cite{javed2010stack}, and Live RAC\cite{mclachlan2008liverac}. 
 	
 \subsection{Support multi-focus comparison}
 
-	The anomaly is the one that does not follow well defined normal behavior\cite{Chandola2009}. Anomaly is often unveiled via comparison with expected values or baseline model. Thus, we argue the temporal analysis is supposed to support the concept of multi-focus comparison. Multi-focus comparison framework is consist of the comparison tasks for the multiple focus, context, and distance awareness \cite{javed2010stack}, \cite{elmqvist2008melange}. This approach is supported by Stack Zooming\cite{javed2010stack}, which leverages one-dimensional nature of the data to present hierarchies of visualization strips, and LiveRAC \cite{mclachlan2008liverac}. In this paper, we take advantage of different approach to multi-focus interaction compared to Stack Zooming and LiveRAC system. We leverage comic map which is composed of multiple small cells, and integrate with the types of anomaly and timestamps to present the relationship of anomaly and its occurrence time. 
+The anomaly is the one that does not follow well defined normal behavior\cite{Chandola2009}. Anomaly is often unveiled via comparison with expected values or baseline model. Thus, we argue the temporal analysis is supposed to support the concept of multi-focus comparison. Multi-focus comparison framework is consist of the comparison tasks for the multiple focus, context, and distance awareness \cite{javed2010stack}, \cite{elmqvist2008melange}. This approach is supported by Stack Zooming\cite{javed2010stack}, which leverages one-dimensional nature of the data to present hierarchies of visualization strips, and LiveRAC \cite{mclachlan2008liverac}. In this paper, we take advantage of different approach to multi-focus interaction compared to Stack Zooming and LiveRAC system. We leverage comic map which is composed of multiple small cells, and integrate with the types of anomaly and timestamps to present the relationship of anomaly and its occurrence time. 
 	
 \subsection{Support collaboration and data reduction}
 
-	Kittur et al\cite{kittur2008crowdsourcing} claims crowdsourcing is a successful approach, which depends on the intelligence of a group of human-beings to solve some hard problems. Furthermore, the distributed cognition\cite{liu2008distributed} has been showed the power to amplify sensemaking in the team-working analysis. The anomaly visual analytics tool is supposed to take the collaboration into consideration, since the mathematical model cannot understand all uncertainties embedded in time-series data. Thus, the participant in the team analysis can be a key role for anomaly exploration.
+Kittur et al\cite{kittur2008crowdsourcing} claims crowdsourcing is a successful approach, which depends on the intelligence of a group of human-beings to solve some hard problems. Furthermore, the distributed cognition\cite{liu2008distributed} has been showed the power to amplify sensemaking in the team-working analysis. The anomaly visual analytics tool is supposed to take the collaboration into consideration, since the mathematical model cannot understand all uncertainties embedded in time-series data. Thus, the participant in the team analysis can be a key role for anomaly exploration.
 	 
-	The scalability is getting to become a critical issue in big data visual analytics. It is hard to display all big data, because the overwhelming computational and memory overhead. The visual analysts can help to narrow down the size and range of data analysis based on the statistical view recommendation. In this paper, we work out a new visual analytics pipeline, which enable analysis participants to join the iterative anomaly detection and set up a possible abnormal time-series range to explore anomaly.
+The scalability is getting to become a critical issue in big data visual analytics. It is hard to display all big data, because the overwhelming computational and memory overhead. The visual analysts can help to narrow down the size and range of data analysis based on the statistical view recommendation. In this paper, we work out a new visual analytics pipeline, which enable analysis participants to join the iterative anomaly detection and set up a possible abnormal time-series range to explore anomaly.
 
 
 \section{ADetector}
@@ -173,10 +173,11 @@ ADetector is an anomaly visual exploration tool. Since the overwhelming anomaly 
 \subsection{Anomaly diagnosis workflow}
 
 In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps -- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
- \begin{figure}[htb]
+
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.49\textwidth]{workflow.png}
-  \caption{The anomaly detection workflow of ADetector tool}
+	\includegraphics[width=0.47\textwidth]{workflow.png}
+	\caption{The anomaly detection workflow of ADetector tool}
 \end{figure}
 
 
@@ -204,28 +205,28 @@ The data comparison tool consists of comic map, which includes multiple line gra
 
 After getting the potential anomalies from the computer, users can step in to analyze the potential anomaly in order to identify if it is actually an anomaly or to find out the reason for the anomaly. In time-series climate data, for example, some abnormal temperature may imply some useful climate phenomena in a specific time frame. In order to find out the pattern or trend behind these anomalies, it is useful to provide the users some method to compare the anomalies. Also an overview of the relationship of these anomalies with the whole datasets will help the users establish an overall understanding as well. Here we introduce a novel representation of anomalies – comic map. 
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.45\textwidth]{comicMap9Cell.jpg}
-  \caption{Comic Map}
+	\includegraphics[width=0.45\textwidth]{comicMap9Cell.jpg}
+	\caption{Comic Map}
 \end{figure}
 
 Comic map is composed of several grid cells. Each shows detail information of each anomaly (Figure 2). With this layout, user can swap and merge cells freely to compare the anomalies with simple drag-and-drop functionality. Moreover, An overview timeline representation of all anomalies is also established corresponding the comic map grid to give the user more knowledge of the anomaly based on the overall timeline (Figure 3)
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.45\textwidth]{timeline.png}
-  \caption{Timeline Overview}
+	\includegraphics[width=0.45\textwidth]{timeline.png}
+	\caption{Timeline Overview}
 \end{figure}
 
 \subsection{Comic map cells}
 
 The basic component of the comic map is every comic map cell. For time series data, a timeline-based representation is more intuitive for user to receive. And also in order to better understand the anomaly, the data surrounding this anomaly is needed for the user to get a picture of the trend of this anomaly, like for extreme anomaly, it appears much higher than other data around. So in each cell, anomaly data is shown along with some more data before and after it in a time sequence visualized as line graphs. In addition, the anomaly data is marked with a red circle as shown in Figure 4. 
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.20\textwidth]{onecell.jpg}
-  \caption{Comic Map Cell}
+	\includegraphics[width=0.20\textwidth]{onecell.jpg}
+	\caption{Comic Map Cell}
 \end{figure}
 
 Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start date of the data in this grid and end data of this grid cell, etc. There is no axis along with timestamp labels is shown due to the space limit of the grid cell. Then the start date and end date are given to provide the user the information about the time. All these information are trying to help analyst get a better understanding of the dataset in the cell.
@@ -242,10 +243,10 @@ For each cell, some information related to the specific anomaly can be obtained,
 Since the dataset is a time-series climate data, time information should be an understandable choice for an overall representation. In the timeline overview, an axis of timestamp is used as the main visualization. Some timestamps are shown to give analyst an overview of time. On the time axis, anomalies are marked corresponding to their happening time. Specifically, different type of anomalies are marked using different colors. Through this overview visualization, analyst gains information of anomalies based on the whole dataset, like the frequency of anomaly in a specific timeframe, the occurrence of different type of anomalies, etc. 
 The comic map cells are also tightly connected with this timeline overview. When a comic map cell is selected, the corresponding timeframe of data in the cell will be highlighted in the overview. More information can be obtained for analyst to analyze anomaly in the cell (Figure 5). 
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.45\textwidth]{timeline2.png}
-  \caption{Timeline overview: select a cell, the corresponding time will be highlighted (light yellow)}
+	\includegraphics[width=0.45\textwidth]{timeline2.png}
+	\caption{Timeline overview: select a cell, the corresponding time will be highlighted (light yellow)}
 \end{figure}
 
 \subsection{Comparison interaction}
@@ -254,28 +255,28 @@ As mentioned before, comparison plays an important role in anomaly analysis. Our
 \subsubsection{Swap}
 The first interaction for comic map is swap. Analyst can swap any two cells by simply drag and drop. By using this interaction, analyst can put any cells together to do a comparison.  Also, analyst can rearrange the comic map to put similar anomalies together (Figure 6).  
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.45\textwidth]{swap.jpg}
-  \caption{Comic Map Swap: upper-left cell swapped with lower-right cell, upper-right cell swapped with lower-left cell}
+	\includegraphics[width=0.45\textwidth]{swap.jpg}
+	\caption{Comic Map Swap: upper-left cell swapped with lower-right cell, upper-right cell swapped with lower-left cell}
 \end{figure}
 
 \subsubsection{Merge}
 The second interaction for comic map is merge. Comparison can be done by putting objects side by side, but can also be done by showing two datasets in one view. The introduction of merge interaction enables the ability of doing comparison in one cell. 
 In order to merge two cells into one cell, analyst can just pick up one cell and drag-and-drop it onto the cell that he wants to merge with. For example, if the analyst wants to merge first, second and third cell, he can drag-and-drop the first cell to the third cell, and then drag-and-drop the second cell to the third cell. A merged view is automatically generated in the third cell (Figure 7).
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.45\textwidth]{merge.jpg}
-  \caption{Comic Map Merge: first cell and second cell merged into third cell}
+	\includegraphics[width=0.45\textwidth]{merge.jpg}
+	\caption{Comic Map Merge: first cell and second cell merged into third cell}
 \end{figure}
  
 The merged view is also revertible. There is a cross sign on the upper-right corner of the merged view. Simply by clicking the cross sign, the merged view will be reverted back to the original dataset view. For example in our former example, after clicking the cross sign, the third cell will show the original anomaly data in that cell (Figure 8).
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.45\textwidth]{merge2.jpg}
-  \caption{Comic Map Merge: revert back to original data by clicking the cross sign}
+	\includegraphics[width=0.45\textwidth]{merge2.jpg}
+	\caption{Comic Map Merge: revert back to original data by clicking the cross sign}
 \end{figure}
 
 \subsubsection{Stack zooming}
@@ -284,10 +285,10 @@ The third interaction for comic map is stack zooming. Analyst often needs to see
 In order to zoom into a specific subset of data, analyst select the region (stack) he wants to zoom in (Figure 9). Then the cell will be automatically updated showing that portion of data. 
 The same as merge interaction, stack zooming is also revertible by just clicking on the cross sign on the upper-right corner. Then, the original whole dataset of anomaly will be shown.
 
- \begin{figure}[htb]
+\begin{figure}[htb]
 	\centering
-  \includegraphics[width=0.20\textwidth]{zoom.jpg}
-  \caption{Comic Map Stack Zooming: select a region (stack) to zoom}
+	\includegraphics[width=0.20\textwidth]{zoom.jpg}
+	\caption{Comic Map Stack Zooming: select a region (stack) to zoom}
 \end{figure}
 
 \section{Matching pursuit -- regressive anomaly detector}
@@ -301,9 +302,9 @@ Fourier transform is a well-known tool in engineering and science. The amplitude
 Matching pursuit is composed of the following five steps. The first step is to use Fourier transform to convert time-series input data to frequency domain. The second one is to obtain the frequency index of top k high amplitude to be the training data. Since the estimate data is consist of the scalar A, and the Fourier Transform equation, but A is unknown. Thus, in order to get the A scalar, the least square method is used to to get the scalar of A. After getting the number of A, the next step is to use scalar A1 to Ak to work out the number of k eigensolutions. At last, supperpositing these k eigen-solutions and carry out an approximate model that is closed to the original one.
 
 \begin{figure}[htb]
-\fbox{
-	\centering
-  \includegraphics[width=0.45\textwidth]{fft.png}
+	\fbox{
+		\centering
+		\includegraphics[width=0.45\textwidth]{fft.png}
 	}
 	\caption{The workflow of matching pursuit regression model}
 \end{figure}
@@ -327,28 +328,28 @@ We have conducted the evaluation of ADetector on the time-series weather data co
 
 \subsection{The correlation validation}
 
-	In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
+In this validation, we want to see the performance of the anomaly detection in different size of data sets. 
 
 Mean square error (MSE) is often used to account for the difference between two variables. In addition, Pearson correlation coefficient is used to measure the linear correlation between two variable. In this experiment, we input 3 year time-series weather data (the total number is 14600), and we change the number of k (the number of iteration) in the model construction, then measure the variations of MSE and Pearson correlation coefficient. 
 \begin{figure}[htb]
-\fbox{
-	\centering
-  \includegraphics[width=0.23\textwidth]{chart_1.png}
-  \includegraphics[width=0.23\textwidth]{chart_2.png}
+	\fbox{
+		\centering
+		\includegraphics[width=0.225\textwidth]{chart_1.png}
+		\includegraphics[width=0.225\textwidth]{chart_2.png}
 	}
 	\caption{The MSE and Pearson correlation coefficient}
 \end{figure}
 
-	At first, we can find the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
+At first, we can find the correlation in each experiment result reveal positive correlation, which means the model data is correlated to the real data. Furthermore, we also find the correlation coefficient is high when we only iterate the regression algorithm 5 times. In other words, even the number of iteration is small, the degree of correlation is high positive. Second, we also conduct the MSE measurement, and we found the MSE decrease with the number of iteration, but the completion time increases with the growth of iteration.
 	
 \subsection{The performance validation}
 In this validation, we want to see the performance of the anomaly detection in different size of data sets. We can see ADetector can complete the anomaly data less than one minute. 
 
 \begin{figure}[htb]
 \begin{center}
-\fbox{
-	\centering
-  \includegraphics[width=0.30\textwidth]{chart_3.png}
+	\fbox{
+		\centering
+		\includegraphics[width=0.30\textwidth]{chart_3.png}
 	}
 \end{center}
 	\caption{The performance validation}
