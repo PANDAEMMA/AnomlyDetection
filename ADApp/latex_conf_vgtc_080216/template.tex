@@ -173,7 +173,7 @@ ADetector is an anomaly visual exploration tool. Due to the overwhelming anomaly
 
 \subsection{Anomaly diagnosis workflow}
 
-In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps -- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
+In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly. Thus ADetector is composed of five steps --- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
 
 \begin{figure}[htb]
 	\centering
@@ -219,7 +219,7 @@ After getting the potential anomalies from the computer, users can step in to an
 	\caption{Comic Map}
 \end{figure}
 
-Comic map is composed of several grid cells. Each shows detail information of each anomaly (Figure 2). With this layout, user can swap and merge cells freely to compare the anomalies with simple drag-and-drop functionality. Moreover, An overview timeline representation of all anomalies is also established corresponding the comic map grid to give the user more knowledge of the anomaly based on the overall timeline (Figure 3)
+Comic map is composed of several grid cells. Each shows detailed information of each anomaly (Figure 2). With this layout, user can swap and merge cells freely to compare the anomalies with simple drag-and-drop functionality. Moreover, An overview timeline representation of all anomalies is also established that corresponds with the comic map grid to give the user more knowledge of the anomaly based on the overall timeline (Figure 3)
 
 \begin{figure}[htb]
 	\centering
@@ -229,7 +229,7 @@ Comic map is composed of several grid cells. Each shows detail information of ea
 
 \subsection{Comic map cells}
 
-The basic component of the comic map is every comic map cell. For time series data, a timeline-based representation is more intuitive for user to receive. And also in order to better understand the anomaly, the data surrounding this anomaly is needed for the user to get a picture of the trend of this anomaly, like for extreme anomaly, it appears much higher than other data around. So in each cell, anomaly data is shown along with some more data before and after it in a time sequence visualized as line graphs. In addition, the anomaly data is marked with a red circle as shown in Figure 4. 
+The basic component of the comic map is every comic map cell. For time series data, a timeline-based representation is more intuitive for user to receive. Also, in order to better understand the anomaly, the data surrounding this anomaly is needed for the user to get a picture of the trend of this anomaly, like for extreme anomaly, which appears much higher than other data around. So in each cell, anomaly data is shown with some more data before and after it in a time sequence visualized as line graphs. In addition, the anomaly data is marked with a red circle as shown in Figure 4. 
 
 \begin{figure}[htb]
 	\centering
@@ -237,7 +237,8 @@ The basic component of the comic map is every comic map cell. For time series da
 	\caption{Comic Map Cell}
 \end{figure}
 
-Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start date of the data in this grid and end data of this grid cell, etc. There is no axis along with timestamp labels is shown due to the space limit of the grid cell. Then the start date and end date are given to provide the user the information about the time. All these information are trying to help analyst get a better understanding of the dataset in the cell.
+Other than the basic line graph of anomaly, some additional information is provided as plain text shown in the upper left corner of the cell, including standard deviation, mean value, start and end date of the data in this grid cell, etc. The axis is not shown with the timestamp labels due to the space limit of the grid cell. Then, the start and end dates are given to provide the user the information about the time. All these information are included to help analyst get a better understanding of the dataset in the cell.
+
 \subsection{Layout}
 Cells of comic map are laid out as comic book grid (Figure 2). In this way, each cell has three (corner cell), five (edge cell) or eight neighbors around it. This kind of layout is more helpful for comparison. Since usually users prefer to set objects side by side to compare it. In our layout, each cell can be easily compared with their neighbors and the number of neighbors is bigger than the traditional horizontal or vertical layout. This is efficient since analyst can do more comparison in comic map layout with less cells moving around.
 
