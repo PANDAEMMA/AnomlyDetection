@@ -316,13 +316,13 @@ In order to zoom into a specific subset of data, analysts would select the regio
 
 \section{Matching pursuit -- regressive anomaly detector}
 
-Regression analysis is used to estimate the trends among variables with the change of the time. Regression analysis model is often used to predict or interpret observed data. Matching is one nonlinear regression model used in ADetector to figure out possible anomaly. The role of regression model is being a baseline to account for the data, and distinguish anomaly from normal one. Least-square fitting curve aims to work out a best-fit formula to describe the distribution or behavior of data. Linear regression model such as ordinary least squares, and weighted least square. However, these linear models sometimes are not applied in nonlinear time-series data, such as financial data, and weather data. In order to find out anomaly from massive data, the nonlinear regression model is supposed to meet scalable, low complexity, and feasible requirements.
+Regression analysis is used to estimate the trends among variables with the change of time. Regression analysis model is often used to predict or interpret observed data. Matching is one nonlinear regression model used in ADetector to figure out possible anomaly. The role of regression model is being a baseline to account for the data and distinguish anomaly from normal one. Least-square fitting curve aims to work out a best-fit formula to describe the distribution or behavior of data. Linear regression models include ordinary least squares and weighted least square. However, these linear models sometimes are not applied in nonlinear time-series data, such as financial data and weather data. In order to find out anomaly from massive data, the nonlinear regression model is supposed to meet scalable, low complexity, and feasible requirements.
 
 \subsection{Approximate nonlinear regression model}
 
-Fourier transform is a well-known tool in engineering and science. The amplitude in the frequency domain is able to represent the characteristic of the data in the time domain. Supposed that the noise is not the principal feature in the data, so the amplitude of noise is low. In addition, Fourier transform can be looked as a noise filter, since in the Fourier frequency domain, high amplitudes usually gather in the initial frequency. Thus, our objective is to leverage the top k big amplitude to reconstruct a fitting curve to estimate the anomaly. 
+Fourier transform is a well-known tool in engineering and science. The amplitude in the frequency domain is able to represent the characteristic of the data in the time domain. For example, noise is not supposed to be the principal feature in the data, so the amplitude of noise is low. In addition, Fourier transform can be looked as a noise filter, since in the Fourier frequency domain, high amplitudes usually gather in the initial frequency. Thus, our objective is to leverage the top $k$ big amplitude to reconstruct a fitting curve to estimate the anomaly. 
 
-Matching pursuit is composed of the following five steps. The first step is to use Fourier transform to convert time-series input data to frequency domain. The second one is to obtain the frequency index of top k high amplitude to be the training data. Since the estimate data is consist of the scalar A, and the Fourier Transform equation, but A is unknown. Thus, in order to get the A scalar, the least square method is used to to get the scalar of A. After getting the number of A, the next step is to use scalar A1 to Ak to work out the number of k eigensolutions. At last, supperpositing these k eigen-solutions and carry out an approximate model that is closed to the original one.
+Matching pursuit is composed of the following five steps. The first step is to use Fourier transform to convert time-series input data to the frequency domain. The second one is to obtain the frequency index of top $k$ high amplitude to be the training data. The estimate data consists of the scalar $A$ and the Fourier Transform equation, but $A$ is unknown. Thus, in order to get the scalar $A$, the least square method is used to get the scalar $A$. After getting $A$, the next step is to use scalar $A_1$ to $A_k$ to work out the $k$ eigensolutions. At last, superpose these $k$ eigensolutions and carry out an approximate model that is close to the original one.
 
 \begin{figure}[htb]
 	\fbox{
@@ -333,18 +333,18 @@ Matching pursuit is composed of the following five steps. The first step is to u
 	\label{fig:fft}
 \end{figure}
 
-The advantages of matching pursuit regression model is it uses the number of frequency to build up the nonlinear fitting curve, and reduce the computational analysis costs. Furthermore, matching pursuit is non-parameter or unsupervised learning algorithm, there is no any training data requirement. At last, matching pursuit algorithm is also scalable, because it can be run in divide-and-conquer approach and in parallel way. Matching pursuit regression model provides us a rapid method to estimate the anomaly in massive time-series data. 
+The advantages of matching pursuit regression model are that it uses the number of frequency to build up the nonlinear fitting curve and that it reduces the computational analysis costs. Furthermore, matching pursuit is a non-parameter or unsupervised learning algorithm, there are no training data requirement. At last, matching pursuit algorithm is also scalable, because it can be run in a divide-and-conquer approach and in a parallel way. Matching pursuit regression model provides us a rapid method to estimate the anomaly in massive time-series data. 
 
 \subsection{Anomaly diagnostic logics}
-Only matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler, there is supposed to be a method to figure out how to use this ruler to measure.
+Only using the matching pursuit regression model is not enough to figure out the location of anomaly, since matching pursuit is like a ruler; there is supposed to be a method to figure out how to use this ruler to measure.
 	
-(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data, and model one to figure out the outliers. ADetector use residual obtained from the matching procedure, and determine possible anomaly.
+(a) Systematic error: the systematic error is a bias that is shift away from the mean. According to the residual formula, we can calculate studentized residual between real data and model one to figure out the outliers. ADetector use residual obtained from the matching procedure and determine possible anomaly.
 			
 \begin{equation}
 res_i = \sigma^2 ( 1 -\frac{1}{n} \frac{((x_j - \overline(x)^2))}{\sum_i(x_j - \overline(x)^2))}
 \end{equation}		 
 
-(b) Latent anomaly data: Latent anomaly data is easy to unaware of because the characteristic of this anomaly is not relevant. In order to look for this anomaly, we calculate heteroskedasticity, and use cook's distance to understand the influential relation between real data and model, and visualize them in comic map cells. 
+(b) Latent anomaly data: Latent anomaly data is easy to miss because the characteristic of this anomaly is not relevant. In order to look for this anomaly, we calculate heteroskedasticity, use Cook's distance to understand the influential relation between real data and model, and visualize them in the comic map cells. 
 
 \section{Results}
 
