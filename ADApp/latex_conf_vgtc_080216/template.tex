@@ -173,7 +173,7 @@ ADetector is an anomaly visual exploration tool. Due to the overwhelming anomaly
 
 \subsection{Anomaly diagnosis workflow}
 
-In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly as shown in Figure ~\ref{fig:workflow}. Thus ADetector is composed of five steps --- Data Table, Type inference, Anomaly region search, view recommendation, and interactive time-series navigation, and comparison.
+In order to take insight into the patterns of abnormal data. ADetector takes advantage of an interactive visual anomaly detection pipeline to infer unpredictable anomaly as shown in Figure ~\ref{fig:workflow}. Thus ADetector is composed of five steps --- Data Table, Statistical Analysis Diagram, Region Selection, View Recommendation, Interactive Analysis, and Data Clean.
 
 \begin{figure}[htb]
 	\centering
@@ -183,14 +183,14 @@ In order to take insight into the patterns of abnormal data. ADetector takes adv
 \end{figure}
 
 \begin{itemize}
-	\item Data Table: This step includes a series data manipulation options such as the selection of input and the type of weather data. 
+	\item Data Table: This step includes a series of data manipulation options such as the selection of input and the type of weather data. 
 	\item Statistical Analysis Diagram: This step provides all anomaly statistical information in a histogram (abnormal region reduction tool) for each year for analysis. Year information can be expanded into monthly information or collapse back.
-	\item Region Selection: Analyst can choose a certain time interval (e.g. one year) to delve in to the micro-level for anomalies analysis by double clicking on region (year or month) on the statistical analysis histogram.
-	\item View Recommendation: At this step, ADetector exploits regression model to carry out anomaly matching calculation, then show the possible anomaly region in multiple cells. The missing, extreme data statistics are shown in timeline widget as well.
+	\item Region Selection: Analyst can choose a certain time interval (e.g. one year) to delve into the micro-level for anomalies analysis by double clicking on region (year or month) on the statistical analysis histogram.
+	\item View Recommendation: At this step, ADetector exploits regression model to carry out anomaly matching calculation, and then it shows the possible anomaly region in multiple cells. The missing and extreme data statistics are shown in the timeline overview widget as well.
 	\item Interactive Analysis: In this step, users can conduct interactive analysis on these anomalies like comparison.
 	\item Data Clean: After interactive analysis, users can choose to use the data clean tool provided by ADetector to do clean out anomalies.(optional)
 \end{itemize}
-Altogether, ADetector workflow is composed of selection, reduction, and comparison steps.
+Altogether, the ADetector workflow is composed of selection, reduction, and comparison steps.
 
 \subsection{The composition of ADetector}
 \subsubsection{Data clean tool}
@@ -198,7 +198,7 @@ Altogether, ADetector workflow is composed of selection, reduction, and comparis
 Data clean tool aims to find out all missing data in the data sets and show their timestamp. Users are able to figure out the occurrence frequency and time from this data clean tool. Furthermore, users also can remove the missing records from this data clean tool. Altogether, the data clean tool gives users an overview of the information about missing data, and allows users to remove them. 
 
 \subsubsection{Abnormal region reduction tool}
-The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histogram, and show the proportion of multiple statistical analysis results in each year. ADetector give three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data, and fitting curve model to help users determine which year is supposed to pay attention to. Afterward, users can delve into one specific year, and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis (Figure ~\ref{fig:region}).
+The purpose of possible abnormal region reduction tool is to narrow down the data checking. This tool is composed of several histograms and shows the proportion of multiple statistical analysis results in each year. ADetector gives three view recommendations including the number of missing data, the average of extreme data, and the residual between raw data and fitting curve model to help users determine which year they are supposed to pay attention to. Afterward, users can delve into one specific year and take a look at the monthly distribution. In the meantime, according to view recommendations. Users can choose one month to proceeds micro-analysis (Figure ~\ref{fig:region}).
 
 \begin{figure}[htb]
 	\centering
@@ -209,7 +209,7 @@ The purpose of possible abnormal region reduction tool is to narrow down the dat
 
 \subsubsection{Data comparison tool}
 
-The data comparison tool consists of comic map, which includes multiple line graph cells. Importing the selected monthly data from susceptible abnormal region reduction tool, ADetector proceeds residual calculation toward selected data, and show a number of possible abnormal region in each comic map cells. In addition, this tool also supports cell switch and multiple line graph merge functionalities. From this tool, users are able to compare the fluctuation of each comic map cell. Furthermore, ADetector data comparison tool also includes stack zooming functionality. Users can select one certain time interval to zoom in and zoom out. 
+The data comparison tool consists of the whole comic map, which includes multiple line graph cells. Importing the selected monthly data from susceptible abnormal region reduction tool, ADetector processes residual calculation toward selected data and show a number of possible abnormal region in each comic map cells. In addition, this tool also supports cell swap and multiple line graph merge functionalities. From this tool, users are able to compare the fluctuation of each comic map cell. Furthermore, the ADetector's data comparison tool also includes the stack zooming functionality. Users can select one certain time interval to zoom in and zoom out. 
 
 % \begin{figure}[htb]
 %\centering
