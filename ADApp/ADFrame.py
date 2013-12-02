@@ -206,12 +206,34 @@ class ADFrame(wx.Frame):
         list.append([dic3])
         return list'''
     
+    def Pick_xaxis(self):
+	File = self.openFilePath+'.tmp'
+	index = [0, 15, 31, 46, 60]
+	year = []
+	length = 0
+	fd = open(File, 'r')
+	for line in fd.readlines():
+		length = length + 1
+	fd.close()
+	interval = (int)(length/5)
+	count = 0
+	fd = open(File, 'r')
+	for line in fd.readlines():
+		count = count + 1
+		a = re.split(',|\n| ', line)
+		if((count % interval) == 0):
+			a = a[MON] + '/' + a[DAY] + '/' + a[YEAR]
+			year.append(a)
+	fd.close()
+	return zip(index, year)
+
     def PackTimelineData(self):
         #{labels:[list], anomolies: [list]}
         # the data part is the information you need to give me
         data = dict()
         #1st and last should be the start and end time, if no lable, can be like [(0, '')]
-        data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
+        #data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
+	data['labels'] = self.Pick_xaxis()
         #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
         data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
         #same as timeframe in comic map, for hightlight, (start date, end date)
