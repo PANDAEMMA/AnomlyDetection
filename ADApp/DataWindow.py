@@ -3,23 +3,27 @@ import math
 import random
 import os
 
+from ADAnRecordLabel import *
+from ADParse import *
+from ADFrame import *
+from DataPanel import *
+
 class DataWindow(wx.Frame):
 
-    def __init__(self,parent,id):
-        wx.Frame.__init__(self, parent, id, 'Data', size=(550,530))
+    def __init__(self,parent,id, File):
+        wx.Frame.__init__(self, parent, id, 'Data', size=(550,630))
         wx.Frame.CenterOnScreen(self)
         CONTENT_ID = wx.NewId()
-        self.content = DataContent(self, CONTENT_ID, None)
+        self.content = DataContent(self, CONTENT_ID, None, File)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.content, 0, wx.EXPAND)
         #self.new.Show(False)
         
-        
 class DataContent(wx.Window):
-    def __init__(self, parent, id, data):
+    def __init__(self, parent, id, data, File):
         wx.Window.__init__(self, parent, id=id)
         self.SetBackgroundColour(wx.WHITE)
-        self.SetSize((550,510))
+        self.SetSize((550,610))
         self.rect = self.GetClientRect()
         self.zeroX = self.rect.x
         self.zeroY = self.rect.y
@@ -28,57 +32,89 @@ class DataContent(wx.Window):
         self.eColor = wx.Colour(255, 50, 50)
         self.gColor = wx.Colour(50,255,50)
         self.mColor = wx.Colour(50, 50, 255)
-        self.scale = 30
-        self.num = 17
-        self.offset = 50
-        #self.addPng = wx.Image(self.opj('add.png'), wx.BITMAP_TYPE_PNG).ConvertToBitmap()
-	self.addPng = wx.Bitmap('add.png')
-        self.minusPng = wx.Image(self.opj('minus.png'), wx.BITMAP_TYPE_PNG).ConvertToBitmap()
-        
+        self.scale = 32
+        self.num = 2
+        self.offset = 100
+	# Layout
+	self.File = File
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        
+	self.Show(True)
+
     def OnPaint(self, event):
         pdc = wx.PaintDC(self)
         dc = wx.GCDC(pdc)
         self.DrawDivide(dc)
         self.DrawPercent(dc)
-        self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
-        self.DrawButton(dc)
+        #self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
+	# Get the number of year
+	year = get_year(self.File, YEAR)
+	self.DrawLabel(dc, year)
+	length = len(year)
+	# Draw out annual statistic
+	for i in range(length):
+		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
+		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min((int)(year[i])*ZOOM_OUT,i))
+		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check((int)(year[i])*CHECK,i))
+
         
-    def DrawButton(self, dc):
-        for i in range(self.num):
-	    dc = wx.PaintDC(self)
-            dc.SetBackground(wx.Brush("WHITE"))
-	    dc.DrawBitmap(self.addPng, 0, 10, useMask=False)
-            #wx.StaticBitmap(self, -1, self.addPng, (10, 10), (20, 20))
-    
+    def DrawButton_min(self, id, y_axis):
+	self.image2 = wx.Image("minus.ico", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+	self.button2 = wx.BitmapButton(self, id, bitmap=self.image2,
+        pos=(self.image2.GetWidth(), y_axis*self.image2.GetHeight()), size = (self.image2.GetWidth(), self.image2.GetHeight()))
+	self.button2.SetDefault()
+
+    def DrawButton_check(self, id, y_axis):
+	self.image3 = wx.Image("check.ico", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+	self.button3 = wx.BitmapButton(self, id, bitmap=self.image3,
+        pos=(2 * self.image3.GetWidth(), y_axis*self.image3.GetHeight()), size = (self.image3.GetWidth(), self.image3.GetHeight()))
+	self.button3.SetDefault()
+
+    def DrawButton_add(self, id, y_axis):
+	self.image1 = wx.Image("add.ico", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        self.button1 = wx.BitmapButton(self, id, bitmap=self.image1,
+        pos=(0, y_axis*self.image1.GetHeight()), size = (self.image1.GetWidth(), self.image1.GetHeight()))
+	self.button1.SetDefault()
+
+    def doMe(self, event):
+	id_n = event.GetId()
+	if ((id_n % CHECK) == 0):
+		year = id_n / CHECK
+		fd = open(self.File, 'r')
+		fd1 = open(self.File+'.tmp', 'w+')
+		for line in fd.readlines():
+			a = re.split(',|\n| ', line)
+			if((int)(a[YEAR]) == year):
+				fd1.write(line)
+		fd.close()
+		fd1.close()
+	self.Destroy() # test
+
     def DrawDivide(self, dc):
         dc.SetPen(wx.BLACK_PEN)
-        for i in range(self.num):
+        for i in range(self.num + 1):
             dc.DrawLine(self.zeroX, self.zeroY+self.scale*i,self.zeroX+self.width, self.zeroY+self.scale*i)
             
     def DrawPercent(self, dc):
+	aa = normal_stat(self.File, YEAR, TEMPER)
+	miss_data = [item[0] for item in aa]
+	max_data = [item[1] for item in aa]
+	min_data = [item[2] for item in aa]
         for i in range(self.num):
-            if i == 2:
-                self.DrawMonth(dc, i)
-            elif i == 0:
-                self.DrawMonth(dc, i)
-            else:
                 dc.SetPen(wx.Pen(self.eColor))
                 dc.SetBrush( wx.Brush(self.eColor) )
-                e = random.randint(25,40)
-                dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, e, self.scale-1)
+       #         e = random.randint(25,40)
+                dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, miss_data[i] * self.width, self.scale-1)
                 dc.SetPen(wx.Pen(self.gColor))
                 dc.SetBrush( wx.Brush(self.gColor) )
-                g = random.randint(5,25)
-                dc.DrawRectangle(self.zeroX+self.offset+e, self.zeroY+self.scale*i+1, g, self.scale-1)
+         #       g = random.randint(5,25)
+                dc.DrawRectangle(self.zeroX+self.offset+ (miss_data[i] * self.width), self.zeroY+self.scale*i+1, max_data[i] * self.width, self.scale-1)
                 dc.SetPen(wx.Pen(self.mColor))
                 dc.SetBrush( wx.Brush(self.mColor) )
-                m = random.randint(25,50)
-                dc.DrawRectangle(self.zeroX+self.offset+e+g, self.zeroY+self.scale*i+1, m, self.scale-1)
+       #         m = random.randint(25,50)
+                dc.DrawRectangle(self.zeroX+self.offset+((miss_data[i] + max_data[i]) * self.width), self.zeroY+self.scale*i+1, min_data[i] * self.width, self.scale-1)
             
     def DrawLabel(self, dc, data):
-        self.labelFont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(self.labelFont)
         dc.SetPen(wx.BLACK_PEN)
         for i in range(len(data)):

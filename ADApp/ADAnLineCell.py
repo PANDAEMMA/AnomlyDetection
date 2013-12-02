@@ -27,7 +27,7 @@ def AnalyzeData(fileObj, dataObj_i):
     signal = []
 
     top_k = 9
-    chunk_num = 1000
+    chunk_num = 10
 
     fd = open(fileObj, 'r')
     # N is the total number of data in a file

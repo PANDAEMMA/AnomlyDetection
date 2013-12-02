@@ -21,6 +21,9 @@ PRESS = 10  # Pressure index
 WEEK_DAY  = 7 # Number of day per week
 
 RATE = 0.01	# The ratio of extreme data (ADAnRecord.py)
+
+ZOOM_OUT = 13   # The divide number of Zoom out in DataWindows.py
+CHECK	= 17	# The divide number of check in DataWindows.py
 # Get data in a specific index
 def get_data_all(fd, flag):
 	arr = []

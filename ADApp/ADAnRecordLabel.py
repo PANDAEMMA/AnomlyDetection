@@ -12,6 +12,32 @@ from ADParse import *
 #
 #------------------------------------------------
 
+# Objective: return the ratio of abnormal data (x-axis) (dangerous score)
+# Usage: normal_stat (fileObj, YEAR, TEMPER)
+# Return: [(0.3, 0.2, 0.1), (0.2, 0.1, 0.2)] (miss_data, max_data, min_data)
+def normal_stat(fileObj, year_flag, mis_flag):
+        miss = []
+        maxx = []
+        minn = []
+	# Counting missing data
+        a = count_year_missdata(fileObj, year_flag, mis_flag)
+	# Counting max data avg
+        aa = count_year_max_data_avg(fileObj, mis_flag)
+	# Counting the nubmer of max data
+        max_a = count_year_max_data(fileObj, aa, mis_flag)
+	# Counting min data avg
+        mm = count_year_min_data_avg(fileObj, mis_flag)
+	# Counting the number of min data
+        min_a = count_year_min_data(fileObj, mm, mis_flag)
+	# Sum up the number of missing, max data, and min data in each year 
+        sum_all = sum(a) + sum(max_a) + sum(min_a)
+	# Get the ratio of data in each dimension
+        for i in range(len(max_a)):
+                miss.append((float)(a[i])/(float)(sum_all))
+                maxx.append((float)(max_a[i])/(float)(sum_all))
+                minn.append((float)(min_a[i])/(float)(sum_all))
+        ratio = zip(miss, maxx, minn)
+        return ratio
 # Objective: Count the number of maximum data each year
 # Usage: count_year_max_data_avg(fileObj, max_data_avg, cat_flag)
 # Return: [12, 3, 53, 21]
@@ -34,6 +60,7 @@ def count_year_max_data(fileObj, aa, cat_flag):
                         count = 0
                         ccount = ccount + 1
                 temp = (int)(a[YEAR])
+	count_data.append(count)
 	fd.close()
         return count_data
 
@@ -59,8 +86,35 @@ def count_year_min_data(fileObj, aa, cat_flag):
                         count = 0
                         ccount = ccount + 1
                 temp = (int)(a[YEAR])
+	count_data.append(count)
 	fd.close()
         return count_data
+
+
+# Objective count the number of data in one year
+# Usage: get_num_data_in_one_year(fileObj, YEAR)
+# Return [23133, 34234, 235234]
+def get_num_data_in_one_year(fileObj, cat_flag):
+	fd = open(fileObj, 'r')
+        year = []
+        temp_year = 0
+        count = 0
+        flag = 0
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                count = count + 1
+                if (flag == 0):
+                        temp_year = (int)(a[cat_flag])
+                        flag = 1
+                if (len(a[cat_flag]) != 0):
+                        if ((int)(a[cat_flag]) != temp_year):
+                                year.append(count)
+                                count = 0
+                        temp_year = (int)(a[cat_flag])
+        year.append(count)
+	fd.close()
+        return year
+
 
 # Objective: List down the year
 # Usage: get_year(fileObj, YEAR)
@@ -68,13 +122,16 @@ def count_year_min_data(fileObj, aa, cat_flag):
 def get_year(fileObj, cat_flag):
         year = []
         temp_year = 0
+	fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0):
                         if ((int)(a[cat_flag]) != temp_year):
-                                year.append((int)(a[cat_flag]))
+                                year.append(a[cat_flag])
                         temp_year = (int)(a[cat_flag])
-        year.append((int)(a[cat_flag]))
+    #    year.append(a[cat_flag])
+	del a,line
+	fd.close()
         return year
 
 # Objective: Show max data avg of each year
@@ -142,7 +199,7 @@ def count_year_min_data_avg(fileObj, cat_flag):
                         count = 0
                 temp = (int)(a[YEAR])
         length = (int)(count * RATE)
-        value = heapq.nlargest(length, year_data)
+        value = heapq.nsmallest(length, year_data)
         avg = mean(value)
         avg_data.append(avg)
         year_data = []
@@ -154,11 +211,12 @@ def count_year_min_data_avg(fileObj, cat_flag):
 # Counting the max data average monthly in one specific year
 # Usage: count_mon_max_data_avg(fd, 2010, TEMPER)
 # Return: [94.2, 92.2, ....] the max data avg 12 months in one year
-def count_mon_max_data_avg(fd, year, cat_flag):
+def count_mon_max_data_avg(fileObj, year, cat_flag):
         count = 0
         flag = 0
         avg_data = []
         year_data = []
+	fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 # Notice the None value
@@ -182,18 +240,19 @@ def count_mon_max_data_avg(fd, year, cat_flag):
         avg = mean(value)
         avg_data.append(avg)
         year_data = []
-
+	fd.close()
 	return avg_data
 
 # Objective: Show the min data avg each month in one year
 # Counting the min data average monthly in one specific year
 # Usage: count_mon_min_data_avg(fd, 2010, TEMPER)
 # Return: [12.2, 13.2, ....] the max data avg 12 months in one year
-def count_mon_min_data_avg(fd, year, cat_flag):
+def count_mon_min_data_avg(fileObj, year, cat_flag):
         count = 0
         flag = 0
         avg_data = []
         year_data = []
+	fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 # Notice the None value
@@ -218,18 +277,19 @@ def count_mon_min_data_avg(fd, year, cat_flag):
         avg_data.append(avg)
         year_data = []
         count = 0
-
+	fd.close()
 	return avg_data
 
 # Objective: Show the number of missing data yearly
 # Count miss data each year
 # Usage: count_year_missdata(fd, YEAR, TEMPER)
 # Return [0, 2, 5,.....] the number of missing data every year
-def count_year_missdata(fd, year_flag, mis_flag):
+def count_year_missdata(fileObj, year_flag, mis_flag):
         count = 0
         flag = 0
         miss_count = 0
         missdata = []
+	fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (flag == 0):
@@ -243,18 +303,20 @@ def count_year_missdata(fd, year_flag, mis_flag):
                         miss_count = 0
                 temp = (int)(a[year_flag])
         missdata.append(miss_count)
+	fd.close()
         return missdata
 
 # Objective: Show the number of data monthly in one year
 # count the number of each month in one year
 # Usage: count_year_mon_missdata(fd, 2010, TEMTER)
 # Return [0, 3, 4, 5, ...] the missing data 12 months in one year
-def count_year_mon_missdata(fd, year, mis_flag):
+def count_year_mon_missdata(fileObj, year, mis_flag):
         temp = 0
         miss_count = 0
         flag = 0
         count = 0
         missdata = []
+	fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (flag == 0 and (int)(a[YEAR]) == year):
@@ -268,4 +330,5 @@ def count_year_mon_missdata(fd, year, mis_flag):
                         miss_count = 0
                 temp = (int)(a[MON])
         missdata.append(miss_count)
+	fd.close()
         return missdata

@@ -1,7 +1,6 @@
 import wx
 import os
 import wx.lib.agw.foldpanelbar as fpb
-
 class DataPanel(wx.Panel):
     def __init__(self,parent,id):
         wx.Panel.__init__(self,parent,id=id,style=wx.SUNKEN_BORDER)
@@ -10,7 +9,7 @@ class DataPanel(wx.Panel):
         #init
         self.dataSourcePanel = self.foldPanel.AddPanel(DataSourcePanel, "Data")
         self.attributePanel = self.foldPanel.AddPanel(AttributePanel, "Attribute")
-        # Layout
+	# Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.foldPanel, 1, wx.EXPAND)
         self.SetSizer(sizer)

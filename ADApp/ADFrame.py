@@ -29,7 +29,6 @@ class ADFrame(wx.Frame):
         sizer.Add(self.DataPanel, 0, wx.EXPAND)
         sizer.Add(self.AnalyzePanel, 1, wx.EXPAND)
         self.SetSizer(sizer)
-        
     def CreateMenuBar(self):
         menu_bar = wx.MenuBar()
         #menus
@@ -37,7 +36,7 @@ class ADFrame(wx.Frame):
         MENU_QUIT = wx.NewId()
         MENU_DATAWINDOW = wx.NewId()
         file_menu.Append(MENU_QUIT,"&Exit")
-        file_menu.Append(MENU_DATAWINDOW,"&Data")
+        file_menu.Append(MENU_DATAWINDOW,"&Analysis")
         menu_bar.Append(file_menu,"&File")
         
         help_menu = wx.Menu()
@@ -46,7 +45,7 @@ class ADFrame(wx.Frame):
         menu_bar.Append(help_menu,"&Help")
         self.Bind(wx.EVT_MENU, self.OnQuit, id=MENU_QUIT)
         self.Bind(wx.EVT_MENU, self.OnAbout, id=MENU_ABOUT)
-        self.Bind(wx.EVT_MENU, self.OnDataWindow, id=MENU_DATAWINDOW)
+        self.Bind(wx.EVT_MENU, self.Analysis, id=MENU_DATAWINDOW)
         return menu_bar
         
     #event handlers
@@ -67,7 +66,6 @@ class ADFrame(wx.Frame):
         self.dataWindow.Show()
         
     def OnImport(self, event):
-	start = clock()
         self.dirname = ''
         dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
@@ -83,18 +81,28 @@ class ADFrame(wx.Frame):
             #self.UpdateAttribute('temprature')
 
             #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
-            partition = self.ParNum
+            '''partition = self.ParNum
             top_k = self.AnomalNum
             self.anomalies = AnalyzeData(self.openFilePath, self.DataType)
             #self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
             self.timelineData = self.PackTimelineData();
             self.DrawComicMap(self.anomaliesData)
-            self.DrawTimeline(self.timelineData)
-	    elapsed = clock() - start
-            print "Anomaly analysis:", elapsed
+            self.DrawTimeline(self.timelineData)'''
+#	print self.printpath(self.File)
+	self.dataWindow = DataWindow(None, 1, self.openFilePath)
+        self.dataWindow.Show()	
         dlg.Destroy()
-        
+
+    def Analysis(self, event):
+	File = self.openFilePath+'.tmp'
+	self.anomalies = AnalyzeData(File, self.DataType)
+        self.anomaliesData = self.PackDataToDraw(self.anomalies)
+        self.timelineData = self.PackTimelineData();
+        self.DrawComicMap(self.anomaliesData)
+        self.DrawTimeline(self.timelineData)
+	os.remove(File)
+
     def UpdateAttribute(self, attr):
         checkboxes = self.DataPanel.attributePanel.GetChildren()
         if attr == 'temprature':
