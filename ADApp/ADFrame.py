@@ -81,16 +81,16 @@ class ADFrame(wx.Frame):
             #self.UpdateAttribute('temprature')
 
             #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
-            '''partition = self.ParNum
+            partition = self.ParNum
             top_k = self.AnomalNum
             self.anomalies = AnalyzeData(self.openFilePath, self.DataType)
             #self.anomalies = []
             self.anomaliesData = self.PackDataToDraw(self.anomalies)
-            self.timelineData = self.PackTimelineData();
-            self.DrawComicMap(self.anomaliesData)
-            self.DrawTimeline(self.timelineData)'''
+            #self.timelineData = self.PackTimelineData();
+            #self.DrawComicMap(self.anomaliesData)
+            #self.DrawTimeline(self.timelineData)
 #	print self.printpath(self.File)
-	self.dataWindow = DataWindow(None, 1, self.openFilePath)
+	self.dataWindow = DataWindow(self, 1, self.openFilePath)
         self.dataWindow.Show()	
         dlg.Destroy()
 
@@ -271,3 +271,6 @@ class ADFrame(wx.Frame):
         else:
             self.AnalyzePanel.OnZoom(zoom)
     
+    def DoneRegionSel(self, data):
+        self.dataWindow.Close(True)
+        self.DrawComicMap(self.anomaliesData)
