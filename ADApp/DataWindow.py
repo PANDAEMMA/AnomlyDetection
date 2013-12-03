@@ -43,7 +43,7 @@ class DataContent(wx.Window):
     def OnPaint(self, event):
         pdc = wx.PaintDC(self)
         dc = wx.GCDC(pdc)
-        self.DrawDivide(dc)
+        #self.DrawDivide(dc)
 
         #self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
 	# Get the number of year
@@ -51,11 +51,12 @@ class DataContent(wx.Window):
 	length = len(year)
 	self.DrawPercent(dc, length)
 	self.DrawLabel(dc, year)
+	self.DrawDivide(dc, length)
 	# Draw out annual statistic
 	for i in range(length):
 		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
-		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min((int)(year[i])*ZOOM_OUT,i))
-		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check((int)(year[i])*CHECK,i))
+		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min(((int)(year[i])-1997)*ZOOM_OUT,i))
+		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check(((int)(year[i]) -1997)*CHECK,i))
 
         
     def DrawButton_min(self, id, y_axis):
@@ -78,8 +79,9 @@ class DataContent(wx.Window):
 
     def doMe(self, event):
 	id_n = event.GetId()
+	print id_n
 	if ((id_n % CHECK) == 0):
-		year = id_n / CHECK
+		year = (id_n / CHECK) + 1997
 		fd = open(self.File, 'r')
 		fd1 = open(self.File+'.tmp', 'w+')
 		for line in fd.readlines():
@@ -90,9 +92,9 @@ class DataContent(wx.Window):
 		fd1.close()
 	self.Destroy() # test
 
-    def DrawDivide(self, dc):
+    def DrawDivide(self, dc, year):
         dc.SetPen(wx.BLACK_PEN)
-        for i in range(self.num + 1):
+        for i in range(year + 1):
             dc.DrawLine(self.zeroX, self.zeroY+self.scale*i,self.zeroX+self.width, self.zeroY+self.scale*i)
             
     def DrawPercent(self, dc, length):
