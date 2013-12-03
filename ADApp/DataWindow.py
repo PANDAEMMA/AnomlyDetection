@@ -44,12 +44,13 @@ class DataContent(wx.Window):
         pdc = wx.PaintDC(self)
         dc = wx.GCDC(pdc)
         self.DrawDivide(dc)
-        self.DrawPercent(dc)
+
         #self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
 	# Get the number of year
 	year = get_year(self.File, YEAR)
-	self.DrawLabel(dc, year)
 	length = len(year)
+	self.DrawPercent(dc, length)
+	self.DrawLabel(dc, year)
 	# Draw out annual statistic
 	for i in range(length):
 		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
@@ -94,12 +95,12 @@ class DataContent(wx.Window):
         for i in range(self.num + 1):
             dc.DrawLine(self.zeroX, self.zeroY+self.scale*i,self.zeroX+self.width, self.zeroY+self.scale*i)
             
-    def DrawPercent(self, dc):
+    def DrawPercent(self, dc, length):
 	aa = normal_stat(self.File, YEAR, TEMPER)
 	miss_data = [item[0] for item in aa]
 	max_data = [item[1] for item in aa]
 	min_data = [item[2] for item in aa]
-        for i in range(self.num):
+        for i in range(length):
                 dc.SetPen(wx.Pen(self.eColor))
                 dc.SetBrush( wx.Brush(self.eColor) )
        #         e = random.randint(25,40)
