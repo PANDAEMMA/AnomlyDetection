@@ -19,7 +19,7 @@ class PlotWindow(wx.Window):
         self.selectionEnd = 0
         self.scaleX = 1
         self.offsetX = 0
-        self.projectedData = []
+        self.startX = 0
         self.selected = False
         self.clicked = False
         #drop target
@@ -31,7 +31,7 @@ class PlotWindow(wx.Window):
     
         self.data = data
         self.dataToDraw = data[:]
-        self.GetProjectionData(False)
+        self.GetProjectionData()
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)#drag   
@@ -40,26 +40,20 @@ class PlotWindow(wx.Window):
         
     #def redefineInputData(self, data):
     
-    def getMaxData(self, redefineW):
+    def getMaxData(self):
         #define maxH and maxW for Axi, get from the unified value from parent
         self.maxH = self.GetParent().maxH
-        if redefineW == True:
-            self.findMaxW(self.dataToDraw)
-        else:
-            self.maxW = self.GetParent().maxW
-        #self.findMaxHW(self.data)
+        self.maxW = self.GetParent().maxW
         self.minH = 0 #here to use maxH(=0) or self.maxH??
         self.minW = 0
         self.findMinHW(self.data)
     
     def ReDraw(self, dataID, data):
-        print "in redraw"
-        print dataID
         self.dataID = dataID
         #define maxH and maxW for Axis
         self.data = data
         self.dataToDraw = data[:]
-        self.GetProjectionData(False)
+        self.GetProjectionData()
         self.Refresh()
         
     def findMaxHW(self, list):
@@ -108,11 +102,12 @@ class PlotWindow(wx.Window):
         self.minH = self.minH-5
         self.minW = self.minW-5
         
-    def GetProjectionData(self, redefineW):
+    def GetProjectionData(self):
         self.rect = self.GetClientRect()
         self.zeroX = self.rect.x
         self.zeroY = self.rect.y
-        self.getMaxData(redefineW)
+        self.buttonRect = wx.Rect(self.rect.width-25, self.zeroY, 20, 20)
+        self.getMaxData()
         self.unitX = float(self.rect.width)/(self.maxW-self.minW)
         self.unitY = float(self.rect.height)/(self.maxH-self.minH)
         
@@ -134,24 +129,25 @@ class PlotWindow(wx.Window):
             self.DrawOutline(dc)
 
     def DrawLabel(self, dc):
-        self.labelFont = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
-        dc.SetFont(self.labelFont)
-        dc.SetPen(wx.BLACK_PEN)
-        for j in range(len(self.dataToDraw)):
-            labels = self.dataToDraw[j]['labels'][0]
-            for i in range(len(labels)):
-                pos = (self.zeroX, self.zeroY)
-                labelText = labels[i]
-                tw, th = dc.GetTextExtent(labelText)
-                dc.DrawText(labelText, pos[0]+3+(tw*j), pos[1]+i*(th+3))
+        #don't draw lable in merged view
+        if (len(self.dataID))== 1:
+            self.labelFont = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
+            dc.SetFont(self.labelFont)
+            dc.SetPen(wx.BLACK_PEN)
+            for j in range(len(self.dataToDraw)):
+                labels = self.dataToDraw[j]['labels'][0]
+                for i in range(len(labels)):
+                    pos = (self.zeroX, self.zeroY)
+                    labelText = labels[i]
+                    tw, th = dc.GetTextExtent(labelText)
+                    dc.DrawText(labelText, pos[0]+3+(tw*j), pos[1]+i*(th+3))
         #cross
-        print len(self.dataID)
-        print self.dataID
-        if (len(self.dataID))> 1:
-            cross1 = (self.rect.width-25, self.zeroY)
-            cross2 = (self.rect.width-5, self.zeroY)
-            cross3 = (self.rect.width-5, self.zeroY+20)
-            cross4 = (self.rect.width-25, self.zeroY+20)
+        dc.SetPen(wx.BLACK_PEN)
+        if (len(self.dataID))> 1 or self.scaleX>1:
+            cross1 = (self.buttonRect.x, self.buttonRect.y)
+            cross2 = (self.buttonRect.x+self.buttonRect.width, self.buttonRect.y)
+            cross3 = (self.buttonRect.x+self.buttonRect.width, self.buttonRect.y+self.buttonRect.height)
+            cross4 = (self.buttonRect.x, self.buttonRect.y+self.buttonRect.height)
             dc.DrawLine(cross1[0], cross1[1], cross2[0], cross2[1])
             dc.DrawLine(cross2[0], cross2[1], cross3[0], cross3[1])
             dc.DrawLine(cross3[0], cross3[1], cross4[0], cross4[1])
@@ -204,39 +200,16 @@ class PlotWindow(wx.Window):
         dc.DrawRectangle( self.selectionStart, self.GetClientRect().y, self.selectionEnd-self.selectionStart, self.GetClientRect().height)
     
     def DoneZoom(self):
-        for set in range(len(self.dataToDraw)):
-            selected = []
-            dataset = self.dataToDraw[set]
-            for i in range(len(dataset['points'])):
-                point = dataset['points'][i]
-                print "-----------"
-                print self.Projection(point)[0]
-                print self.selectionStart
-                print self.selectionEnd
-                print "-----------"
-                if self.Projection(point)[0]>= self.selectionStart and self.Projection(point)[0]>= self.selectionEnd:
-                    selected.append(point)
-            #resort
-            diff = selected[0][0]-0
-            for j in range(len(selected)):
-                newpoint = (j,selected[j][1])
-                selected[j] = newpoint
-            self.dataToDraw[set]['points']= selected
-            newAnomalies = []
-            for anomly in self.dataToDraw[set]['anomolies']:
-                anomly = anomly-diff
-                if anomly<0 or anomly>len(self.dataToDraw[set]['points']):
-                    continue
-                else:
-                    newAnomalies.append(anomly)
-            self.dataToDraw[set]['anomolies']= newAnomalies       
+        curLen = self.rect.width*self.scaleX
+        selectedLen = self.selectionEnd-self.selectionStart
+        #get the start in original width
+        self.startX = (self.selectionStart+self.offsetX)/float(self.scaleX)
         
+        self.scaleX = curLen/float(selectedLen)
+        self.offsetX = self.startX*self.scaleX
         self.selectionStart = 0
         self.selectionEnd = 0
-        
-        self.GetProjectionData(True)
         self.Refresh()
-        
         
     #project to wxpython coordinatate top-left is (0,0)
     def Projection(self, p):
@@ -245,20 +218,36 @@ class PlotWindow(wx.Window):
         x = x-self.minW
         y = y-self.minH
 
-        x = self.zeroX+x*self.unitX;
+        x = self.zeroX+x*self.unitX*self.scaleX-self.offsetX;
         y = self.zeroY+(self.rect.height-y*self.unitY)
         return (x,y)
     
     def OnLeftDown(self, event):
         self.GetParent().UpdateClick(self.id)
-        if self.GetTopLevelParent().GridEffect == "swap" or self.GetTopLevelParent().GridEffect == "merge":
+        x, y = event.GetPositionTuple()
+        if self.InButton(x,y,self.buttonRect):
+            self.Revert()            
+        elif self.GetTopLevelParent().GridEffect == "swap" or self.GetTopLevelParent().GridEffect == "merge":
             self.StartDragOpperation()
-        if self.GetTopLevelParent().GridEffect == "zoom":
-            self.selection = []
-            x, y = event.GetPositionTuple()
+        elif self.GetTopLevelParent().GridEffect == "zoom":
             self.selectionStart = x;
             self.CaptureMouse()
-            #self.GetTopLevelParent().UpDateTimeline
+            
+    def Revert(self):
+        self.scaleX = 1
+        self.offsetX = 0
+        if len(self.dataID)>0:
+            newIDs = [self.dataID[0]]
+            newData = self.GetParent().GetDataByIDs(newIDs)
+            self.ReDraw(newIDs, newData)
+        else: 
+            self.Refresh()
+    
+    def InButton(self, x, y, bRect):
+        if x>bRect.x and x<bRect.x+bRect.width and y>bRect.y and y<bRect.y+bRect.height:
+            return True
+        else:
+            return False
             
     def OnMotion(self, event):
         if self.HasCapture() and event.Dragging() and self.GetTopLevelParent().GridEffect == "zoom":
@@ -274,15 +263,11 @@ class PlotWindow(wx.Window):
     def UpdateDragTarget(self):
         self.GetParent().UpdateDragTarget(self.sourceID)
 
-
     def StartDragOpperation(self):
-        # create our own data format and use it in a
-        # custom data object
+        # create our own data format and use it in a custom data object
         data = wx.CustomDataObject("anomalyID")
         data.SetData(str(self.sourceID))
-
-        # And finally, create the drop source and begin the drag
-        # and drop opperation
+        # And finally, create the drop source and begin the drag and drop opperation
         dropSource = wx.DropSource(self)
         dropSource.SetData(data)
         result = dropSource.DoDragDrop(wx.Drag_AllowMove)

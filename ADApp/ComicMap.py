@@ -116,6 +116,12 @@ class ComicMap(wx.Panel):
             i=i+1
         self.GetParent().GetParent().UpdateTimeline(self.plots[id].dataID)
         
+    def GetDataByIDs(self, ids):
+        data = []
+        for i in range(len(ids)):
+            data = data + self.data[ids[i]]
+        return data
+        
         
         
         
