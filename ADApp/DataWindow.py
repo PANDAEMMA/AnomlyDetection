@@ -17,7 +17,6 @@ class DataWindow(wx.Frame):
         self.content = DataContent(self, CONTENT_ID, None, File)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.content, 0, wx.EXPAND)
-        #self.new.Show(False)
         
 class DataContent(wx.Window):
     def __init__(self, parent, id, data, File):
@@ -35,10 +34,10 @@ class DataContent(wx.Window):
         self.scale = 32
         self.num = 2
         self.offset = 100
-	# Layout
-	self.File = File
+        # Layout
+        self.File = File
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-	self.Show(True)
+        self.Show(True)
 
     def OnPaint(self, event):
         pdc = wx.PaintDC(self)
@@ -46,17 +45,17 @@ class DataContent(wx.Window):
         #self.DrawDivide(dc)
 
         #self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
-	# Get the number of year
-	year = get_year(self.File, YEAR)
-	length = len(year)
-	self.DrawPercent(dc, length)
-	self.DrawLabel(dc, year)
-	self.DrawDivide(dc, length)
-	# Draw out annual statistic
-	for i in range(length):
-		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
-		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min(((int)(year[i])-1997)*ZOOM_OUT,i))
-		self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check(((int)(year[i]) -1997)*CHECK,i))
+        # Get the number of year
+        year = get_year(self.File, YEAR)
+        length = len(year)
+        self.DrawPercent(dc, length)
+        self.DrawLabel(dc, year)
+        self.DrawDivide(dc, length)
+        # Draw out annual statistic
+        for i in range(length):
+            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
+            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min(((int)(year[i])-1997)*ZOOM_OUT,i))
+            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check(((int)(year[i]) -1997)*CHECK,i))
 
         
     def DrawButton_min(self, id, y_axis):
@@ -89,7 +88,8 @@ class DataContent(wx.Window):
 				fd1.write(line)
 		fd.close()
 		fd1.close()
-	self.Destroy() # test
+        self.GetParent().GetParent().DoneRegionSel([])
+	#self.Destroy() # test
 
     def DrawDivide(self, dc, year):
         dc.SetPen(wx.BLACK_PEN)

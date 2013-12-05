@@ -258,7 +258,8 @@ class PlotWindow(wx.Window):
     def OnLeftUp(self, event):
         if self.HasCapture() and self.GetTopLevelParent().GridEffect == "zoom":
             self.ReleaseMouse()
-            self.DoneZoom()
+            if self.selectionEnd != 0:
+                self.DoneZoom()
             
     def UpdateDragTarget(self):
         self.GetParent().UpdateDragTarget(self.sourceID)
