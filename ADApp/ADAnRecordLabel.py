@@ -38,6 +38,32 @@ def normal_stat(fileObj, year_flag, mis_flag):
                 minn.append((float)(min_a[i])/(float)(sum_all))
         ratio = zip(miss, maxx, minn)
         return ratio
+
+def normal_mon_stat(fileObj, year_flag, mis_flag):
+        miss = []
+        maxx = []
+        minn = []
+        # Counting missing data
+        a = count_year_mon_missdata(fileObj, year_flag, mis_flag)
+        # Counting max data avg
+        aa = count_mon_max_data_avg(fileObj, year_flag, mis_flag)
+        # Counting the nubmer of max data
+        max_a = count_mon_max_data(fileObj, aa, mis_flag, year_flag)
+'''
+        # Counting min data avg
+        mm = count_mon_min_data_avg(fileObj, year_flag,  mis_flag)
+        # Counting the number of min data
+        min_a = count_mon_min_data(fileObj, mm, mis_flag, year_flag)
+        # Sum up the number of missing, max data, and min data in each year 
+        sum_all = sum(a) + sum(max_a) + sum(min_a)
+        # Get the ratio of data in each dimension
+        for i in range(len(max_a)):
+                miss.append((float)(a[i])/(float)(sum_all))
+                maxx.append((float)(max_a[i])/(float)(sum_all))
+                minn.append((float)(min_a[i])/(float)(sum_all))
+        ratio = zip(miss, maxx, minn)
+        return ratio'''
+
 # Objective: Count the number of maximum data each year
 # Usage: count_year_max_data_avg(fileObj, max_data_avg, cat_flag)
 # Return: [12, 3, 53, 21]
@@ -64,6 +90,30 @@ def count_year_max_data(fileObj, aa, cat_flag):
 	fd.close()
         return count_data
 
+def count_mon_max_data(fileObj, aa, cat_flag, year):
+        fd = open(fileObj, 'r')
+        count = 0
+        flag = 0
+        ccount = 0
+        count_data = []
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
+                        if ((float)(a[cat_flag]) > (float)(aa[ccount])):
+                                count = count + 1
+                """if (flag == 0 and (int)(a[YEAR]) == year):
+                        temp = (int)(a[MON])
+                        flag = 1
+                if(temp != (int)(a[YEAR]) and (int)(a[YEAR]) == year):
+                        count_data.append(count)
+                        count = 0
+                        ccount = ccount + 1
+                temp = (int)(a[MON])
+        count_data.append(count)
+        fd.close()
+        return count_data"""
+
+
 # Objective: Count the number of minimum data each year
 # Usage: count_year_min_data_avg(fileObj, max_data_avg, cat_flag)
 # Return: [12, 3, 53, 21]
@@ -88,6 +138,29 @@ def count_year_min_data(fileObj, aa, cat_flag):
                 temp = (int)(a[YEAR])
 	count_data.append(count)
 	fd.close()
+        return count_data
+
+def count_mon_min_data(fileObj, aa, cat_flag, year):
+        fd = open(fileObj, 'r')
+        count = 0
+        flag = 0
+        ccount = 0
+        count_data = []
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
+                        if ((float)(a[cat_flag]) < (float)(aa[ccount])):
+                                count = count + 1
+                if (flag == 0 and (int)(a[YEAR]) == year):
+                        temp = (int)(a[MON])
+                        flag = 1
+                if(temp != (int)(a[YEAR]) and (int)(a[YEAR]) == year):
+                        count_data.append(count)
+                        count = 0
+                        ccount = ccount + 1
+                temp = (int)(a[MON])
+        count_data.append(count)
+        fd.close()
         return count_data
 
 

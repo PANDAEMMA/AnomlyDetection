@@ -88,6 +88,11 @@ class DataContent(wx.Window):
 				fd1.write(line)
 		fd.close()
 		fd1.close()
+	if ((id_n % ZOOM_OUT) == 0):	
+		pdc = wx.PaintDC(self)
+        	dc = wx.GCDC(pdc)	
+                year = (id_n / ZOOM_OUT) + 1997
+		self.DrawMonth(dc, id_n/ZOOM_OUT, year)	
         self.GetParent().GetParent().DoneRegionSel([])
 	#self.Destroy() # test
 
@@ -125,25 +130,29 @@ class DataContent(wx.Window):
             pos = (self.width-tw-5, self.zeroY+self.scale*i+5)
             dc.DrawText(labelText, pos[0], pos[1])
             
-    def DrawMonth(self,dc, i):
+    def DrawMonth(self,dc, i, year):
+	aa = normal_mon_stat(self.File+'.tmp', year, TEMPER)
+	"""miss_data = [item[0] for item in aa]
+        max_data = [item[1] for item in aa]
+        min_data = [item[2] for item in aa]
+
         entryW = self.width/float(12)
         for j in range(12):
             dc.SetPen(wx.Pen(self.eColor))
             dc.SetBrush( wx.Brush(self.eColor) )
-            e = random.randint(25,40)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+1, e, self.scale-1)
+          #  e = random.randint(25,40)/float(12)
+            dc.DrawRectangle(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+1, miss_data[j], self.scale-1)
             dc.SetPen(wx.Pen(self.gColor))
             dc.SetBrush( wx.Brush(self.gColor) )
-            g = random.randint(5,25)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e, self.zeroY+self.scale*i+1, g, self.scale-1)
+           # g = random.randint(5,25)/float(12)
+            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e, self.zeroY+self.scale*i+1, max_data[j], self.scale-1)
             dc.SetPen(wx.Pen(self.mColor))
             dc.SetBrush( wx.Brush(self.mColor) )
-            m = random.randint(25,50)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e+g, self.zeroY+self.scale*i+1, m, self.scale-1)
+           # m = random.randint(25,50)/float(12)
+            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e+g, self.zeroY+self.scale*i+1, min_data[j], self.scale-1)
             if not j==0:
                 dc.SetPen(wx.BLACK_PEN)
-                dc.DrawLine(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i,self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+self.scale)
-            
+                dc.DrawLine(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i,self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+self.scale)"""
     
     def opj(self, path):
         """Convert paths to the platform-specific separator"""
