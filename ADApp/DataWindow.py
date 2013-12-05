@@ -79,7 +79,6 @@ class DataContent(wx.Window):
 
     def doMe(self, event):
 	id_n = event.GetId()
-	print id_n
 	if ((id_n % CHECK) == 0):
 		year = (id_n / CHECK) + 1997
 		fd = open(self.File, 'r')
