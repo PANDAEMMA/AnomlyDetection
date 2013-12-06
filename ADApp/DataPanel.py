@@ -9,7 +9,7 @@ class DataPanel(wx.Panel):
         #init
         self.dataSourcePanel = self.foldPanel.AddPanel(DataSourcePanel, "Data")
         self.attributePanel = self.foldPanel.AddPanel(AttributePanel, "Attribute")
-	# Layout
+        # Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.foldPanel, 1, wx.EXPAND)
         self.SetSizer(sizer)

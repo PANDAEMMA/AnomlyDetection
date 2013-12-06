@@ -9,9 +9,35 @@ class DataCleanWindow(wx.Frame):
         CONTENT_ID = wx.NewId()
         self.panel = wx.Panel(self)
         self.list = DataCleanContent(self.panel, CONTENT_ID, data)
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.list, 1, wx.EXPAND)
+        self.submit_button = wx.Button(self.panel, -1, "Clean Data Submit", (50,50))
+        
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.list, 1, wx.EXPAND | wx.ALL, border=5)
+        sizer.Add(self.submit_button, 0, wx.ALIGN_BOTTOM | wx.ALIGN_LEFT |wx.EXPAND| wx.ALL, border=5)
         self.panel.SetSizer(sizer)
+        
+        #event 
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_BUTTON, self.OnSubmit, self.submit_button)
+        
+    def OnClose(self, event):
+        if event.CanVeto():
+            if wx.MessageBox("Do you want to exit without submitting?",
+                         "Please confirm",
+                         wx.ICON_QUESTION | wx.YES_NO) != wx.YES:
+
+                event.Veto()
+                return
+
+        self.Destroy()  
+    
+    def OnSubmit(self, event):
+        self.delIndex = []
+        for i in range(len(self.list.delete)):
+            if self.list.delete[i] == True:
+                self.delIndex.append(i)
+        self.GetParent().onCleanData(self.delIndex)
+        self.Destroy()
         
 class DataCleanContent(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
     def __init__(self, parent, id, data):
@@ -22,6 +48,10 @@ class DataCleanContent(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrl
         self.data = data
         self.SetLabels(self.data['labels'])
         self.SetData(self.data['data'])
+        # init status
+        self.delete = []
+        for i in range(len(self.data['data'])):
+            self.delete.append(False)
 
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated)
         
@@ -47,5 +77,5 @@ class DataCleanContent(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrl
         self.ToggleItem(evt.m_itemIndex)
         
     def OnCheckItem(self, index, flag):
-        print(index, flag)
+        self.delete[index] = flag
             

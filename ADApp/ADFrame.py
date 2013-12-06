@@ -299,3 +299,7 @@ class ADFrame(wx.Frame):
         self.DrawTimeline(self.timelineData)
         os.remove(File)
         #self.DrawComicMap(self.anomaliesData)
+        
+    def onCleanData(self, cleanIndex):
+        self.cleanIndex = cleanIndex
+        print self.cleanIndex
