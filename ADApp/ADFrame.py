@@ -5,6 +5,7 @@ from AnalyzePanel import *
 from ADParse import *
 from ADAnLineCell import *
 from DataWindow import *
+from DataCleanWindow import *
 
 from time import clock,time
 
@@ -12,6 +13,13 @@ class ADFrame(wx.Frame):
     def __init__(self, size):
         wx.Frame.__init__(self, None, -1, 'Anomaly Detection Tool', size = size, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
         #init data for app
+        self.canClean = True
+        self.cleanData = dict()
+        self.cleanData['labels'] = ['Type', 'Value', 'Date']
+        #0: extremes, 1: glitches, 2: Missing
+        self.cleanData['data'] = [(0, 33.4, "01/02/1997"), (0, '27','03/04/1988'),(0, '25', '06/07/2013'),
+                                (1, 33.4, "01/03/1997"), (1, '66.8','03/08/1988'),(1, '77.4', '09/07/2013'),
+                                (2, '', "01/05/1997"), (2, '','08/04/1988'),(2, '', '06/09/2013'),]
         self.AnomalNum = 4
         self.ParNum = 4
         self.GridEffect = 'swap'
@@ -29,15 +37,19 @@ class ADFrame(wx.Frame):
         sizer.Add(self.DataPanel, 0, wx.EXPAND)
         sizer.Add(self.AnalyzePanel, 1, wx.EXPAND)
         self.SetSizer(sizer)
+    
     def CreateMenuBar(self):
         menu_bar = wx.MenuBar()
         #menus
         file_menu = wx.Menu()
         MENU_QUIT = wx.NewId()
-        MENU_DATAWINDOW = wx.NewId()
         file_menu.Append(MENU_QUIT,"&Exit")
-        file_menu.Append(MENU_DATAWINDOW,"&Analysis")
         menu_bar.Append(file_menu,"&File")
+        
+        tool_menu = wx.Menu()
+        MENU_DATACLEANWINDOW = wx.NewId()
+        tool_menu.Append(MENU_DATACLEANWINDOW,"&Clean Data")
+        menu_bar.Append(tool_menu,"&Tools")
         
         help_menu = wx.Menu()
         MENU_ABOUT = wx.NewId()
@@ -45,7 +57,7 @@ class ADFrame(wx.Frame):
         menu_bar.Append(help_menu,"&Help")
         self.Bind(wx.EVT_MENU, self.OnQuit, id=MENU_QUIT)
         self.Bind(wx.EVT_MENU, self.OnAbout, id=MENU_ABOUT)
-        self.Bind(wx.EVT_MENU, self.Analysis, id=MENU_DATAWINDOW)
+        self.Bind(wx.EVT_MENU, self.OnDataClean, id=MENU_DATACLEANWINDOW)
         return menu_bar
         
     #event handlers
@@ -61,9 +73,15 @@ class ADFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
         
-    def OnDataWindow(self, event):
-        self.dataWindow = DataWindow(parent=None, id=-1000)
-        self.dataWindow.Show()
+    def OnDataClean(self, event):
+        if self.canClean == True:
+            self.dataCleanWindow = DataCleanWindow(self, id=-1000, data = self.cleanData)
+            self.dataCleanWindow.Show()
+        else:
+            dlg = wx.MessageDialog(self, 'Please import the source data and select a region first!',
+            'No anomalies found', wx.OK| wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
         
     def OnImport(self, event):
         self.dirname = ''
@@ -90,18 +108,18 @@ class ADFrame(wx.Frame):
             #self.DrawComicMap(self.anomaliesData)
             #self.DrawTimeline(self.timelineData)
 #	print self.printpath(self.File)
-	self.dataWindow = DataWindow(self, 1, self.openFilePath)
-        self.dataWindow.Show()	
+            self.dataWindow = DataWindow(self, 1, self.openFilePath)
+            self.dataWindow.Show()	
         dlg.Destroy()
 
     def Analysis(self, event):
-	File = self.openFilePath+'.tmp'
-	self.anomalies = AnalyzeData(File, self.DataType)
+        File = self.openFilePath+'.tmp'
+        self.anomalies = AnalyzeData(File, self.DataType)
         self.anomaliesData = self.PackDataToDraw(self.anomalies)
         self.timelineData = self.PackTimelineData();
         self.DrawComicMap(self.anomaliesData)
         self.DrawTimeline(self.timelineData)
-	os.remove(File)
+        os.remove(File)
 
     def UpdateAttribute(self, attr):
         checkboxes = self.DataPanel.attributePanel.GetChildren()
@@ -207,25 +225,25 @@ class ADFrame(wx.Frame):
         return list'''
     
     def Pick_xaxis(self):
-	File = self.openFilePath+'.tmp'
-	index = [0, 15, 31, 46, 60]
-	year = []
-	length = 0
-	fd = open(File, 'r')
-	for line in fd.readlines():
-		length = length + 1
-	fd.close()
-	interval = (int)(length/5)
-	count = 0
-	fd = open(File, 'r')
-	for line in fd.readlines():
-		count = count + 1
-		a = re.split(',|\n| ', line)
-		if((count % interval) == 0):
-			a = a[MON] + '/' + a[DAY] + '/' + a[YEAR]
-			year.append(a)
-	fd.close()
-	return zip(index, year)
+        File = self.openFilePath+'.tmp'
+        index = [0, 15, 31, 46, 60]
+        year = []
+        length = 0
+        fd = open(File, 'r')
+        for line in fd.readlines():
+            length = length + 1
+        fd.close()
+        interval = (int)(length/5)
+        count = 0
+        fd = open(File, 'r')
+        for line in fd.readlines():
+            count = count + 1
+            a = re.split(',|\n| ', line)
+            if((count % interval) == 0):
+                a = a[MON] + '/' + a[DAY] + '/' + a[YEAR]
+                year.append(a)
+        fd.close()
+        return zip(index, year)
 
     def PackTimelineData(self):
         #{labels:[list], anomolies: [list]}
@@ -233,7 +251,7 @@ class ADFrame(wx.Frame):
         data = dict()
         #1st and last should be the start and end time, if no lable, can be like [(0, '')]
         #data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
-	data['labels'] = self.Pick_xaxis()
+        data['labels'] = self.Pick_xaxis()
         #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
         data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
         #same as timeframe in comic map, for hightlight, (start date, end date)
@@ -273,4 +291,11 @@ class ADFrame(wx.Frame):
     
     def DoneRegionSel(self, data):
         self.dataWindow.Close(True)
+        File = self.openFilePath+'.tmp'
+        self.anomalies = AnalyzeData(File, self.DataType)
+        self.anomaliesData = self.PackDataToDraw(self.anomalies)
+        self.timelineData = self.PackTimelineData();
         self.DrawComicMap(self.anomaliesData)
+        self.DrawTimeline(self.timelineData)
+        os.remove(File)
+        #self.DrawComicMap(self.anomaliesData)
