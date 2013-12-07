@@ -13,13 +13,7 @@ class ADFrame(wx.Frame):
     def __init__(self, size):
         wx.Frame.__init__(self, None, -1, 'Anomaly Detection Tool', size = size, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
         #init data for app
-        self.canClean = True
-        self.cleanData = dict()
-        self.cleanData['labels'] = ['Type', 'Value', 'Date']
-        #0: extremes, 1: glitches, 2: Missing
-        self.cleanData['data'] = [(0, 33.4, "01/02/1997"), (0, '27','03/04/1988'),(0, '25', '06/07/2013'),
-                                (1, 33.4, "01/03/1997"), (1, '66.8','03/08/1988'),(1, '77.4', '09/07/2013'),
-                                (2, '', "01/05/1997"), (2, '','08/04/1988'),(2, '', '06/09/2013'),]
+        self.canClean = False
         self.AnomalNum = 4
         self.ParNum = 4
         self.GridEffect = 'swap'
@@ -64,7 +58,7 @@ class ADFrame(wx.Frame):
         self.Destroy()
         
     def OnAbout(self, event):
-        msg = "This Is The About Anomaly Detection and Data Clean Tool.\n\n" + \
+        msg = "This Is ADetector:An Anomaly Detection and Data Clean Tool.\n\n" + \
               "Author: Tsung Tai Yeh&Shuying Feng @ Purdue\n\n"
         dlg = wx.MessageDialog(self, msg, "Data Clean Tool",
                                wx.OK | wx.ICON_INFORMATION)
@@ -89,8 +83,9 @@ class ADFrame(wx.Frame):
             self.filename = dlg.GetFilename()
             self.dirname = dlg.GetDirectory()
             self.openFilePath = os.path.join(self.dirname, self.filename)
-            #TODO backend function called function: StatisticalAnalyze
-            #self.dangerData = StatisticalAnalyze(self.openFilePath)
+            #----------------TODO-------------------
+            #backend function called function: StatisticalAnalyze
+            #self.dangerData = StatisticalAnalyze(self.openFilePath, self.DataType)
             self.dangerData = []
             self.dangerData.append({'year':1997,'year_data':(0.23, 0.34, 0.06), 
             'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
@@ -116,15 +111,6 @@ class ADFrame(wx.Frame):
             self.dataWindow.Show()	
         dlg.Destroy()
 
-    def Analysis(self, event):
-        File = self.openFilePath+'.tmp'
-        self.anomalies = AnalyzeData(File, self.DataType)
-        self.anomaliesData = self.PackDataToDraw(self.anomalies)
-        self.timelineData = self.PackTimelineData();
-        self.DrawComicMap(self.anomaliesData)
-        self.DrawTimeline(self.timelineData)
-        os.remove(File)
-
     def UpdateAttribute(self, attr):
         checkboxes = self.DataPanel.attributePanel.GetChildren()
         if attr == 'temprature':
@@ -134,24 +120,73 @@ class ADFrame(wx.Frame):
         if attr == 'airPressure':
             checkboxes[2].SetValue(True)
             
+        #{labels:[list], anomolies: [list]}
+        # the data part is the information you need to give me
+        data = dict()
+        #1st and last should be the start and end time, if no lable, can be like [(0, '')]
+        #data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
+        data['labels'] = self.Pick_xaxis()
+        #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
+        data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
+        #same as timeframe in comic map, for hightlight, (start date, end date)
+        data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
+        return data
+        
+    #analyze functions
+    def DrawComicMap(self, data):
+        self.AnalyzePanel.AddComicMap(200, data)
+        
+    def DrawTimeline(self, data):
+        self.AnalyzePanel.AddTimeline(300, data)
+    
+    def SetAnomalyNum(self, num):
+        self.AnomalNum = num
+        
+    def SetParNum(self, num):
+        self.ParNum = num
+        
+    def SetGridEffect(self, effect):
+        self.GridEffect = effect
+        
+    def SetDataType(self, type):
+        if type == 'TEMPER':
+            self.DataType = TEMPER
+        if type == 'HUMID':
+            self.DataType = HUMID
+        if type == 'PRESS':
+            self.DataType = PRESS
+    
+    def DoneRegionSel(self, data):
+        self.dataWindow.Close(True)
+        print data
+        #data (year, month), if select the whole year, month = -1
+        #----------------TODO-------------------
+        #backend function AnalyzeData can return a tuple
+        #self.anomalies , self.overviewData, self.cleanData = AnalyzeData(File, self.DataType, (year, month))
+        self.anomalies= self.overviewData = self.cleanData = []
+        self.cleanData = self.PackCleanData(self.cleanData)
+        self.anomaliesData = self.PackDataToDraw(self.anomalies)
+        self.timelineData = self.PackTimelineData(self.overviewData)
+        self.DrawComicMap(self.anomaliesData)
+        self.DrawTimeline(self.timelineData)
+        
+    def PackCleanData(self, data):
+        #---------TODO--------
+        #If the data backend generated is the same as my data structure, no packing work needed here, just return the data
+        #otherwise, reformt the data as my data structure
+        
+        #mimic Data for clean data
+        self.cleanData = dict()
+        self.cleanData['labels'] = ['Type', 'Value', 'Date']
+        #0: extremes, 1: glitches, 2: Missing
+        self.cleanData['data'] = [(0, 33.4, "01/02/1997"), (0, '27','03/04/1988'),(0, '25', '06/07/2013'),
+                                (1, 33.4, "01/03/1997"), (1, '66.8','03/08/1988'),(1, '77.4', '09/07/2013'),
+                                (2, '', "01/05/1997"), (2, '','08/04/1988'),(2, '', '06/09/2013'),]
+        self.canClean = True
+        return self.cleanData
+        
     def PackDataToDraw(self, anomalies):
-        data = []
-
-#       TODO: Design an interface to let users key in top_k, chunk_num, dataObj_i
-#	 top_k is the number of ceil you want to show them out
-# 	 chunk_num is the number of partitions. Dividing data into a couple of partitions. e.g. 1, 2, .... 
-# 	 dataObj_i is the category of data index. e.g. TEMPER = 8 (refer ADParse.py)
-
-#	AnalyzeData(fileObj, top_k, chunk_num, dataObj_i):
-#       AnalyzeData returns 
-# 	t is the index of top_k, e.g. 1, 2, 3, ...
-# 	index is the x-axis
-# 	r is the index of data chunk
-# 	temp_anomaly is the temperature in one data chunk
-#       zip(t, r, index, temp_anomaly)
-# 	zipped output: e.g. (1, 0, 0, 23.2) (1, 0, 1, 24.2)
-#       Using index, and temp_anomaly to draw the graph
-
+        '''data = []
         N = len(anomalies)
         for i in range(N):
             dic = dict()
@@ -160,7 +195,6 @@ class ADFrame(wx.Frame):
             g = random.randint(30, 255)
             b = random.randint(30, 255)
             dic['color'] = (r,g,b)
-            #dic['color'] = 'red'
             # Adding anomaly data index
             # decompose the anomaly data array
             index = [item[0] for item in anomalies[i]]
@@ -197,9 +231,9 @@ class ADFrame(wx.Frame):
             data.append([dic])
             anomaly_data = []
             
-        return data
+        return data'''
 
-        '''#mimic Data
+        #mimic Data
         #genData mimic data here, will by read later
         list = []
         dic = dict()
@@ -226,84 +260,28 @@ class ADFrame(wx.Frame):
         list.append([dic1])
         list.append([dic2])
         list.append([dic3])
-        return list'''
-    
-    def Pick_xaxis(self):
-        File = self.openFilePath+'.tmp'
-        index = [0, 15, 31, 46, 60]
-        year = []
-        length = 0
-        fd = open(File, 'r')
-        for line in fd.readlines():
-            length = length + 1
-        fd.close()
-        interval = (int)(length/5)
-        count = 0
-        fd = open(File, 'r')
-        for line in fd.readlines():
-            count = count + 1
-            a = re.split(',|\n| ', line)
-            if((count % interval) == 0):
-                a = a[MON] + '/' + a[DAY] + '/' + a[YEAR]
-                year.append(a)
-        fd.close()
-        return zip(index, year)
+        return list
 
-    def PackTimelineData(self):
+    def PackTimelineData(self, data):
+        #---------TODO--------
+        #If the data backend generated is the same as my data structure, no packing work needed here, just return the data
+        #otherwise, reformt the data as my data structure
+        
+        #mimic Data
         #{labels:[list], anomolies: [list]}
         # the data part is the information you need to give me
         data = dict()
         #1st and last should be the start and end time, if no lable, can be like [(0, '')]
-        #data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
-        data['labels'] = self.Pick_xaxis()
+        data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
         #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
         data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
         #same as timeframe in comic map, for hightlight, (start date, end date)
         data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
         return data
         
-    #analyze functions
-    def DrawComicMap(self, data):
-        #TODO need to maintain comic maps ID globally here
-        self.AnalyzePanel.AddComicMap(200, data)
-        
-    def DrawTimeline(self, data):
-        self.AnalyzePanel.AddTimeline(300, data)
-    
-    def SetAnomalyNum(self, num):
-        self.AnomalNum = num
-        
-    def SetParNum(self, num):
-        self.ParNum = num
-        
-    def SetGridEffect(self, effect):
-        self.GridEffect = effect
-        
-    def SetDataType(self, type):
-        if type == 'TEMPER':
-            self.DataType = TEMPER
-        if type == 'HUMID':
-            self.DataType = HUMID
-        if type == 'PRESS':
-            self.DataType = PRESS
-        
-    def OnZoom(self, zoom):
-        if self.AnalyzePanel.comicMap is None:
-            return false
-        else:
-            self.AnalyzePanel.OnZoom(zoom)
-    
-    def DoneRegionSel(self, data):
-        self.dataWindow.Close(True)
-        File = self.openFilePath+'.tmp'
-        self.anomalies = AnalyzeData(File, self.DataType)
-        self.anomaliesData = self.PackDataToDraw(self.anomalies)
-        self.timelineData = self.PackTimelineData();
-        self.DrawComicMap(self.anomaliesData)
-        self.DrawTimeline(self.timelineData)
-        os.remove(File)
-        #self.DrawComicMap(self.anomaliesData)
-        
     def onCleanData(self, cleanIndex):
         self.cleanIndex = cleanIndex
         print self.cleanIndex
+        #----------------TODO-------------------
+        #backend function CleanSourceData take in a array of indexes of the original anomalies that needs to be removed
+        #CleanSourceData(index)

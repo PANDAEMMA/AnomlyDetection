@@ -169,10 +169,10 @@ class DataContent(wx.Window):
         for i in range(len(self.buttons)):
             if self.buttons[i] == "year":
                 if self.InRegion(x, y, self.yearRegion[i]):
-                    print (int(float(self.labels[i])), -1)
-                    return True
+                    data = (int(float(self.labels[i])), -1)
+                    self.GetParent().GetParent().DoneRegionSel(data)
             else:
                 for j in range(len(self.monthRegion[i])):
                     if self.InRegion(x, y, self.monthRegion[i][j]):
-                        print (int(float(self.labels[i])), j+1)
-                        return True
+                        data = (int(float(self.labels[i])), j+1)
+                        self.GetParent().GetParent().DoneRegionSel(data)
