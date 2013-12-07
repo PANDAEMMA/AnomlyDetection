@@ -9,17 +9,16 @@ from ADFrame import *
 from DataPanel import *
 
 class DataWindow(wx.Frame):
-
-    def __init__(self,parent,id, File):
+    def __init__(self,parent,id, data):
         wx.Frame.__init__(self, parent, id, 'Data', size=(550,630))
         wx.Frame.CenterOnScreen(self)
         CONTENT_ID = wx.NewId()
-        self.content = DataContent(self, CONTENT_ID, None, File)
+        self.content = DataContent(self, CONTENT_ID, data)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.content, 0, wx.EXPAND)
         
 class DataContent(wx.Window):
-    def __init__(self, parent, id, data, File):
+    def __init__(self, parent, id, data):
         wx.Window.__init__(self, parent, id=id)
         self.SetBackgroundColour(wx.WHITE)
         self.SetSize((550,610))
@@ -33,92 +32,69 @@ class DataContent(wx.Window):
         self.mColor = wx.Colour(50, 50, 255)
         self.scale = 32
         self.num = 2
-        self.offset = 100
+        self.offset = 32
+        self.data = data
+        self.ParseData()
+        
         # Layout
-        self.File = File
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnClick)
         self.Show(True)
+        
+    def ParseData(self):
+        self.num = len(self.data)
+        self.yw = self.width-self.offset
+        self.mw = self.yw/float(12)
+        self.labels = []
+        self.buttons = []
+        self.buttonPos = []
+        self.yearRegion = []
+        self.monthRegion = []
+        self.yearData = []
+        self.monthData = []
+        for i in range(len(self.data)):
+            self.labels.append(str(self.data[i]['year']))
+            self.buttons.append('year')
+            self.yearData.append(self.data[i]['year_data'])
+            self.monthData.append(self.data[i]['month_data'])
+            self.yearRegion.append(wx.Rect(self.zeroX+self.offset,self.zeroY+self.scale*i+1,self.width-self.offset,self.scale))
+            self.monthRegionYear = []
+            for j in range(12):
+                self.monthRegionYear.append(wx.Rect(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+1, self.mw, self.scale))
+            self.monthRegion.append(self.monthRegionYear)
+            self.buttonPos.append(wx.Rect(self.zeroX+3, self.zeroY+self.scale*i+3, 26, 26))
 
     def OnPaint(self, event):
         pdc = wx.PaintDC(self)
         dc = wx.GCDC(pdc)
-        #self.DrawDivide(dc)
-
-        #self.DrawLabel(dc, ['1997', '1998', '1999','2000','2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'])
-        # Get the number of year
-        year = get_year(self.File, YEAR)
-        length = len(year)
-        self.DrawPercent(dc, length)
-        self.DrawLabel(dc, year)
-        self.DrawDivide(dc, length)
-        # Draw out annual statistic
-        for i in range(length):
-            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
-            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min(((int)(year[i])-1997)*ZOOM_OUT,i))
-            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check(((int)(year[i]) -1997)*CHECK,i))
-
+        self.DrawPercent(dc, self.yearData, self.monthData, self.buttons)
+        self.DrawDivide(dc, self.num)
+        self.DrawLabel(dc,self.labels)
+        self.DrawButtons(dc, self.buttons, self.buttonPos)
         
-    def DrawButton_min(self, id, y_axis):
-	self.image2 = wx.Image("minus.ico", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-	self.button2 = wx.BitmapButton(self, id, bitmap=self.image2,
-        pos=(self.image2.GetWidth(), y_axis*self.image2.GetHeight()), size = (self.image2.GetWidth(), self.image2.GetHeight()))
-	self.button2.SetDefault()
-
-    def DrawButton_check(self, id, y_axis):
-	self.image3 = wx.Image("check.ico", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-	self.button3 = wx.BitmapButton(self, id, bitmap=self.image3,
-        pos=(2 * self.image3.GetWidth(), y_axis*self.image3.GetHeight()), size = (self.image3.GetWidth(), self.image3.GetHeight()))
-	self.button3.SetDefault()
-
-    def DrawButton_add(self, id, y_axis):
-	self.image1 = wx.Image("add.ico", wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-        self.button1 = wx.BitmapButton(self, id, bitmap=self.image1,
-        pos=(0, y_axis*self.image1.GetHeight()), size = (self.image1.GetWidth(), self.image1.GetHeight()))
-	self.button1.SetDefault()
-
-    def doMe(self, event):
-	id_n = event.GetId()
-	if ((id_n % CHECK) == 0):
-		year = (id_n / CHECK) + 1997
-		fd = open(self.File, 'r')
-		fd1 = open(self.File+'.tmp', 'w+')
-		for line in fd.readlines():
-			a = re.split(',|\n| ', line)
-			if((int)(a[YEAR]) == year):
-				fd1.write(line)
-		fd.close()
-		fd1.close()
-	if ((id_n % ZOOM_OUT) == 0):	
-		pdc = wx.PaintDC(self)
-        	dc = wx.GCDC(pdc)	
-                year = (id_n / ZOOM_OUT) + 1997
-		self.DrawMonth(dc, id_n/ZOOM_OUT, year)	
-        self.GetParent().GetParent().DoneRegionSel([])
-	#self.Destroy() # test
-
-    def DrawDivide(self, dc, year):
-        dc.SetPen(wx.BLACK_PEN)
-        for i in range(year + 1):
-            dc.DrawLine(self.zeroX, self.zeroY+self.scale*i,self.zeroX+self.width, self.zeroY+self.scale*i)
+    def DrawButtons(self, dc, buttonInfo, buttonPos):
+        for i in range(len(buttonInfo)):
+            if buttonInfo[i] == 'year':
+                self.DrawButton(dc, buttonPos[i], 1)
+            else:
+                self.DrawButton(dc, buttonPos[i], 0)
             
-    def DrawPercent(self, dc, length):
-	aa = normal_stat(self.File, YEAR, TEMPER)
-	miss_data = [item[0] for item in aa]
-	max_data = [item[1] for item in aa]
-	min_data = [item[2] for item in aa]
-        for i in range(length):
-                dc.SetPen(wx.Pen(self.eColor))
-                dc.SetBrush( wx.Brush(self.eColor) )
-       #         e = random.randint(25,40)
-                dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, miss_data[i] * self.width, self.scale-1)
-                dc.SetPen(wx.Pen(self.gColor))
-                dc.SetBrush( wx.Brush(self.gColor) )
-         #       g = random.randint(5,25)
-                dc.DrawRectangle(self.zeroX+self.offset+ (miss_data[i] * self.width), self.zeroY+self.scale*i+1, max_data[i] * self.width, self.scale-1)
-                dc.SetPen(wx.Pen(self.mColor))
-                dc.SetBrush( wx.Brush(self.mColor) )
-       #         m = random.randint(25,50)
-                dc.DrawRectangle(self.zeroX+self.offset+((miss_data[i] + max_data[i]) * self.width), self.zeroY+self.scale*i+1, min_data[i] * self.width, self.scale-1)
+    def DrawButton(self, dc, posRect, type):
+        dc.SetPen(wx.Pen(wx.BLACK, 2))
+        dc.SetBrush(wx.WHITE_BRUSH)
+        center = (posRect.x+float(posRect.width)/2, posRect.y+float(posRect.height)/2)
+        radius = (posRect.width)/2
+        len = radius-8
+        dc.DrawCircle(center[0], center[1], radius)
+        dc.DrawLine(center[0]-len, center[1],center[0]+len, center[1])
+        if type == 1:
+            dc.DrawLine(center[0], center[1]-len,center[0], center[1]+len)
+
+    def DrawDivide(self, dc, len):
+        dc.SetPen(wx.Pen(wx.BLACK, 1))
+        for i in range(len + 1):
+            dc.DrawLine(self.zeroX, self.zeroY+self.scale*i,self.zeroX+self.width, self.zeroY+self.scale*i)
             
     def DrawLabel(self, dc, data):
         self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
@@ -130,36 +106,73 @@ class DataContent(wx.Window):
             pos = (self.width-tw-5, self.zeroY+self.scale*i+5)
             dc.DrawText(labelText, pos[0], pos[1])
             
-    def DrawMonth(self,dc, i, year):
-	aa = normal_mon_stat(self.File+'.tmp', year, TEMPER)
-	"""miss_data = [item[0] for item in aa]
-        max_data = [item[1] for item in aa]
-        min_data = [item[2] for item in aa]
-
-        entryW = self.width/float(12)
+    def DrawPercent(self, dc, yeardata, monthdata, buttons):
+        for i in range(len(buttons)):
+            if buttons[i] == 'year':
+                self.DrawYear(dc, i, yeardata[i])
+            else:
+                self.DrawMonth(dc, i, monthdata[i])
+                
+    def DrawYear(self, dc, i, data):
+        dc.SetPen(wx.Pen(self.eColor))
+        dc.SetBrush( wx.Brush(self.eColor))
+        dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, data[0]*self.yw, self.scale-1)
+        dc.SetPen(wx.Pen(self.gColor))
+        dc.SetBrush( wx.Brush(self.gColor) )
+        dc.DrawRectangle(self.zeroX+self.offset+ data[0]*self.yw, self.zeroY+self.scale*i+1, data[1]*self.yw, self.scale-1)
+        dc.SetPen(wx.Pen(self.mColor))
+        dc.SetBrush( wx.Brush(self.mColor) )
+        dc.DrawRectangle(self.zeroX+self.offset+((data[0] + data[1])*self.yw), self.zeroY+self.scale*i+1, data[2]*self.yw, self.scale-1)
+            
+    def DrawMonth(self,dc, i, data):
         for j in range(12):
+            md = data[j]
             dc.SetPen(wx.Pen(self.eColor))
             dc.SetBrush( wx.Brush(self.eColor) )
-          #  e = random.randint(25,40)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+1, miss_data[j], self.scale-1)
+            dc.DrawRectangle(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+1, md[0]*self.mw, self.scale-1)
             dc.SetPen(wx.Pen(self.gColor))
             dc.SetBrush( wx.Brush(self.gColor) )
-           # g = random.randint(5,25)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e, self.zeroY+self.scale*i+1, max_data[j], self.scale-1)
+            dc.DrawRectangle(self.zeroX+self.offset+self.mw*j+md[0]*self.mw, self.zeroY+self.scale*i+1, md[1]*self.mw, self.scale-1)
             dc.SetPen(wx.Pen(self.mColor))
             dc.SetBrush( wx.Brush(self.mColor) )
-           # m = random.randint(25,50)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e+g, self.zeroY+self.scale*i+1, min_data[j], self.scale-1)
+            dc.DrawRectangle(self.zeroX+self.offset+self.mw*j+((md[0]+md[1])*self.mw), self.zeroY+self.scale*i+1, md[2]*self.mw, self.scale-1)
             if not j==0:
                 dc.SetPen(wx.BLACK_PEN)
-                dc.DrawLine(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i,self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+self.scale)"""
+                dc.DrawLine(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i,self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+self.scale)
+            #draw month label
+            self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
+            dc.SetFont(self.labelFont)
+            dc.SetPen(wx.BLACK_PEN)
+            labelText = str(j+1)
+            tw, th = dc.GetTextExtent(labelText)
+            pos = (self.zeroX+self.offset+self.mw*j+1, self.zeroY+self.scale*(i+1)-th)
+            dc.DrawText(labelText, pos[0], pos[1])
     
-    def opj(self, path):
-        """Convert paths to the platform-specific separator"""
-        st = apply(os.path.join, tuple(path.split('/')))
-        # HACK: on Linux, a leading / gets lost...
-        if path.startswith('/'):
-            st = '/' + st
-        return st        
+    def InRegion(self, x, y, bRect):
+        if x>bRect.x and x<bRect.x+bRect.width and y>bRect.y and y<bRect.y+bRect.height:
+            return True
+        else:
+            return False
     
-        
+    def OnClick(self, event):
+        x, y = event.GetPositionTuple()
+        for i in range(len(self.buttonPos)):
+            if self.InRegion(x, y, self.buttonPos[i]):
+                if self.buttons[i] == "year":
+                    self.buttons[i] = "month"
+                elif self.buttons[i] == "month":
+                    self.buttons[i] = "year"
+                self.Refresh()
+    
+    def OnDoubleClick(self, event):
+        x, y = event.GetPositionTuple()
+        for i in range(len(self.buttons)):
+            if self.buttons[i] == "year":
+                if self.InRegion(x, y, self.yearRegion[i]):
+                    print (int(float(self.labels[i])), -1)
+                    return True
+            else:
+                for j in range(len(self.monthRegion[i])):
+                    if self.InRegion(x, y, self.monthRegion[i][j]):
+                        print (int(float(self.labels[i])), j+1)
+                        return True

@@ -40,7 +40,6 @@ class ADFrame(wx.Frame):
     
     def CreateMenuBar(self):
         menu_bar = wx.MenuBar()
-        #menus
         file_menu = wx.Menu()
         MENU_QUIT = wx.NewId()
         file_menu.Append(MENU_QUIT,"&Exit")
@@ -90,25 +89,30 @@ class ADFrame(wx.Frame):
             self.filename = dlg.GetFilename()
             self.dirname = dlg.GetDirectory()
             self.openFilePath = os.path.join(self.dirname, self.filename)
-            #TODO handle data read and data parser by call utility functions here
-            #TODO need a new draw function pass in data here
-            #self.DrawComicMap(zipped)
-            #self.anomalies = AnalyzeData(self.openFilePath)
-            #self.anomaliesData = self.PackDataToDraw(self.anomalies)
-            #self.DrawComicMap(self.anomaliesData)
-            #self.UpdateAttribute('temprature')
-
-            #TODO: Designing an interface to pass the following parameters: partition, top_k, dataObj_index
-            partition = self.ParNum
-            top_k = self.AnomalNum
-            self.anomalies = AnalyzeData(self.openFilePath, self.DataType)
-            #self.anomalies = []
-            self.anomaliesData = self.PackDataToDraw(self.anomalies)
-            #self.timelineData = self.PackTimelineData();
-            #self.DrawComicMap(self.anomaliesData)
-            #self.DrawTimeline(self.timelineData)
-#	print self.printpath(self.File)
-            self.dataWindow = DataWindow(self, 1, self.openFilePath)
+            #TODO backend function called function: StatisticalAnalyze
+            #self.dangerData = StatisticalAnalyze(self.openFilePath)
+            self.dangerData = []
+            self.dangerData.append({'year':1997,'year_data':(0.23, 0.34, 0.06), 
+            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
+            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
+            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
+            self.dangerData.append({'year':1998,'year_data':(0.03, 0.14, 0.56), 
+            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
+            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
+            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
+            self.dangerData.append({'year':1999,'year_data':(0.13, 0.34, 0.56), 
+            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
+            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
+            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
+            self.dangerData.append({'year':2000,'year_data':(0.33, 0.04, 0.56), 
+            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
+            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
+            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
+            self.dangerData.append({'year':2001,'year_data':(0.03, 0.24, 0.06), 
+            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
+            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
+            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
+            self.dataWindow = DataWindow(self, 1, self.dangerData)
             self.dataWindow.Show()	
         dlg.Destroy()
 
