@@ -18,7 +18,6 @@ class ComicMap(wx.Panel):
         while (i<len(data)):
             self.plots.append(PlotWindow(self, self.window_init_id+i, data=data[i]))
             i=i+1
-        #self.col = math.sqrt(len(data))
         self.col = 3
         self.row=math.ceil(float(len(data))/self.col)
         self.sizer = wx.GridSizer(self.row,self.col)
@@ -77,10 +76,6 @@ class ComicMap(wx.Panel):
         else:
             sourceDataID = self.plots[source].dataID
             targetDataID = self.plots[target].dataID
-            #i = 0;
-            #while (i<len(self.data[sourceDataID])):
-                #self.data[targetDataID].append(self.data[sourceDataID][i])
-                #i=i+1
             targetDataID = targetDataID+sourceDataID
             sourceData = []
             targetData = []
@@ -90,21 +85,6 @@ class ComicMap(wx.Panel):
                 targetData = targetData + self.data[targetDataID[t]]
             self.plots[source].ReDraw(sourceDataID, sourceData)
             self.plots[target].ReDraw(targetDataID, targetData)
-        
-    def OnZoom(self, zoom):
-        if zoom == "in":
-            self.plotSize = self.plotSize+10
-        if zoom == "out":
-            self.plotSize = self.plotSize-10
-        i=0
-        self.newSizer =  wx.GridSizer(self.row,self.col)
-        while (i<len(self.plots)):
-            self.plots[i].SetSize((self.plotSize,self.plotSize))
-            i=i+1
-        for plot in self.plots:
-            self.newSizer.Add(plot, 0, 0)
-        self.SetSizer(self.newSizer)
-        self.Fit()
         
     def UpdateClick(self, id):
         i = 0

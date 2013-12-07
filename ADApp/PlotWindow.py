@@ -38,7 +38,6 @@ class PlotWindow(wx.Window):
         self.Bind(wx.EVT_LEFT_UP,  self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)  
         
-    #def redefineInputData(self, data):
     
     def getMaxData(self):
         #define maxH and maxW for Axi, get from the unified value from parent
@@ -115,7 +114,6 @@ class PlotWindow(wx.Window):
         #init paint 
         pdc = wx.PaintDC(self)
         dc = wx.GCDC(pdc)
-        #dc.SetUserScale(self.scaleX, self.scaleY)
         #draw data
         for dataset in self.dataToDraw:
             self.DrawData(dataset, dc)
