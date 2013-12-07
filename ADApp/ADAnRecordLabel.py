@@ -49,7 +49,6 @@ def normal_mon_stat(fileObj, year_flag, mis_flag):
         aa = count_mon_max_data_avg(fileObj, year_flag, mis_flag)
         # Counting the nubmer of max data
         max_a = count_mon_max_data(fileObj, aa, mis_flag, year_flag)
-'''
         # Counting min data avg
         mm = count_mon_min_data_avg(fileObj, year_flag,  mis_flag)
         # Counting the number of min data
@@ -62,7 +61,7 @@ def normal_mon_stat(fileObj, year_flag, mis_flag):
                 maxx.append((float)(max_a[i])/(float)(sum_all))
                 minn.append((float)(min_a[i])/(float)(sum_all))
         ratio = zip(miss, maxx, minn)
-        return ratio'''
+        return ratio
 
 # Objective: Count the number of maximum data each year
 # Usage: count_year_max_data_avg(fileObj, max_data_avg, cat_flag)
@@ -99,19 +98,19 @@ def count_mon_max_data(fileObj, aa, cat_flag, year):
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
-                        if ((float)(a[cat_flag]) > (float)(aa[ccount])):
-                                count = count + 1
-                """if (flag == 0 and (int)(a[YEAR]) == year):
+			if ((float)(a[cat_flag]) > (float)(aa[ccount])):
+				count = count + 1
+                if (flag == 0 and (int)(a[YEAR]) == year):
                         temp = (int)(a[MON])
                         flag = 1
-                if(temp != (int)(a[YEAR]) and (int)(a[YEAR]) == year):
+                if(temp != (int)(a[MON]) and (int)(a[YEAR]) == year):
                         count_data.append(count)
                         count = 0
                         ccount = ccount + 1
                 temp = (int)(a[MON])
         count_data.append(count)
         fd.close()
-        return count_data"""
+        return count_data
 
 
 # Objective: Count the number of minimum data each year
@@ -154,7 +153,7 @@ def count_mon_min_data(fileObj, aa, cat_flag, year):
                 if (flag == 0 and (int)(a[YEAR]) == year):
                         temp = (int)(a[MON])
                         flag = 1
-                if(temp != (int)(a[YEAR]) and (int)(a[YEAR]) == year):
+                if(temp != (int)(a[MON]) and (int)(a[YEAR]) == year):
                         count_data.append(count)
                         count = 0
                         ccount = ccount + 1

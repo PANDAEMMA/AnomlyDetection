@@ -31,6 +31,7 @@ class DataContent(wx.Window):
         self.eColor = wx.Colour(255, 50, 50)
         self.gColor = wx.Colour(50,255,50)
         self.mColor = wx.Colour(50, 50, 255)
+	self.wColor = wx.Colour(255, 255, 255)
         self.scale = 32
         self.num = 2
         self.offset = 100
@@ -49,12 +50,13 @@ class DataContent(wx.Window):
         year = get_year(self.File, YEAR)
         length = len(year)
         self.DrawPercent(dc, length)
+#	self.DrawMonth(dc, 1, 1997)
         self.DrawLabel(dc, year)
         self.DrawDivide(dc, length)
         # Draw out annual statistic
         for i in range(length):
-            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add((int)(year[i]),i))
-            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min(((int)(year[i])-1997)*ZOOM_OUT,i))
+            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_min(((int)(year[i])-1997)*ZOOM_IN,i))
+            self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_add(((int)(year[i])-1997)*ZOOM_OUT,i))
             self.Bind(wx.EVT_BUTTON, self.doMe, self.DrawButton_check(((int)(year[i]) -1997)*CHECK,i))
 
         
@@ -93,33 +95,78 @@ class DataContent(wx.Window):
         	dc = wx.GCDC(pdc)	
                 year = (id_n / ZOOM_OUT) + 1997
 		self.DrawMonth(dc, id_n/ZOOM_OUT, year)	
-        self.GetParent().GetParent().DoneRegionSel([])
+	if ((id_n % ZOOM_IN) == 0):
+		pdc = wx.PaintDC(self)
+                dc = wx.GCDC(pdc)
+                year = (id_n / ZOOM_IN) + 1997
+		fd = open(self.File, 'r')
+                fd1 = open(self.File+'.tmp', 'w+')
+                for line in fd.readlines():
+                        a = re.split(',|\n| ', line)
+                        if((int)(a[YEAR]) == year):
+                                fd1.write(line)
+                fd.close()
+                fd1.close()
+#		self.DrawPercent_Back(dc, id_n/ZOOM_IN, year)
+
+        #self.GetParent().GetParent().DoneRegionSel([])
 	#self.Destroy() # test
 
     def DrawDivide(self, dc, year):
         dc.SetPen(wx.BLACK_PEN)
         for i in range(year + 1):
             dc.DrawLine(self.zeroX, self.zeroY+self.scale*i,self.zeroX+self.width, self.zeroY+self.scale*i)
-            
+    
     def DrawPercent(self, dc, length):
-	aa = normal_stat(self.File, YEAR, TEMPER)
-	miss_data = [item[0] for item in aa]
-	max_data = [item[1] for item in aa]
-	min_data = [item[2] for item in aa]
-        for i in range(length):
-                dc.SetPen(wx.Pen(self.eColor))
-                dc.SetBrush( wx.Brush(self.eColor) )
-       #         e = random.randint(25,40)
-                dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, miss_data[i] * self.width, self.scale-1)
-                dc.SetPen(wx.Pen(self.gColor))
-                dc.SetBrush( wx.Brush(self.gColor) )
-         #       g = random.randint(5,25)
+        aa = normal_stat(self.File, YEAR, TEMPER)
+        miss_data = [item[0] for item in aa]
+        max_data = [item[1] for item in aa]
+        min_data = [item[2] for item in aa]
+	for i in range(length):
+		dc.SetPen(wx.Pen(self.eColor))
+		dc.SetBrush( wx.Brush(self.eColor) )
+		dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, miss_data[i] * self.width, self.scale-1)
+		dc.SetPen(wx.Pen(self.gColor))
+		dc.SetBrush( wx.Brush(self.gColor) )
                 dc.DrawRectangle(self.zeroX+self.offset+ (miss_data[i] * self.width), self.zeroY+self.scale*i+1, max_data[i] * self.width, self.scale-1)
+                
                 dc.SetPen(wx.Pen(self.mColor))
                 dc.SetBrush( wx.Brush(self.mColor) )
-       #         m = random.randint(25,50)
                 dc.DrawRectangle(self.zeroX+self.offset+((miss_data[i] + max_data[i]) * self.width), self.zeroY+self.scale*i+1, min_data[i] * self.width, self.scale-1)
-            
+
+    def DrawLabel_Back(self, dc, data, i):
+        self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        dc.SetFont(self.labelFont)
+        dc.SetPen(wx.BLACK_PEN)
+        labelText = data
+        tw, th = dc.GetTextExtent(labelText)
+        pos = (self.width-tw-5, self.zeroY+self.scale*i+5)
+        dc.DrawText(labelText, pos[0], pos[1])
+
+    def DrawPercent_Back(self, dc, i, year):
+        aa = normal_stat(self.File+'.tmp', YEAR, TEMPER)
+        miss_data = [item[0] for item in aa]
+        max_data = [item[1] for item in aa]
+        min_data = [item[2] for item in aa]
+
+        dc.SetPen(wx.Pen(self.wColor))
+        dc.SetBrush( wx.Brush(self.wColor) )
+        dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, self.width, self.scale-1)
+
+        dc.SetPen(wx.Pen(self.eColor))
+        dc.SetBrush( wx.Brush(self.eColor) )
+        dc.DrawRectangle(self.zeroX+self.offset, self.zeroY+self.scale*i+1, miss_data[i] * self.width, self.scale-1)
+        
+        dc.SetPen(wx.Pen(self.gColor))
+        dc.SetBrush( wx.Brush(self.gColor) )
+        dc.DrawRectangle(self.zeroX+self.offset+ (miss_data[i] * self.width), self.zeroY+self.scale*i+1, max_data[i] * self.width, self.scale-1)
+        
+        dc.SetPen(wx.Pen(self.mColor))
+        dc.SetBrush( wx.Brush(self.mColor) )
+        dc.DrawRectangle(self.zeroX+self.offset+((miss_data[i] + max_data[i]) * self.width), self.zeroY+self.scale*i+1, min_data[i] * self.width, self.scale-1)
+        
+ #       self.DrawLabel_Back(dc, year, i)
+
     def DrawLabel(self, dc, data):
         self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(self.labelFont)
@@ -129,31 +176,39 @@ class DataContent(wx.Window):
             tw, th = dc.GetTextExtent(labelText)
             pos = (self.width-tw-5, self.zeroY+self.scale*i+5)
             dc.DrawText(labelText, pos[0], pos[1])
-            
+
     def DrawMonth(self,dc, i, year):
 	aa = normal_mon_stat(self.File+'.tmp', year, TEMPER)
-	"""miss_data = [item[0] for item in aa]
+	miss_data = [item[0] for item in aa]
         max_data = [item[1] for item in aa]
         min_data = [item[2] for item in aa]
-
         entryW = self.width/float(12)
+
+	dc.SetPen(wx.Pen(self.wColor))
+        dc.SetBrush( wx.Brush(self.wColor) )
+          #  e = random.randint(25,40)/float(12)
+        dc.DrawRectangle(self.zeroX+self.offset+entryW, self.zeroY+self.scale*i+1, self.width, self.scale-1)
+
         for j in range(12):
             dc.SetPen(wx.Pen(self.eColor))
             dc.SetBrush( wx.Brush(self.eColor) )
           #  e = random.randint(25,40)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+1, miss_data[j], self.scale-1)
+            dc.DrawRectangle(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+1, miss_data[j]*self.width, self.scale-1)
             dc.SetPen(wx.Pen(self.gColor))
             dc.SetBrush( wx.Brush(self.gColor) )
            # g = random.randint(5,25)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e, self.zeroY+self.scale*i+1, max_data[j], self.scale-1)
+            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+miss_data[j], self.zeroY+self.scale*i+1, max_data[j]*self.width, self.scale-1)
             dc.SetPen(wx.Pen(self.mColor))
             dc.SetBrush( wx.Brush(self.mColor) )
            # m = random.randint(25,50)/float(12)
-            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+e+g, self.zeroY+self.scale*i+1, min_data[j], self.scale-1)
+            dc.DrawRectangle(self.zeroX+self.offset+entryW*j+miss_data[j]+max_data[j], self.zeroY+self.scale*i+1, min_data[j]*self.width, self.scale-1)
             if not j==0:
                 dc.SetPen(wx.BLACK_PEN)
-                dc.DrawLine(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i,self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+self.scale)"""
-    
+                dc.DrawLine(self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i,self.zeroX+self.offset+entryW*j, self.zeroY+self.scale*i+self.scale)
+	a = (str)(year)
+	print a, year
+#	self.DrawLabel_Back(dc, i, (str)(year))
+
     def opj(self, path):
         """Convert paths to the platform-specific separator"""
         st = apply(os.path.join, tuple(path.split('/')))
