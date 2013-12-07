@@ -173,7 +173,7 @@ class ADFrame(wx.Frame):
     def PackCleanData(self, data):
         #---------TODO--------
         #If the data backend generated is the same as my data structure, no packing work needed here, just return the data
-        #otherwise, reformt the data as my data structure
+        #otherwise, reformat the data as my data structure
         
         #mimic Data for clean data
         self.cleanData = dict()
@@ -265,7 +265,7 @@ class ADFrame(wx.Frame):
     def PackTimelineData(self, data):
         #---------TODO--------
         #If the data backend generated is the same as my data structure, no packing work needed here, just return the data
-        #otherwise, reformt the data as my data structure
+        #otherwise, reformat the data as my data structure
         
         #mimic Data
         #{labels:[list], anomolies: [list]}
@@ -284,4 +284,4 @@ class ADFrame(wx.Frame):
         print self.cleanIndex
         #----------------TODO-------------------
         #backend function CleanSourceData take in a array of indexes of the original anomalies that needs to be removed
-        #CleanSourceData(index)
+        #CleanSourceData(self.cleanIndex)
