@@ -19,9 +19,121 @@ from ADParse import *
 
 #from scipy.stats.stats import pearsonr
 
+def AnalyzeData(fileObj, cat_flag, year, month):
+	if(month == -1):
+		anomaly = AnalyzeData_year(fileObj, cat_flag, year)
+	else:
+		anomaly = AnalyzeData_month(fileObj, cat_flag, year, month)
+	return anomaly
+
+def AnalyzeData_month(fileObj, cat_flag, year, mon):
+        fd = open(fileObj, 'r')
+        top_k = 9
+        chunk_num = 10
+        input_data = []
+        buf = []
+        anomaly = []
+	std_list = []
+	yy = []
+	mm = []
+	dd = []
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year and (int)(a[MON]) == mon):
+                        input_data.append((float)(a[cat_flag]))
+			yy.append(a[YEAR])
+                        dd.append(a[DAY])
+                        mm.append(a[MON])
+
+        N = len(input_data)
+        step = (int)(N / chunk_num)
+
+        for i in range(chunk_num):
+                for j in range(step):
+                        buf.append((float)(input_data[i*step+j]))
+                N1 = len(buf)
+                #Calculate model
+                model = FFT_Model(buf, N1)
+                #Calculate std between real data and model data
+                std = stderr(buf, model, N1)
+                std_list.append(std)
+                buf = []
+        # Get the number of top k index of std data
+        rank_i = getTopKIndex(std_list, top_k)
+	buf = []
+        index = range(N1)
+        for k in range(top_k):
+                date = []
+		data_i = []
+                for t in range(N1):
+                        buf.append(input_data[rank_i[k]*step+t])
+                        date.append(mm[rank_i[k]*step+t]+'/'+dd[rank_i[k]*step+t]+'/'+yy[rank_i[k]*step+t])
+			date_i.append(rank_i[k]*step+t)
+                zipped = zip(index, buf, date, date_i)
+                anomaly.append(zipped)
+		buf = []
+	input_data = []
+	std_list = []
+	yy = []
+	dd = []
+	mm = []
+	return anomaly
+
+def AnalyzeData_year(fileObj, cat_flag, year):
+	fd = open(fileObj, 'r')
+	top_k = 9
+	chunk_num = 100
+	input_data = []
+	buf = []
+	anomaly = []
+	std_list = []
+	yy = []
+	dd = []
+	mm = []
+	for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
+			input_data.append((float)(a[cat_flag]))
+			yy.append(a[YEAR])
+			dd.append(a[DAY])
+			mm.append(a[MON])
+	N = len(input_data)
+	step = (int)(N / chunk_num)
+
+	for i in range(chunk_num):
+		for j in range(step):
+			buf.append((float)(input_data[i*step+j]))
+		N1 = len(buf)
+        	#Calculate model
+        	model = FFT_Model(buf, N1)
+        	#Calculate std between real data and model data
+        	std = stderr(buf, model, N1)
+        	std_list.append(std)
+		buf = []
+	# Get the number of top k index of std data
+    	rank_i = getTopKIndex(std_list, top_k)
+	buf = []
+	index = range(N1)
+	for k in range(top_k):
+		date = []
+		date_i = []
+		for t in range(N1):
+			buf.append((float)(input_data[rank_i[k]*step+t]))
+			date.append(mm[rank_i[k]*step+t]+'/'+dd[rank_i[k]*step+t]+'/'+yy[rank_i[k]*step+t])
+			date_i.append(rank_i[k]*step+t)
+		zipped = zip(index, buf, date, date_i)
+		anomaly.append(zipped)
+		buf = []
+	fd.close()
+	input_data = []
+	std_list = []
+	yy = []
+	dd = []
+	mm = []
+	return anomaly
 # the anomaly data in each cell (top_k = 6, partition = 10)
 # dataObj_i is the category of data index. e.g. TEMPER = 8
-def AnalyzeData(fileObj, dataObj_i):
+def AnalyzeData_div(fileObj, dataObj_i):
     anomalies = []
     index = []
     signal = []

@@ -93,6 +93,7 @@ def count_mon_max_data(fileObj, aa, cat_flag, year):
         fd = open(fileObj, 'r')
         count = 0
         flag = 0
+	temp = 0
         ccount = 0
         count_data = []
         for line in fd.readlines():
@@ -103,11 +104,12 @@ def count_mon_max_data(fileObj, aa, cat_flag, year):
                 if (flag == 0 and (int)(a[YEAR]) == year):
                         temp = (int)(a[MON])
                         flag = 1
-                if(temp != (int)(a[MON]) and (int)(a[YEAR]) == year):
+                if(temp != (int)(a[MON]) and flag == 1):
                         count_data.append(count)
                         count = 0
                         ccount = ccount + 1
-                temp = (int)(a[MON])
+		if (flag == 1):
+                	temp = (int)(a[MON])
         count_data.append(count)
         fd.close()
         return count_data
@@ -143,6 +145,7 @@ def count_mon_min_data(fileObj, aa, cat_flag, year):
         fd = open(fileObj, 'r')
         count = 0
         flag = 0
+	temp = 0
         ccount = 0
         count_data = []
         for line in fd.readlines():
@@ -153,11 +156,12 @@ def count_mon_min_data(fileObj, aa, cat_flag, year):
                 if (flag == 0 and (int)(a[YEAR]) == year):
                         temp = (int)(a[MON])
                         flag = 1
-                if(temp != (int)(a[MON]) and (int)(a[YEAR]) == year):
+		if(temp != (int)(a[MON]) and flag == 1):
                         count_data.append(count)
                         count = 0
                         ccount = ccount + 1
-                temp = (int)(a[MON])
+                if (flag == 1):
+                        temp = (int)(a[MON])
         count_data.append(count)
         fd.close()
         return count_data
@@ -202,9 +206,23 @@ def get_year(fileObj, cat_flag):
                                 year.append(a[cat_flag])
                         temp_year = (int)(a[cat_flag])
     #    year.append(a[cat_flag])
-	del a,line
 	fd.close()
         return year
+
+def get_year_i(fileObj, cat_flag):
+        year = []
+        temp_year = 0
+        fd = open(fileObj, 'r')
+        for line in fd.readlines():
+                a = re.split(',|\n| ', line)
+                if (len(a[cat_flag]) != 0):
+                        if ((int)(a[cat_flag]) != temp_year):
+                                year.append((int)(a[cat_flag]))
+                        temp_year = (int)(a[cat_flag])
+    #    year.append(a[cat_flag])
+        fd.close()
+        return year
+
 
 # Objective: Show max data avg of each year
 # Calculate 1% maximum data average
@@ -396,11 +414,12 @@ def count_year_mon_missdata(fileObj, year, mis_flag):
                         flag = 1
                 if (len(a[mis_flag]) == 0 and (int)(a[YEAR]) == year):
                         miss_count = miss_count + 1
-                if(temp != (int)(a[MON]) and (int)(a[YEAR]) == year):
+                if(temp != (int)(a[MON]) and flag == 1):
                         count = count + 1
                         missdata.append(miss_count)
                         miss_count = 0
-                temp = (int)(a[MON])
+		if(flag == 1):
+                	temp = (int)(a[MON])
         missdata.append(miss_count)
 	fd.close()
         return missdata
