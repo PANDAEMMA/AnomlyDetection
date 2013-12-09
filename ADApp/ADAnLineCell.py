@@ -64,7 +64,7 @@ def AnalyzeData_month(fileObj, cat_flag, year, mon):
         index = range(N1)
         for k in range(top_k):
                 date = []
-		data_i = []
+		date_i = []
                 for t in range(N1):
                         buf.append(input_data[rank_i[k]*step+t])
                         date.append(mm[rank_i[k]*step+t]+'/'+dd[rank_i[k]*step+t]+'/'+yy[rank_i[k]*step+t])

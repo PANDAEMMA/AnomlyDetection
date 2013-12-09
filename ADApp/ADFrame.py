@@ -28,7 +28,7 @@ class ADFrame(wx.Frame):
         self.DataPanel = DataPanel(self,self.ID_DATAPANEL)
         self.AnalyzePanel = AnalyzePanel(self,self.ID_ANALYZEPANEL)
         # TimeLine
-	self.TimeLineLen = 60
+	self.TimeLineLen = 600
 	# Layout
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.DataPanel.SetSize((200, -1))
@@ -306,14 +306,15 @@ class ADFrame(wx.Frame):
 		an_data = [item[1] for item in anomalies[j]]
 		max_i = getMaxIndex(an_data)
 		an_i = date[max_i]
-		start_x = (int)(((float)(an_i)/(float)(size))*self.TimeLineLen)
+		start_x = (float)(an_i)/(float)(size)*self.TimeLineLen
 		ann.append(start_x)
 		ann_zip = zip(i1, ann, ann)
 	for k in range(len(miss)):
-		an_x  = (int)(((float)(miss[k])/(float)(size))*self.TimeLineLen)
+		an_x  = (float)(miss[k])/(float)(size)*self.TimeLineLen
 		ann2.append(an_x)
 		ann2_zip = zip(i2, ann2, ann2)
-	ann_zip.extend(ann2_zip)
+	if (len(miss) > 0):
+		ann_zip.extend(ann2_zip)
 	data['anomolies'] = ann_zip
 	#data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
         #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
@@ -326,8 +327,8 @@ class ADFrame(wx.Frame):
 		start_d = date[0]
 		step = len(date)
 		stop_d = date[step - 1]
-		start_x = (int)(((float)(start_d)/(float)(size))*self.TimeLineLen)
-		stop_x = (int)(((float)(stop_d)/(float)(size))*self.TimeLineLen)
+		start_x = (float)(start_d)/(float)(size)*self.TimeLineLen
+		stop_x = (float)(stop_d)/(float)(size)*self.TimeLineLen
 		start.append(start_x)
 		end.append(stop_x)
 	time_index = zip(start, end)

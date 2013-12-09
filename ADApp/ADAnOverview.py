@@ -76,8 +76,7 @@ def get_mon_x_axis(fileObj, cat_flag, year, month, length, chunk_num):
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year and (int)(a[MON]) == month):
                         if (count1 == count):
-                                (int)((count1/file_len)*length)
-                                ii = (int)(((float)(count1)/(float)(file_len))*length)
+                                ii = (float)(count1)/(float)(file_len)*length
                                 date.append(a[MON] + '/' + a[DAY] + '/' + a[YEAR])
                                 index.append(ii)
                                 count1 = count1 + step
@@ -104,8 +103,7 @@ def get_year_x_axis(fileObj, cat_flag, year, length, chunk_num):
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
 			if (count1 == count):
-				(int)((count1/file_len)*length)
-				ii = (int)(((float)(count1)/(float)(file_len))*length)
+				ii = (float)(count1)/(float)(file_len)*length
 				date.append(a[MON] + '/' + a[DAY] + '/' + a[YEAR])
 				index.append(ii)
 				count1 = count1 + step
