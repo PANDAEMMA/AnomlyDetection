@@ -54,17 +54,21 @@ def clean_year_max_data(fileObj, year, cat_flag):
 	fd = open(fileObj, 'r')
         buf = []
 	buf1 = []
+	buf2 = []
+	count = 0
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
                         if ((float)(a[cat_flag]) > avg):
 				buf.append(a[MON]+'/'+a[DAY]+'/'+a[YEAR])
                                 buf1.append((float)(a[cat_flag]))
-        
+        			buf2.append(count)
+		count = count + 1
        	index = [0]*int(len(buf))
-        max_data = zip(index, buf1, buf)
+        max_data = zip(index, buf1, buf, buf2)
         buf = []
         buf1 = []
+	buf2 = []
         fd.close()
         return max_data
 
@@ -73,17 +77,21 @@ def clean_year_min_data(fileObj, year, cat_flag):
         fd = open(fileObj, 'r')
         buf = []
         buf1 = []
+	buf2 = []
+	count = 0
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year):
                         if ((float)(a[cat_flag]) < avg):
                                 buf.append(a[MON]+'/'+a[DAY]+'/'+a[YEAR])
                                 buf1.append((float)(a[cat_flag]))
-
+				buf2.append(count)
+		count = count + 1
         index = [0]*int(len(buf))
-        min_data = zip(index, buf1, buf)
+        min_data = zip(index, buf1, buf, buf2)
         buf = []
         buf1 = []
+	buf2 = []
         fd.close()
         return min_data
 
@@ -92,17 +100,21 @@ def clean_year_mon_max_data(fileObj, year, mon, cat_flag):
         fd = open(fileObj, 'r')
         buf = []
         buf1 = []
+	buf2 = []
+	count = 0
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year and (int)(a[MON]) == mon):
                         if ((float)(a[cat_flag]) > avg):
                                 buf.append(a[MON]+'/'+a[DAY]+'/'+a[YEAR])
                                 buf1.append((float)(a[cat_flag]))
-
+				buf2.append(count)
+		count = count + 1
         index = [0]*int(len(buf))
-        max_data = zip(index, buf1, buf)
+        max_data = zip(index, buf1, buf, buf2)
         buf = []
         buf1 = []
+	buf2 = []
         fd.close()
         return max_data
 
@@ -111,17 +123,21 @@ def clean_year_mon_min_data(fileObj, year, mon, cat_flag):
         fd = open(fileObj, 'r')
         buf = []
         buf1 = []
+	buf2 = []
+	count = 0
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[cat_flag]) != 0 and (int)(a[YEAR]) == year and (int)(a[MON]) == mon):
                         if ((float)(a[cat_flag]) < avg):
                                 buf.append(a[MON]+'/'+a[DAY]+'/'+a[YEAR])
                                 buf1.append((float)(a[cat_flag]))
-
+				buf2.append(count)
+		count = count + 1
         index = [0]*int(len(buf))
-        min_data = zip(index, buf1, buf)
+        min_data = zip(index, buf1, buf, buf2)
         buf = []
         buf1 = []
+	buf2= []
         fd.close()
         return min_data
 
@@ -170,16 +186,20 @@ def clean_year_missdata(fileObj, year, mis_flag):
         count = 0
         buf = []
 	buf1 = []
+	buf2 = []
         fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[mis_flag]) == 0 and (int)(a[YEAR]) == year):
                        buf.append(a[MON]+'/'+a[DAY]+'/'+a[YEAR])
-                       buf1.append(' ')
+                       buf1.append('')
+		       buf2.append(count)
+		count = count + 1
         index = [2]*int(len(buf))
-        missdata = zip(index, buf1, buf)
+        missdata = zip(index, buf1, buf, buf2)
         buf = []
         buf1 = []
+	buf2 = []
         fd.close()
         return missdata
 
@@ -190,14 +210,17 @@ def clean_year_mon_missdata(fileObj, year, mon, mis_flag):
         count = 0
         buf = []
         buf1 = []
+	buf2 = []
         fd = open(fileObj, 'r')
         for line in fd.readlines():
                 a = re.split(',|\n| ', line)
                 if (len(a[mis_flag]) == 0 and (int)(a[YEAR]) == year and (int)(a[MON]) == mon):
                        buf.append(a[MON]+'/'+a[DAY]+'/'+a[YEAR])
                        buf1.append('')
+		       buf2.append(count)
+		count = count + 1
         index = [2]*int(len(buf))
-        missdata = zip(index, buf1, buf)
+        missdata = zip(index, buf1, buf, buf2)
         buf = []
         buf1 = []
         fd.close()

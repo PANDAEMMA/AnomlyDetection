@@ -183,7 +183,13 @@ class ADFrame(wx.Frame):
         #mimic Data for clean data
         self.cleanData = dict()
         self.cleanData['labels'] = ['Type', 'Value', 'Date']
-	self.cleanData['data'] = CleanAnalyze(self.openFilePath, self.DataType, data[0], data[1])
+	self.clean = CleanAnalyze(self.openFilePath, self.DataType, data[0], data[1])
+	clean_d1 = [item[0] for item in self.clean]
+	clean_d2 = [item[1] for item in self.clean]
+	clean_d3 = [item[2] for item in self.clean]
+	clean_dd = zip(clean_d1, clean_d2, clean_d3)
+	self.cleanData['data'] = clean_dd
+#	self.cleanData['data'] = CleanAnalyze(self.openFilePath, self.DataType, data[0], data[1])
         #0: extremes, 1: glitches, 2: Missing
         #self.cleanData['data'] = [(0, 33.4, "01/02/1997"), (0, '27','03/04/1988'),(0, '25', '06/07/2013'),
         #                        (1, 33.4, "01/03/1997"), (1, '66.8','03/08/1988'),(1, '77.4', '09/07/2013'),
@@ -325,8 +331,13 @@ class ADFrame(wx.Frame):
         return data
         
     def onCleanData(self, cleanIndex):
-        self.cleanIndex = cleanIndex
-        #print self.cleanIndex
+        cleanData = [item[3] for item in self.clean]
+	self.cleanIndex = cleanIndex
+	for i in range(len(self.cleanIndex)):
+		lines = open(self.openFilePath, 'r').readlines()
+		del lines[cleanData[self.cleanIndex[i]]]
+		open(self.openFilePath, 'w').writelines(lines)
+		
         #----------------TODO-------------------
         #backend function CleanSourceData take in a array of indexes of the original anomalies that needs to be removed
         #CleanSourceData(self.cleanIndex)
