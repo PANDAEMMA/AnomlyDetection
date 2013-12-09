@@ -32,12 +32,13 @@ def normal_stat(fileObj, year_flag, mis_flag):
 	# Sum up the number of missing, max data, and min data in each year 
         sum_all = sum(a) + sum(max_a) + sum(min_a)
 	# Get the ratio of data in each dimension
-        for i in range(len(max_a)):
-                miss.append((float)(a[i])/(float)(sum_all))
-                maxx.append((float)(max_a[i])/(float)(sum_all))
-                minn.append((float)(min_a[i])/(float)(sum_all))
-        ratio = zip(miss, maxx, minn)
-        return ratio
+	if (sum_all > 0):
+        	for i in range(len(max_a)):
+                	miss.append((float)(a[i])/(float)(sum_all))
+                	maxx.append((float)(max_a[i])/(float)(sum_all))
+                	minn.append((float)(min_a[i])/(float)(sum_all))
+        	ratio = zip(miss, maxx, minn)
+        	return ratio
 
 def normal_mon_stat(fileObj, year_flag, mis_flag):
         miss = []
@@ -56,12 +57,13 @@ def normal_mon_stat(fileObj, year_flag, mis_flag):
         # Sum up the number of missing, max data, and min data in each year 
         sum_all = sum(a) + sum(max_a) + sum(min_a)
         # Get the ratio of data in each dimension
-        for i in range(len(max_a)):
-                miss.append((float)(a[i])/(float)(sum_all))
-                maxx.append((float)(max_a[i])/(float)(sum_all))
-                minn.append((float)(min_a[i])/(float)(sum_all))
-        ratio = zip(miss, maxx, minn)
-        return ratio
+	if (sum_all > 0):
+        	for i in range(len(max_a)):
+                	miss.append((float)(a[i])/(float)(sum_all))
+                	maxx.append((float)(max_a[i])/(float)(sum_all))
+                	minn.append((float)(min_a[i])/(float)(sum_all))
+        	ratio = zip(miss, maxx, minn)
+        	return ratio
 
 # Objective: Count the number of maximum data each year
 # Usage: count_year_max_data_avg(fileObj, max_data_avg, cat_flag)
@@ -245,6 +247,8 @@ def count_year_max_data_avg(fileObj, cat_flag):
                         flag = 1
                 if(temp != (int)(a[YEAR])):
                         length = (int)(count * RATE)
+			if (length == 0):
+				length = 1
                         value = heapq.nlargest(length, year_data)
                         avg = mean(value)
                         avg_data.append(avg)
@@ -282,6 +286,8 @@ def count_year_min_data_avg(fileObj, cat_flag):
                         flag = 1
                 if(temp != (int)(a[YEAR])):
                         length = (int)(count * RATE)
+			if (length == 0):
+				length = 1
                         value = heapq.nsmallest(length, year_data)
                         avg = mean(value)
                         avg_data.append(avg)
@@ -319,6 +325,8 @@ def count_mon_max_data_avg(fileObj, year, cat_flag):
                                 count = count + 1
                         if(temp != (int)(a[MON])):
 				length = (int)(count * RATE)
+				if (length == 0):
+					length = 1
                         	value = heapq.nlargest(length, year_data)
                        	 	avg = mean(value)
                         	avg_data.append(avg)
@@ -355,6 +363,8 @@ def count_mon_min_data_avg(fileObj, year, cat_flag):
                                 count = count + 1
                         if(temp != (int)(a[MON])):
 				length = (int)(count * RATE)
+				if (length == 0):
+					length = 1
 	                        value = heapq.nsmallest(length, year_data)
         	                avg = mean(value)
                 	        avg_data.append(avg)

@@ -287,7 +287,7 @@ class ADFrame(wx.Frame):
 	ann = []
 	ann2 = []
 	i1 = [0]*int(N)
-	i2 = [1]*int(len(miss))
+	i2 = [2]*int(len(miss))
 	for j in range(N):	
 		date = [item[3] for item in anomalies[j]]
 		an_data = [item[1] for item in anomalies[j]]
