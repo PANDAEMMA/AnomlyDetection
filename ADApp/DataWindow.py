@@ -60,7 +60,7 @@ class DataContent(wx.Window):
             self.monthData.append(self.data[i]['month_data'])
             self.yearRegion.append(wx.Rect(self.zeroX+self.offset,self.zeroY+self.scale*i+1,self.width-self.offset,self.scale))
             self.monthRegionYear = []
-            for j in range(12):
+            for j in range(len(self.monthData)):
                 self.monthRegionYear.append(wx.Rect(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+1, self.mw, self.scale))
             self.monthRegion.append(self.monthRegionYear)
             self.buttonPos.append(wx.Rect(self.zeroX+3, self.zeroY+self.scale*i+3, 26, 26))
@@ -126,27 +126,30 @@ class DataContent(wx.Window):
             
     def DrawMonth(self,dc, i, data):
         for j in range(12):
-            md = data[j]
-            dc.SetPen(wx.Pen(self.eColor))
-            dc.SetBrush( wx.Brush(self.eColor) )
-            dc.DrawRectangle(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+1, md[0]*self.mw, self.scale-1)
-            dc.SetPen(wx.Pen(self.gColor))
-            dc.SetBrush( wx.Brush(self.gColor) )
-            dc.DrawRectangle(self.zeroX+self.offset+self.mw*j+md[0]*self.mw, self.zeroY+self.scale*i+1, md[1]*self.mw, self.scale-1)
-            dc.SetPen(wx.Pen(self.mColor))
-            dc.SetBrush( wx.Brush(self.mColor) )
-            dc.DrawRectangle(self.zeroX+self.offset+self.mw*j+((md[0]+md[1])*self.mw), self.zeroY+self.scale*i+1, md[2]*self.mw, self.scale-1)
-            if not j==0:
+            if j>= len(data):
+                return
+            else:
+                md = data[j]
+                dc.SetPen(wx.Pen(self.eColor))
+                dc.SetBrush( wx.Brush(self.eColor) )
+                dc.DrawRectangle(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+1, md[0]*self.mw, self.scale-1)
+                dc.SetPen(wx.Pen(self.gColor))
+                dc.SetBrush( wx.Brush(self.gColor) )
+                dc.DrawRectangle(self.zeroX+self.offset+self.mw*j+md[0]*self.mw, self.zeroY+self.scale*i+1, md[1]*self.mw, self.scale-1)
+                dc.SetPen(wx.Pen(self.mColor))
+                dc.SetBrush( wx.Brush(self.mColor) )
+                dc.DrawRectangle(self.zeroX+self.offset+self.mw*j+((md[0]+md[1])*self.mw), self.zeroY+self.scale*i+1, md[2]*self.mw, self.scale-1)
+                if not j==0:
+                    dc.SetPen(wx.BLACK_PEN)
+                    dc.DrawLine(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i,self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+self.scale)
+                #draw month label
+                self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
+                dc.SetFont(self.labelFont)
                 dc.SetPen(wx.BLACK_PEN)
-                dc.DrawLine(self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i,self.zeroX+self.offset+self.mw*j, self.zeroY+self.scale*i+self.scale)
-            #draw month label
-            self.labelFont = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
-            dc.SetFont(self.labelFont)
-            dc.SetPen(wx.BLACK_PEN)
-            labelText = str(j+1)
-            tw, th = dc.GetTextExtent(labelText)
-            pos = (self.zeroX+self.offset+self.mw*j+1, self.zeroY+self.scale*(i+1)-th)
-            dc.DrawText(labelText, pos[0], pos[1])
+                labelText = str(j+1)
+                tw, th = dc.GetTextExtent(labelText)
+                pos = (self.zeroX+self.offset+self.mw*j+1, self.zeroY+self.scale*(i+1)-th)
+                dc.DrawText(labelText, pos[0], pos[1])
     
     def InRegion(self, x, y, bRect):
         if x>bRect.x and x<bRect.x+bRect.width and y>bRect.y and y<bRect.y+bRect.height:
