@@ -91,26 +91,6 @@ class ADFrame(wx.Frame):
             #backend function called function: StatisticalAnalyze
             #self.dangerData = StatisticalAnalyze(self.openFilePath, self.DataType)
             self.dangerData = []
-            """self.dangerData.append({'year':1997,'year_data':(0.23, 0.34, 0.06), 
-            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
-            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
-            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
-            self.dangerData.append({'year':1998,'year_data':(0.03, 0.14, 0.56), 
-            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
-            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
-            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
-            self.dangerData.append({'year':1999,'year_data':(0.13, 0.34, 0.56), 
-            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
-            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
-            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
-            self.dangerData.append({'year':2000,'year_data':(0.33, 0.04, 0.56), 
-            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
-            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
-            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})
-            self.dangerData.append({'year':2001,'year_data':(0.03, 0.24, 0.06), 
-            'month_data':[(0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), 
-            (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),
-            (0.21, 0.09, 0.07), (0.67, 0.11, 0.3), (0.23, 0.34, 0.14),(0.21, 0.09, 0.07), (0.67, 0.11, 0.3)]})"""
             self.dangerData = self.StatisticalAnalyze(self.openFilePath, self.DataType)
 	    self.dataWindow = DataWindow(self, 1, self.dangerData)
             self.dataWindow.Show()	
@@ -162,11 +142,6 @@ class ADFrame(wx.Frame):
     
     def DoneRegionSel(self, data):
         self.dataWindow.Close(True)
-        #print data
-        #data (year, month), if select the whole year, month = -1
-        #----------------TODO-------------------
-        #backend function AnalyzeData can return a tuple
-        #self.anomalies , self.overviewData, self.cleanData = AnalyzeData(File, self.DataType, (year, month))
 	self.anomalies = AnalyzeData(self.openFilePath, self.DataType, data[0], data[1])
 	self.overviewData = self.cleanData = data
         self.cleanData = self.PackCleanData(self.cleanData)
@@ -176,11 +151,6 @@ class ADFrame(wx.Frame):
         self.DrawTimeline(self.timelineData)
         
     def PackCleanData(self, data):
-        #---------TODO/Done--------
-        #If the data backend generated is the same as my data structure, no packing work needed here, just return the data
-        #otherwise, reformat the data as my data structure
-        
-        #mimic Data for clean data
         self.cleanData = dict()
         self.cleanData['labels'] = ['Type', 'Value', 'Date']
 	self.clean = CleanAnalyze(self.openFilePath, self.DataType, data[0], data[1])
@@ -189,11 +159,6 @@ class ADFrame(wx.Frame):
 	clean_d3 = [item[2] for item in self.clean]
 	clean_dd = zip(clean_d1, clean_d2, clean_d3)
 	self.cleanData['data'] = clean_dd
-#	self.cleanData['data'] = CleanAnalyze(self.openFilePath, self.DataType, data[0], data[1])
-        #0: extremes, 1: glitches, 2: Missing
-        #self.cleanData['data'] = [(0, 33.4, "01/02/1997"), (0, '27','03/04/1988'),(0, '25', '06/07/2013'),
-        #                        (1, 33.4, "01/03/1997"), (1, '66.8','03/08/1988'),(1, '77.4', '09/07/2013'),
-        #                        (2, '', "01/05/1997"), (2, '','08/04/1988'),(2, '', '06/09/2013'),]
         self.canClean = True
         return self.cleanData
         
@@ -245,46 +210,10 @@ class ADFrame(wx.Frame):
             
         return data
 
-        #mimic Data
-        #genData mimic data here, will by read later
-        '''list = []
-        dic = dict()
-        dic1 = dict()
-        dic2 = dict()
-        dic3 = dict()
-        dic['color'] = 'red'
-        dic1['color'] = (255, 255, 0)
-        dic2['color'] = (255, 0, 255)
-        dic3['color'] = 'green'
-        dic['points'] = [(-10, 30),(20, -40), (30, 90), (40, 50)]
-        dic1['points'] = [(-20, 10),(0, 40), (30, 60), (40, 50)]
-        dic2['points'] = [(-10, 30),(20, 90), (30, -40), (40, 90)]
-        dic3['points'] = [(-40, 30),(0, -40), (30, 80), (40, 90)]
-        dic['anomolies'] = [1]
-        dic1['anomolies'] = [2]
-        dic2['anomolies'] = [0,2]
-        dic3['anomolies'] = [3]
-        dic['labels'] = [("test")]
-        dic1['labels'] = [("test")]
-        dic2['labels'] = [("test")]
-        dic3['labels'] = [("test")]
-        list.append([dic])
-        list.append([dic1])
-        list.append([dic2])
-        list.append([dic3])
-        return list'''
-
     def PackTimelineData(self, an, anomalies):
-        #---------TODO/Done--------
-        #If the data backend generated is the same as my data structure, no packing work needed here, just return the data
-        #otherwise, reformat the data as my data structure
 	chunk_num = 5
 	x_axis = get_x_axis(self.openFilePath, self.DataType, an[0], an[1], self.TimeLineLen, chunk_num)
-        #mimic Data
-        #{labels:[list], anomolies: [list]}
-        # the data part is the information you need to give me
         data = dict()
-        #1st and last should be the start and end time, if no lable, can be like [(0, '')]
 	data['labels'] = x_axis
 
 	N = len(anomalies)
@@ -309,9 +238,6 @@ class ADFrame(wx.Frame):
 	if (len(miss) > 0):
 		ann_zip.extend(ann2_zip)
 	data['anomolies'] = ann_zip
-	#data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
-        #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
-        #data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
 	
 	start = []
 	end = []
@@ -327,7 +253,6 @@ class ADFrame(wx.Frame):
 	time_index = zip(start, end)
         #same as timeframe in comic map, for hightlight, (start date, end date)
 	data['dates'] = time_index
-        #data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
         return data
         
     def onCleanData(self, cleanIndex):
@@ -338,6 +263,3 @@ class ADFrame(wx.Frame):
 		del lines[cleanData[self.cleanIndex[i]]]
 		open(self.openFilePath, 'w').writelines(lines)
 		
-        #----------------TODO-------------------
-        #backend function CleanSourceData take in a array of indexes of the original anomalies that needs to be removed
-        #CleanSourceData(self.cleanIndex)
