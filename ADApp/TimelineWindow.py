@@ -18,7 +18,7 @@ class TimelineWindow(wx.Window):
         self.eColor = wx.Colour(255, 50, 50)
         self.gColor = wx.Colour(50,255,50)
         self.mColor = wx.Colour(50, 50, 255)
-        self.maskColor = wx.Colour(255,255,0, 92 )
+        self.maskColor = wx.Colour(255,0,0, 160 )
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
     
@@ -108,7 +108,10 @@ class TimelineWindow(wx.Window):
             endx = self.ProjectX(l[id][1])
             dc.SetPen( wx.Pen(self.maskColor) )
             dc.SetBrush( wx.Brush(self.maskColor) )
-            dc.DrawRectangle( startx, self.GetClientRect().y, endx-startx, self.GetClientRect().height)
+            if startx == endx:
+                dc.DrawRectangle( startx, self.GetClientRect().y, 1, self.GetClientRect().height)
+            else:
+                dc.DrawRectangle( startx, self.GetClientRect().y, endx-startx, self.GetClientRect().height)
     
             
     def DrawData(self, data, dc):

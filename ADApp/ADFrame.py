@@ -135,19 +135,6 @@ class ADFrame(wx.Frame):
             checkboxes[1].SetValue(True)
         if attr == 'airPressure':
             checkboxes[2].SetValue(True)
-            
-        #{labels:[list], anomolies: [list]}
-        # the data part is the information you need to give me
-        data = dict()
-        #1st and last should be the start and end time, if no lable, can be like [(0, '')]
-        #data['labels'] = [(0,'01/01/1997'), (15, '01/15/1997'), (31, '02/01/1997'), (46, '02/15/1997'), (60, '02/28/1997')]
-        data['labels'] = self.Pick_xaxis()
-        #0: extremes, 1: glitches, (type, xstart, xend), the index must be the same as comicmap data, #pass in source IDs
-        data['anomolies'] = [(0,21,21), (0,19,19), (0,2,2), (0,9,9), (0,26,26), (0,33,33), (0,36,36), (0,42,42), (0,11,11)]
-        #same as timeframe in comic map, for hightlight, (start date, end date)
- 
-	#data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
-        return data
         
     #analyze functions
     def DrawComicMap(self, data):
@@ -333,7 +320,7 @@ class ADFrame(wx.Frame):
 		end.append(stop_x)
 	time_index = zip(start, end)
         #same as timeframe in comic map, for hightlight, (start date, end date)
-	data['date'] = time_index
+	data['dates'] = time_index
         #data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
         return data
         
