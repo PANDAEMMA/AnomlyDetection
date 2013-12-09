@@ -319,7 +319,7 @@ class ADFrame(wx.Frame):
 		end.append(stop_x)
 	time_index = zip(start, end)
         #same as timeframe in comic map, for hightlight, (start date, end date)
-	data['date'] = time_index
+	data['dates'] = time_index
         #data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
         return data
         
