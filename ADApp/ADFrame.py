@@ -306,12 +306,11 @@ class ADFrame(wx.Frame):
 		an_data = [item[1] for item in anomalies[j]]
 		max_i = getMaxIndex(an_data)
 		an_i = date[max_i]
-		an_x = start_x = (int)(((float)(an_i)/(float)(size))*self.TimeLineLen)
-		ann.append(an_i)
+		start_x = (int)(((float)(an_i)/(float)(size))*self.TimeLineLen)
+		ann.append(start_x)
 		ann_zip = zip(i1, ann, ann)
 	for k in range(len(miss)):
-		an_x = start_x = (int)(((float)(miss[k])/(float)(size))*self.TimeLineLen)
-
+		an_x  = (int)(((float)(miss[k])/(float)(size))*self.TimeLineLen)
 		ann2.append(an_x)
 		ann2_zip = zip(i2, ann2, ann2)
 	ann_zip.extend(ann2_zip)
@@ -334,7 +333,6 @@ class ADFrame(wx.Frame):
 	time_index = zip(start, end)
         #same as timeframe in comic map, for hightlight, (start date, end date)
 	data['date'] = time_index
-	print time_index
         #data['dates'] = [(20, 24), (14, 20), (1, 5), (5, 10), (24, 30), (30, 35), (35, 39), (39, 43), (10, 14)]
         return data
         
