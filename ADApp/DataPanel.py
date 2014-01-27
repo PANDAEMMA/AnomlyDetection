@@ -7,7 +7,7 @@ class DataPanel(wx.Panel):
         #create the manager
         self.foldPanel = FoldPanelMgr(self)
         #init
-        self.dataSourcePanel = self.foldPanel.AddPanel(DataSourcePanel, "Data")
+#        self.dataSourcePanel = self.foldPanel.AddPanel(DataSourcePanel, "Data")
         self.attributePanel = self.foldPanel.AddPanel(AttributePanel, "Attribute")
         # Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -18,20 +18,19 @@ class DataPanel(wx.Panel):
 class DataSourcePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        
+        """
         self.dataType = wx.RadioBox(
                 self, -1, "Choose Data: ", wx.DefaultPosition, wx.DefaultSize,
                 ['Temperature', 'Humidity', 'Pressure'], 1, wx.RA_SPECIFY_COLS
                 )
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox, self.dataType)
-        
         self.import_button = wx.Button(self, -1, "Import Data Source", (50,50))
-        self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)
+        self.Bind(wx.EVT_BUTTON, self.OnImport, self.import_button)"""
         
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
-        self.vsizer.Add(self.dataType, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
-        self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 20)
+        #self.vsizer.Add(self.dataType, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
+        #self.vsizer.Add(self.import_button, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.BOTTOM, 20)
         self.SetSizer(self.vsizer)
     
     def OnImport(self,e):

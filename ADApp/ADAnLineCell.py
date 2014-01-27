@@ -87,6 +87,7 @@ def AnalyzeData_year(fileObj, cat_flag, year):
 	buf = []
 	anomaly = []
 	std_list = []
+	model_list = []
 	yy = []
 	dd = []
 	mm = []
@@ -109,10 +110,12 @@ def AnalyzeData_year(fileObj, cat_flag, year):
         	#Calculate std between real data and model data
         	std = stderr(buf, model, N1)
         	std_list.append(std)
+		model_list.append(model)
 		buf = []
 	# Get the number of top k index of std data
     	rank_i = getTopKIndex(std_list, top_k)
 	buf = []
+	model_buf = []
 	index = range(N1)
 	for k in range(top_k):
 		date = []
@@ -121,12 +124,15 @@ def AnalyzeData_year(fileObj, cat_flag, year):
 			buf.append((float)(input_data[rank_i[k]*step+t]))
 			date.append(mm[rank_i[k]*step+t]+'/'+dd[rank_i[k]*step+t]+'/'+yy[rank_i[k]*step+t])
 			date_i.append(rank_i[k]*step+t)
-		zipped = zip(index, buf, date, date_i)
+			model_buf.append(model_list[rank_i[k]][t])
+		zipped = zip(index, buf, date, date_i, model_buf)
 		anomaly.append(zipped)
 		buf = []
+		model_buf = []
 	fd.close()
 	input_data = []
 	std_list = []
+	model_list = []
 	yy = []
 	dd = []
 	mm = []

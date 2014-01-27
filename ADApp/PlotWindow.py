@@ -191,6 +191,13 @@ class PlotWindow(wx.Window):
             newPoint = self.Projection(points[i])
             newpoints.append(newPoint)
         dc.DrawLines(newpoints)
+	points_m = data['model']
+	newpoints_m = []
+        for i in range(len(points_m)):
+            newPoint = self.Projection(points_m[i])
+            newpoints_m.append(newPoint)
+	dc.SetPen(wx.RED_PEN)
+        dc.DrawLines(newpoints_m)
         
     def DrawMask(self,dc):
         dc.SetPen( wx.Pen(self.mask_colour) )

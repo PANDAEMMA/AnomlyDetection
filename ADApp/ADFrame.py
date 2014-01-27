@@ -40,7 +40,9 @@ class ADFrame(wx.Frame):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         MENU_QUIT = wx.NewId()
+	MENU_IMPORT = wx.NewId()
         file_menu.Append(MENU_QUIT,"&Exit")
+        file_menu.Append(MENU_IMPORT, "&Import")
         menu_bar.Append(file_menu,"&File")
         
         tool_menu = wx.Menu()
@@ -55,6 +57,7 @@ class ADFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnQuit, id=MENU_QUIT)
         self.Bind(wx.EVT_MENU, self.OnAbout, id=MENU_ABOUT)
         self.Bind(wx.EVT_MENU, self.OnDataClean, id=MENU_DATACLEANWINDOW)
+	self.Bind(wx.EVT_MENU, self.OnImport, id=MENU_IMPORT)
         return menu_bar
         
     #event handlers
@@ -108,13 +111,15 @@ class ADFrame(wx.Frame):
 	return data
 	
     def UpdateAttribute(self, attr):
+	attr = 'temperature'
+	"""
         checkboxes = self.DataPanel.attributePanel.GetChildren()
         if attr == 'temprature':
             checkboxes[0].SetValue(True)
         if attr == 'humidity':
             checkboxes[1].SetValue(True)
         if attr == 'airPressure':
-            checkboxes[2].SetValue(True)
+            checkboxes[2].SetValue(True)"""
         
     #analyze functions
     def DrawComicMap(self, data):
@@ -177,28 +182,31 @@ class ADFrame(wx.Frame):
             index = [item[0] for item in anomalies[i]]
             an_data = [item[1] for item in anomalies[i]]
             date = [item[2] for item in anomalies[i]]
+	    model = [item[4] for item in anomalies[i]]
             points = zip(index, an_data)
-    
+	    points_m = zip(index, model)
             length_index = len(index)
-            # std cal.
+            """# std cal.
             std = []
             aa = stdcal(an_data, length_index)
             std.append('std:'+ (str)(aa))
             # avg cal.
             average = []
             av = avg(an_data, length_index)
-            average.append('mean:' + (str)(av))
+            average.append('mean:' + (str)(av))"""
             # start date
             start_date = []
             start_date.append('sdate:'+ (str)(anomalies[i][0][2]))
             # end date
             end_date = []
             end_date.append('edate:' + (str)(anomalies[i][length_index - 1][2]))
-            label = zip(std, average, start_date, end_date)
+           #label = zip(std, average, start_date, end_date)
+	    label = zip(start_date, end_date)
             # add std, avg, and date into label
             dic['labels'] = label
             # add anomaly data
             dic['points'] = points
+	    dic['model'] = points_m
             # add extreme data
             maxdata = getMaxIndex(an_data)
             anomaly_data.append(maxdata)
